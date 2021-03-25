@@ -37,6 +37,10 @@ def get_financing(company_id):
     ## return array of deals
     return []
 
-
+def add_assessment(company_id, rating):
+		## add new assessment to the assessment table
+		## add new record connect assessment to company
+		## return all assessments from company
+		return []
 
 

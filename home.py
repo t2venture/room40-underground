@@ -32,3 +32,15 @@ def get_deals():
     ## pull all active deals from the deals table
     ## list of dictionaries of deals
     return []
+
+def add_to_agenda(item):
+    ## Item is a dictionary of agenda details
+    ## To do this, we add an activity and activityComapny with RPVC id and new activity id
+    ## return the db copy of the activity
+    return {}
+
+def add_deal(deal):
+    ## Create new deal record
+    ## Return db copy of deal
+    return {}
+

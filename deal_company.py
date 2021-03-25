@@ -16,3 +16,25 @@ def load_company(deal_id):
 ### Pull up all files associated with the company
 
     return {}
+
+def update_status(deal_id, status):
+    ## change the status field in the company table
+    ## return deal status as dictionary
+    return {}
+
+def add_note(deal_id, note):
+    ## create new note record
+    ## get company from deal
+    ## create linking record from company to note
+    ## return all notes for the company
+    return []
+
+def edit_eval(deal_id, eval):
+    ## find the vote in the vote table and overwrite changes
+    ## return the db version of the eval
+    return {}
+
+def add_file(deal_id, file):
+    # more complicated but will likely add to blob with company_id pulled from deal
+    # return all files
+    return []

@@ -15,3 +15,11 @@ def get_final_votes():
     # pull up all deals that are at final vote stage and pass them to the front, or deals that have recently been voted on
     # return a list of dictionaries of these deals
     return []
+
+def add_final_votes(deal_id, eval):
+    ## create new vote record that is flagged as final
+    ## link it to deal via voteDeal table
+    ## mark deal stage as one of the done statuses
+    ## retunr the db copy of the vote record
+    return {}
+
