@@ -9,5 +9,5 @@ class CompanyActivity(db.Model):
     __tablename__ = "company_activity"
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    activity_id = db.Column(db.Integer, ForeignKey('activity.id'))
-    company_id = db.Column(db.Integer, ForeignKey('company.id'))
+    activity_id = db.Column(db.Integer, db.ForeignKey('activity.id'))
+    company_id = db.Column(db.Integer, db.ForeignKey('company.id'))

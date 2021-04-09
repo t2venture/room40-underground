@@ -9,5 +9,5 @@ class DealInvestor(db.Model):
     __tablename__ = "deal_investor"
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    deal_id = db.Column(db.Integer, ForeignKey('deal.id'))
-    investor_id = db.Column(db.Integer, ForeignKey('company.id'))
+    deal_id = db.Column(db.Integer, db.ForeignKey('deal.id'))
+    investor_id = db.Column(db.Integer, db.ForeignKey('company.id'))
