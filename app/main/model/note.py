@@ -11,6 +11,6 @@ class Note(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     description = db.Column(db.String(1000), unique=False, nullable=False)
     category = db.Column(db.String(255), unique=False, nullable=False)
-    isThesis = db.Column(db.Boolean, nullable=False)
+    is_thesis = db.Column(db.Boolean, nullable=False)
 
     

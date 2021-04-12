@@ -9,8 +9,8 @@ class Company(db.Model):
     __tablename__ = "company"
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    name = db.Column(db.String(255), unique=True, nullable=False)
-    description = db.Column(db.String(2500), unique=True, nullable=False)
-    website = db.Column(db.String(255), unique=True, nullable=False)
-    crunchbase = db.Column(db.String(255), unique=True, nullable=True)
-    pitchbook = db.Column(db.String(255), unique=True, nullable=True)
+    name = db.Column(db.String(255), unique=False, nullable=False)
+    description = db.Column(db.String(2500), unique=False, nullable=False)
+    website = db.Column(db.String(255), unique=False, nullable=False)
+    crunchbase = db.Column(db.String(255), unique=False, nullable=True)
+    pitchbook = db.Column(db.String(255), unique=False, nullable=True)

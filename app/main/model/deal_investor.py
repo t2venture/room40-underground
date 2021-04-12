@@ -11,3 +11,4 @@ class DealInvestor(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     deal_id = db.Column(db.Integer, db.ForeignKey('deal.id'))
     investor_id = db.Column(db.Integer, db.ForeignKey('company.id'))
+    amount = db.Column(db.Integer)

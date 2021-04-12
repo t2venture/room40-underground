@@ -1,8 +1,8 @@
-"""added core models
+"""initial database migration
 
-Revision ID: 46c074fec2de
+Revision ID: 7f7e068bd80e
 Revises: 
-Create Date: 2021-04-08 20:26:49.731492
+Create Date: 2021-04-12 11:47:28.258867
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '46c074fec2de'
+revision = '7f7e068bd80e'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -46,12 +46,7 @@ def upgrade():
     sa.Column('website', sa.String(length=255), nullable=False),
     sa.Column('crunchbase', sa.String(length=255), nullable=True),
     sa.Column('pitchbook', sa.String(length=255), nullable=True),
-    sa.PrimaryKeyConstraint('id'),
-    sa.UniqueConstraint('crunchbase'),
-    sa.UniqueConstraint('description'),
-    sa.UniqueConstraint('name'),
-    sa.UniqueConstraint('pitchbook'),
-    sa.UniqueConstraint('website')
+    sa.PrimaryKeyConstraint('id')
     )
     op.create_table('event',
     sa.Column('id', sa.Integer(), autoincrement=True, nullable=False),
@@ -66,7 +61,7 @@ def upgrade():
     sa.Column('id', sa.Integer(), autoincrement=True, nullable=False),
     sa.Column('description', sa.String(length=1000), nullable=False),
     sa.Column('category', sa.String(length=255), nullable=False),
-    sa.Column('isThesis', sa.Boolean(), nullable=False),
+    sa.Column('is_thesis', sa.Boolean(), nullable=False),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('user',
@@ -81,9 +76,7 @@ def upgrade():
     sa.Column('twitter_url', sa.String(length=255), nullable=False),
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('email'),
-    sa.UniqueConstraint('linkedin_url'),
     sa.UniqueConstraint('public_id'),
-    sa.UniqueConstraint('twitter_url'),
     sa.UniqueConstraint('username')
     )
     op.create_table('vote',
@@ -153,6 +146,7 @@ def upgrade():
     sa.Column('id', sa.Integer(), autoincrement=True, nullable=False),
     sa.Column('deal_id', sa.Integer(), nullable=True),
     sa.Column('investor_id', sa.Integer(), nullable=True),
+    sa.Column('amount', sa.Integer(), nullable=True),
     sa.ForeignKeyConstraint(['deal_id'], ['deal.id'], ),
     sa.ForeignKeyConstraint(['investor_id'], ['company.id'], ),
     sa.PrimaryKeyConstraint('id')

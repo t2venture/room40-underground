@@ -9,7 +9,7 @@ DROP_TABLE = "DROP TABLE {}"
 CREATE_VOTE_TABLE = """CREATE TABLE vote (
     vote_id int PRIMARY KEY
     vote_field_1 int
-    vote_field_1_description varchar(255)
+    vote_field_1_des varchar(255)
 )"""
 
 CREATE_EVENT_TABLE = """CREATE TABLE event (
@@ -114,7 +114,7 @@ ADD_NOTE = "INSERT INTO note (description, category, is_thesis) values ('{}','{}
 ADD_COMPANY = "INSERT INTO company (name, description, website, valuation, pitchbook_url, crunchbase_url) values ('{}','{}','{}','{}','{}','{}')"
 ADD_DEAL = "INSERT INTO deal (stage, round_name, size, post_money, initial_vote_id, final_vote_id, company_id, owner_id) values ('{}','{}','{}','{}','{}','{}','{}','{}')"
 ADD_USER = "INSERT INTO user (full_name, email, company_id, linkedin_url) values ('{}','{}','{}','{}')"
-ADD_VOTE = "INSERT INTO vote (vote_field_1, vote_field_1_description) values ('{}','{}')"
+ADD_VOTE = "INSERT INTO vote (vote_field_1, vote_field_1_des) values ('{}','{}')"
 ADD_EVENT = "INSERT INTO event (time, link, description, notes, event_type) values ('{}','{}','{}','{}','{}')"
 ADD_COMPANY_ASSESSMENT  = "INSERT INTO company_assessment (company_id, assessment_id) values ('{}', '{}')"
 ADD_COMPANY_ACTIVITY = "INSERT INTO company_activity (company_id, activity_id) values ('{}', '{}')"

@@ -15,8 +15,8 @@ class User(db.Model):
     public_id = db.Column(db.String(100), unique=True)
     username = db.Column(db.String(50), unique=True)
     password_hash = db.Column(db.String(100))
-    linkedin_url = db.Column(db.String(255), unique=True, nullable=False)
-    twitter_url = db.Column(db.String(255), unique=True, nullable=False)
+    linkedin_url = db.Column(db.String(255), unique=False, nullable=False)
+    twitter_url = db.Column(db.String(255), unique=False, nullable=False)
 
     @property
     def password(self):

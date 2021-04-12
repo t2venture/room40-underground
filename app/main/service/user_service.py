@@ -13,7 +13,9 @@ def save_new_user(data):
             email=data['email'],
             username=data['username'],
             password=data['password'],
-            registered_on=datetime.datetime.utcnow()
+            registered_on=datetime.datetime.utcnow(),
+            linkedin_url=data['linkedin_url'],
+            twitter_url=data['twitter_url'],
         )
         save_changes(new_user)
         return generate_token(new_user)
