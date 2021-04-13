@@ -16,7 +16,8 @@ def save_new_activity(company_id, data):
         db.session.flush()
         
         save_changes(new_activity)
-        save_new_company_activity(company_id, new_activity.id)
+        data = {'company_id': company_id, 'activity_id': new_activity.id}
+        save_new_company_activity(data)
         response_object = {
                 'status': 'success',
                 'message': 'Successfully registered.',

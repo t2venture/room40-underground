@@ -16,7 +16,8 @@ def save_new_assessment(company_id, data):
         db.session.flush()
         
         save_changes(new_assessment)
-        save_new_company_assessment(company_id, new_assessment.id)
+        data = {'company_id': company_id, 'activity_id': new_assessment.id} 
+        save_new_company_assessment(data)
         response_object = {
                 'status': 'success',
                 'message': 'Successfully registered.',

@@ -16,8 +16,8 @@ def save_new_event(deal_id, data):
         )
         db.session.add(new_event)
         db.session.flush()
-
-        save_new_deal_event(deal_id, new_event.id)
+        data = {'deal_id': deal_id, 'event_id': new_event.id} 
+        save_new_deal_event(data)
         save_changes(new_event)
         response_object = {
                 'status': 'success',

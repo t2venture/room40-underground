@@ -4,11 +4,11 @@ import datetime
 from app.main import db
 from app.main.model.deal_note import DealNote
 
-def save_new_deal_note(deal_id, note_id):
+def save_new_deal_note(data):
     try:
         new_deal_note = DealNote(
-            deal_id=deal_id,
-            note_id=note_id,
+            deal_id=data['deal_id'],
+            note_id=data['note_id'],
         )
         save_changes(new_deal_note)
         response_object = {

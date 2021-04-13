@@ -4,11 +4,11 @@ import datetime
 from app.main import db
 from app.main.model.company_assessment import CompanyAssessment
 
-def save_new_company_assessment(company_id, assessment_id):
+def save_new_company_assessment(data):
     try:
         new_company_assessment = CompanyAssessment(
-            assessment_id=assessment_id,
-            company_id=company_id,
+            assessment_id=data['assessment_id'],
+            company_id=data['company_id'],
         )
         save_changes(new_company_assessment)
         response_object = {

@@ -17,9 +17,11 @@ from .main.controller.vote_controller import api as vote_ns
 blueprint = Blueprint('api', __name__)
 
 api = Api(blueprint,
-          title='FLASK RESTPLUS API BOILER-PLATE WITH JWT',
+          title='Room 40 API',
           version='1.0',
-          description='a boilerplate for flask restplus web service'
+          description='The development environment for endpoints for the Room 40 superapp. One app to rule them All.',
+          contact='luke@fromstandard.com',
+          
           )
 
 api.add_namespace(user_ns, path="/user")

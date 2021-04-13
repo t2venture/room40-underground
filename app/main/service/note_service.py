@@ -14,8 +14,8 @@ def save_new_note(deal_id, data):
         )
         db.session.add(new_note)
         db.session.flush()
-
-        save_new_deal_note(deal_id, new_note.id)
+        data = {'deal_id': deal_id, 'note_id': new_note.id} 
+        save_new_deal_note(data)
         save_changes(new_note)
         response_object = {
                 'status': 'success',

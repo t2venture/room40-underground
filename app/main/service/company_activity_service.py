@@ -4,11 +4,11 @@ import datetime
 from app.main import db
 from app.main.model.company_activity import CompanyActivity
 
-def save_new_company_activity(company_id, activity_id):
+def save_new_company_activity(data):
     try:
         new_company_activity = CompanyActivity(
-            activity_id=activity_id,
-            company_id=company_id,
+            activity_id=data['activity_id'],
+            company_id=data['company_id'],
         )
         save_changes(new_company_activity)
         response_object = {

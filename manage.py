@@ -37,3 +37,4 @@ if __name__ == '__main__':
     manager.run()
 
 #TODO: Change all mapping tables "Save" service method to only take in data and pass in a dictionary with current params. Just like user_company_serivce
+#TODO: Search functionality
