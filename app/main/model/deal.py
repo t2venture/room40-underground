@@ -15,5 +15,3 @@ class Deal(db.Model):
     post_money = db.Column(db.Integer, unique=False, nullable=False)
     lead_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     company_id = db.Column(db.Integer, db.ForeignKey('company.id'))
-    initial_vote_id = db.Column(db.Integer, db.ForeignKey('vote.id'))
-    final_vote_id = db.Column(db.Integer, db.ForeignKey('vote.id'))

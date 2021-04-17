@@ -9,14 +9,14 @@ def save_new_assessment(company_id, data):
     try:
         new_assessment = Assessment(
             quarter=data['quarter'],
-            assessment_field_1=data['assessment_field_1'],
-            assessment_field_1_des=data['assessment_field_1_des'],
+            sentiment=data['sentiment'],
+            notes=data['notes'],
         )
         db.session.add(new_assessment)
         db.session.flush()
         
         save_changes(new_assessment)
-        data = {'company_id': company_id, 'activity_id': new_assessment.id} 
+        data = {'company_id': company_id, 'assessment_id': new_assessment.id} 
         save_new_company_assessment(data)
         response_object = {
                 'status': 'success',

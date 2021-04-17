@@ -6,6 +6,7 @@ from app.main.model.company_assessment import CompanyAssessment
 
 def save_new_company_assessment(data):
     try:
+        print(data)
         new_company_assessment = CompanyAssessment(
             assessment_id=data['assessment_id'],
             company_id=data['company_id'],
@@ -18,6 +19,7 @@ def save_new_company_assessment(data):
         return response_object, 201
 
     except Exception as e:
+        print(e)
         response_object = {
             'status': 'fail',
             'message': 'Some error occurred. Please try again.'

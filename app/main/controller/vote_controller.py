@@ -24,16 +24,18 @@ class VoteList(Resource):
     @api.response(201, 'vote successfully created.')
     @api.doc('create a new vote')
     @api.param('deal_id', "the deal id passed in")
-    @api.param('vote_type', "the type of vote this is ('initial' or 'final')")
+    @api.param('stage', "the type of vote this is ('initial' or 'final')")
+    @api.param('name', "the name of the person voting")
     @api.expect(_vote, validate=True)
     def post(self):
         """Creates a new vote """
         parser = reqparse.RequestParser()
-        parser.add_argument("vote_type", default='initial', type=str)
+        parser.add_argument("stage", type=str)
         parser.add_argument("deal_id", type=int)
+        parser.add_argument("name", type=str)
         args = parser.parse_args()
         data = request.json
-        return save_new_vote(args["deal_id"], args["vote_type"], data=data)
+        return save_new_vote(args["deal_id"], args["stage"], args["name"], data=data)
 
 @api.route('/<vote_id>')
 @api.param('vote_id', 'The vote identifier')

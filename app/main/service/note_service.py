@@ -24,7 +24,6 @@ def save_new_note(deal_id, data):
         return response_object, 201
 
     except Exception as e:
-        print(e)
         response_object = {
             'status': 'fail',
             'message': 'Some error occurred. Please try again.'

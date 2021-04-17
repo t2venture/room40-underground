@@ -9,7 +9,10 @@ def save_new_deal_investor(data):
         new_deal_investor = DealInvestor(
             deal_id=data['deal_id'],
             investor_id=data['investor_id'],
-            amount=data['amount']
+            amount=data['amount'],
+            date=datetime.datetime.strptime(data['date'], '%Y-%m-%dT%H:%M:%S'),
+            investment_type=data['investment_type'],
+            fund_invested=data['fund_invested'],
         )
         save_changes(new_deal_investor)
         response_object = {
@@ -19,7 +22,6 @@ def save_new_deal_investor(data):
         return response_object, 201
 
     except Exception as e:
-        print(e)
         response_object = {
             'status': 'fail',
             'message': 'Some error occurred. Please try again.'

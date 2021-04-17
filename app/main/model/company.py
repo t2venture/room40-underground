@@ -12,5 +12,7 @@ class Company(db.Model):
     name = db.Column(db.String(255), unique=False, nullable=False)
     description = db.Column(db.String(2500), unique=False, nullable=False)
     website = db.Column(db.String(255), unique=False, nullable=False)
+    industry = db.Column(db.String(255), unique=False, nullable=False)
+    status = db.Column(db.String(255), unique=False, nullable=False)
     crunchbase = db.Column(db.String(255), unique=False, nullable=True)
     pitchbook = db.Column(db.String(255), unique=False, nullable=True)

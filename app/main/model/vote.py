@@ -9,5 +9,9 @@ class Vote(db.Model):
     __tablename__ = "vote"
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    vote_field_1 = db.Column(db.String(255), unique=False, nullable=False)
-    vote_field_1_des = db.Column(db.String(255), unique=False, nullable=False)
+    team = db.Column(db.Integer, unique=False, nullable=False)
+    team_notes = db.Column(db.String(255), unique=False, nullable=False)
+    market = db.Column(db.Integer, unique=False, nullable=False)
+    market_notes = db.Column(db.String(255), unique=False, nullable=False)
+    product = db.Column(db.Integer, unique=False, nullable=False)
+    product_notes = db.Column(db.String(255), unique=False, nullable=False)

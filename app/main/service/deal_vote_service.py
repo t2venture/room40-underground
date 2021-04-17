@@ -2,15 +2,17 @@ import uuid
 import datetime
 
 from app.main import db
-from app.main.model.deal_note import DealNote
+from app.main.model.deal_vote import DealVote
 
-def save_new_deal_note(data):
+def save_new_deal_vote(data):
     try:
-        new_deal_note = DealNote(
+        new_deal_vote = DealVote(
             deal_id=data['deal_id'],
-            note_id=data['note_id'],
+            vote_id=data['vote_id'],
+            stage=data['stage'],
+            name = data['name']
         )
-        save_changes(new_deal_note)
+        save_changes(new_deal_vote)
         response_object = {
                 'status': 'success',
                 'message': 'Successfully registered.',
@@ -25,16 +27,15 @@ def save_new_deal_note(data):
         return response_object, 401
 
 
-def get_notes_from_deal(deal_id):
+def get_votes_from_deal(deal_id):
+    return DealVote.query.filter_by(deal_id=deal_id).all()
 
-    return DealNote.query.filter_by(deal_id=deal_id).all()
+def get_all_deal_votes():
+    return DealVote.query.all()
 
-def get_all_deal_notes():
-    return DealNote.query.all()
 
-    
-def get_a_deal_note(deal_note_id):
-    return DealNote.query.filter_by(id=deal_note_id).first()
+def get_a_deal_vote(deal_vote_id):
+    return DealVote.query.filter_by(id=deal_vote_id).first()
 
 
 def save_changes(data):

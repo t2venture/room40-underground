@@ -10,6 +10,8 @@ def save_new_company(data):
             name=data['name'],
             description=data['description'],
             website=data['website'],
+            industry=data['industry'],
+            status=data['status'],
             crunchbase=data['crunchbase'],
             pitchbook=data['pitchbook'],
         )

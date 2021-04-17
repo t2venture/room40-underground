@@ -13,6 +13,7 @@ from .main.controller.event_controller import api as event_ns
 from .main.controller.event_participant_controller import api as event_participant_ns
 from .main.controller.note_controller import api as note_ns
 from .main.controller.vote_controller import api as vote_ns
+from .main.controller.highlight_controller import api as highlight_ns
 
 blueprint = Blueprint('api', __name__)
 
@@ -21,7 +22,6 @@ api = Api(blueprint,
           version='1.0',
           description='The development environment for endpoints for the Room 40 superapp. One app to rule them All.',
           contact='luke@fromstandard.com',
-          
           )
 
 api.add_namespace(user_ns, path="/user")
@@ -34,6 +34,6 @@ api.add_namespace(deal_ns, path="/deal")
 api.add_namespace(event_ns, path="/deal/<deal_id>/event")
 api.add_namespace(note_ns, path="/deal/<deal_id>/note")
 api.add_namespace(deal_investor_ns, path="/deal_investor")
+api.add_namespace(highlight_ns, path="/company/<company_id>/highlight")
 api.add_namespace(event_participant_ns, path="/event_participant")
 api.add_namespace(vote_ns, path="/vote")
-
