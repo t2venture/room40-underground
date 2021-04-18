@@ -31,7 +31,7 @@ def populate_db():
     upload_data()
 
 @manager.command
-def clear_db():
+def clear_db(): 
     clear_data()
 
 @manager.command
