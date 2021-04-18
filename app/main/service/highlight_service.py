@@ -3,7 +3,6 @@ import datetime
 
 from app.main import db
 from app.main.model.highlight import Highlight
-from app.main.service.company_highlight_service import save_new_company_highlight, get_highlights_from_company
 
 def save_new_highlight(company_id, data):
     try:
@@ -11,11 +10,9 @@ def save_new_highlight(company_id, data):
         new_highlight = Highlight(
             notes=data['notes'],
             is_active=bool(data['is_active']),
+            company_id=data['company_id']
         )
         db.session.add(new_highlight)
-        db.session.flush()
-        data = {'company_id': company_id, 'highlight_id': new_highlight.id} 
-        save_new_company_highlight(data)
         save_changes(new_highlight)
         response_object = {
                 'status': 'success',
@@ -33,9 +30,8 @@ def save_new_highlight(company_id, data):
 
 
 def get_all_highlights(company_id):
-    highlight_ids = [ch.highlight_id for ch in get_highlights_from_company(company_id)]
 
-    return Highlight.query.filter(Highlight.id.in_(highlight_ids)).all()
+    return Highlight.query.all()
 
 
 def get_a_highlight(highlight_id):

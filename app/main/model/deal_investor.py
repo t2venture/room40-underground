@@ -12,6 +12,5 @@ class DealInvestor(db.Model):
     deal_id = db.Column(db.Integer, db.ForeignKey('deal.id'))
     investor_id = db.Column(db.Integer, db.ForeignKey('company.id'))
     amount = db.Column(db.Integer)
-    date = db.Column(db.DateTime)
     investment_type = db.Column(db.String(255))
     fund_invested = db.Column(db.String(255))

@@ -12,5 +12,7 @@ class Note(db.Model):
     description = db.Column(db.String(1000), unique=False, nullable=False)
     category = db.Column(db.String(255), unique=False, nullable=False)
     is_thesis = db.Column(db.Boolean, nullable=False)
+    deal_id = db.Column(db.Integer, db.ForeignKey('deal.id'), nullable=True)
+    keywords = db.Column(db.String, nullable=False)
 
     

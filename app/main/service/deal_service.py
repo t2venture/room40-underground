@@ -30,7 +30,12 @@ def save_new_deal(data):
         return response_object, 401
 
 
-def get_all_deals():
+def get_all_deals(company_id=""):
+    # Get all deals for a company
+    # Get current valuation of company
+    # Get a company's stake in another company
+    # Get the current companies cap table
+    # Get the return on investment for companies
     return Deal.query.all()
 
 

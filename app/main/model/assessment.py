@@ -12,3 +12,4 @@ class Assessment(db.Model):
     quarter = db.Column(db.String(20), unique=False, nullable=False)
     sentiment = db.Column(db.Integer, unique=False, nullable=False)
     notes = db.Column(db.String(2000), unique=False, nullable=True)
+    company_id = db.Column(db.Integer, db.ForeignKey('company.id'))

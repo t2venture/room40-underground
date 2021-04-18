@@ -4,10 +4,12 @@ import unittest
 from flask_migrate import Migrate, MigrateCommand
 from flask_script import Manager
 
-from app.main.model import user, activity, assessment, company_activity, company_assessment, company, deal_event, deal_investor, deal_note, deal, event_participant, event, note, user_company, user_company, vote
+from app.main.model import user, activity, assessment, company, deal_investor, deal, event_participant, event, highlight, note, user_company, vote
 from app.main import create_app, db
 from app import blueprint
 from app.main.model import blacklist
+
+from app.main.util.data_uploader import upload_data, clear_data
 
 app = create_app(os.getenv('BOILERPLATE_ENV') or 'dev')
 app.register_blueprint(blueprint)
@@ -25,6 +27,14 @@ def run():
     app.run()
 
 @manager.command
+def populate_db():
+    upload_data()
+
+@manager.command
+def clear_db():
+    clear_data()
+
+@manager.command
 def test():
     """Runs the unit tests."""
     tests = unittest.TestLoader().discover('app/test', pattern='test*.py')
@@ -35,6 +45,3 @@ def test():
 
 if __name__ == '__main__':
     manager.run()
-
-#TODO: Change all mapping tables "Save" service method to only take in data and pass in a dictionary with current params. Just like user_company_serivce
-#TODO: Search functionality

@@ -11,3 +11,4 @@ class Highlight(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     notes = db.Column(db.String(2000), unique=False, nullable=False)
     is_active = db.Column(db.Boolean, nullable=False)
+    company_id= db.Column(db.Integer, db.ForeignKey('company.id'))

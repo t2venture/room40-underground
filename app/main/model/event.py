@@ -14,5 +14,5 @@ class Event(db.Model):
     description = db.Column(db.String(1000), unique=False, nullable=False)
     notes = db.Column(db.String(2500), unique=False, nullable=False)
     event_type = db.Column(db.String(255), unique=False, nullable=False)
-
+    deal_id = db.Column(db.Integer, db.ForeignKey('deal.id'))
     

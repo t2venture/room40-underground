@@ -3,19 +3,16 @@ import datetime
 
 from app.main import db
 from app.main.model.note import Note
-from app.main.service.deal_note_service import save_new_deal_note, get_notes_from_deal
 
-def save_new_note(deal_id, data):
+def save_new_note(data):
     try:
         new_note = Note(
             description=data['description'],
             category=data['category'],
             is_thesis=bool(data['is_thesis']),
+            deal_id=data['deal_id'],
+            keywords=data['keywords']
         )
-        db.session.add(new_note)
-        db.session.flush()
-        data = {'deal_id': deal_id, 'note_id': new_note.id} 
-        save_new_deal_note(data)
         save_changes(new_note)
         response_object = {
                 'status': 'success',
@@ -31,10 +28,18 @@ def save_new_note(deal_id, data):
         return response_object, 401
 
 
-def get_all_notes(deal_id):
-    note_ids = [dn.note_id for dn in get_notes_from_deal(deal_id)]
+def get_all_notes(deal_id="", search_query=""):
+    
+    notes = Note.query
+    if deal_id is not "":
+        notes = notes.filter_by(deal_id=deal_id)
+    
+    if search_query is not "":
+        notes = notes.filter_by()
+    
+    # note_ids = [dn.note_id for dn in get_notes_from_deal(deal_id)]
 
-    return Note.query.filter(Note.id.in_(note_ids)).all()
+    return Note.query.all()
 
 
 def get_a_note(note_id):

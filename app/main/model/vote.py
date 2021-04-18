@@ -15,3 +15,6 @@ class Vote(db.Model):
     market_notes = db.Column(db.String(255), unique=False, nullable=False)
     product = db.Column(db.Integer, unique=False, nullable=False)
     product_notes = db.Column(db.String(255), unique=False, nullable=False)
+    name=db.Column(db.String(255), unique=False, nullable=False)
+    stage=db.Column(db.String(255), unique=False, nullable=False)
+    deal_id=db.Column(db.Integer,db.ForeignKey('deal.id'))

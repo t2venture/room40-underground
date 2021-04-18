@@ -12,3 +12,4 @@ class Activity(db.Model):
     title = db.Column(db.String(255), unique=False, nullable=False)
     priority = db.Column(db.String(255), unique=False, nullable=False)
     due = db.Column(db.DateTime, nullable=False)
+    company_id = db.Column(db.Integer, db.ForeignKey('company.id'))

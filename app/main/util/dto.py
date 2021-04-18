@@ -7,7 +7,8 @@ class ActivityDto:
         'id': fields.String(required=False, description='activity id'),
         'title': fields.String(required=True, description='activity title'),
         'priority': fields.String(required=True, description='activity priority'),
-        'due': fields.DateTime(required=True, description='activity_due_date', dt_format='rfc822')
+        'due': fields.DateTime(required=True, description='activity_due_date', dt_format='rfc822'),
+        'company_id': fields.String(required=True, description='company activity'),
     })
 
 class AssessmentDto:
@@ -17,6 +18,7 @@ class AssessmentDto:
         'quarter': fields.String(required=True, description='assessment quarter'),
         'sentiment': fields.String(required=True, description='assessmentrank'),
         'notes': fields.String(required=True, description='assessment description'),
+        'company_id': fields.String(required=True, description='assessments company'),
     })
 
 class AuthDto:
@@ -25,22 +27,6 @@ class AuthDto:
         'id': fields.String(required=False, description='auth id'),
         'email': fields.String(required=True, description='The email address'),
         'password': fields.String(required=True, description='The user password '),
-    })
-
-class CompanyActivityDto:
-    api = Namespace('company_activity', description='company_activity related operations')
-    company_activity = api.model('company_activity', {
-        'id': fields.String(required=False, description='company activity id'),
-        'activity_id': fields.String(required=True, description='activity id'),
-        'company_id': fields.String(required=True, description='company id'),
-    })
-
-class CompanyAssessmentDto:
-    api = Namespace('company_assessment', description='company_assessment related operations')
-    company_assessment = api.model('company_assessment', {
-        'id': fields.String(required=False, description='company assessment id'),
-        'assessment_id': fields.String(required=True, description='assessment id'),
-        'company_id': fields.String(required=True, description='company id'),
     })
 
 class CompanyDto:
@@ -55,22 +41,6 @@ class CompanyDto:
         'crunchbase': fields.String(description='company crunchbase profile'),
         'pitchbook': fields.String(description='company pitchbook profile')
     })
-    
-class CompanyHighlightDto:
-    api = Namespace('company_highlight', description='company highlights')
-    company_highlight = api.model('company_highlight', {
-        'id': fields.String(required=False, description='company_highlight id'),
-        'highlight_id': fields.String(required=True, description='highlight id'),
-        'company_id': fields.String(required=True, description='company id'),
-    })
-
-class DealEventDto:
-    api = Namespace('deal_event', description='deal_event related operations')
-    deal_event = api.model('deal_event', {
-        'id': fields.String(required=False, description='deal event id'),
-        'deal_id': fields.String(required=True, description='deal id'),
-        'event_id': fields.String(required=True, description='event id'),
-    })
 
 class DealInvestorDto:
     api = Namespace('deal investor', description='deal_investor related operations')
@@ -82,24 +52,6 @@ class DealInvestorDto:
         'date': fields.DateTime(description='investment date', dt_format='rfc822'),
         'investment_type': fields.String(description="opportunistic or core"),
         'fund_invested': fields.String(description="fund 1, 2, ..."),
-    })
-
-class DealNoteDto:
-    api = Namespace('deal_note', description='deal_note related operations')
-    deal_note = api.model('deal_note', {
-        'id': fields.String(required=False, description='deal note id'),
-        'deal_id': fields.String(required=True, description='deal id'),
-        'note_id': fields.String(required=True, description='note id'),
-    })
-
-class DealVoteDto:
-    api = Namespace('deal_vote', description='deal_vote related operations')
-    deal_note = api.model('deal_vote', {
-        'id': fields.String(required=False, description='deal note id'),
-        'deal_id': fields.String(required=True, description='deal id'),
-        'vote_id': fields.String(required=True, description='vote id'),
-        'stage': fields.String(required=True, description='stage of vote'),
-        'name': fields.String(required=True, description='name of voter'),
     })
 
 class DealDto:
@@ -130,7 +82,8 @@ class EventDto:
         'link': fields.String(description='event link'),
         'description': fields.String(required=True, description='event description'),
         'notes': fields.String(description='event notes'),
-        'event_type': fields.String(description='event type')
+        'event_type': fields.String(description='event type'),
+        'deal_id': fields.String(required=True, description='events deal'),
     })
 class HighlightDto:
     api = Namespace('highlight', description='highlights')
@@ -138,6 +91,7 @@ class HighlightDto:
         'id': fields.String(required=False, description='highlight id'),
         'notes': fields.String(required=True, description='highlight notes'),
         'is_active': fields.String(description='active displayed highlight'),
+        'company_id': fields.String(required=True, description='highlight for company'),
     })
 
 class NoteDto:
@@ -147,6 +101,9 @@ class NoteDto:
         'description': fields.String(required=True, description='note content'),
         'category': fields.String(required=True, description='category of note'),
         'is_thesis': fields.String(required=True, description='is note a thesis'),
+        'deal_id': fields.String(required=False, description='what deal is the note apart of'),
+        'keywords': fields.String(required=True, description='note keywords'),
+        'deal_id': fields.String(required=True, description='deal for note'),
     })
 
 class UserCompanyDto:
@@ -180,4 +137,7 @@ class VoteDto:
         'market_notes': fields.String(required=True, description='market description'),
         'product': fields.String(required=True, description='product rank'),
         'product_notes': fields.String(required=True, description='product description'),
+        'deal_id': fields.String(required=True, description='deal voted on'),
+        'name': fields.String(required=True, description='name of voter'),
+        'stage': fields.String(required=True, description='stage of voting'),
     })
