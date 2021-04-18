@@ -3,7 +3,7 @@ import datetime
 
 from app.main import db
 from app.main.model.user import User
-
+from app.main.service.user_company_service import get_users_from_company
 
 def save_new_user(data):
     user = User.query.filter_by(email=data['email']).first()
@@ -27,8 +27,14 @@ def save_new_user(data):
         return response_object, 409
 
 
-def get_all_users():
-    return User.query.all()
+def get_all_users(company_id=""):
+    users=User.query
+
+    if company_id and company_id != "":
+        user_ids = [uc.user_id for uc in get_users_from_company(company_id)]
+        users = users.filter(User.id.in_(user_ids))
+
+    return users.all()
 
 
 def get_a_user(public_id):

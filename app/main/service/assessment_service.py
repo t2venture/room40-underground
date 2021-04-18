@@ -32,7 +32,12 @@ def save_new_assessment(company_id, data):
 
 def get_all_assessments(company_id=""):
 
-    return Assessment.query.all()
+    assessments = Assessment.query
+    
+    if company_id and company_id != "":
+        assessments = assessments.filter_by(company_id=company_id)
+
+    return assessments.all()
 
 
 def get_a_assessment(assessment_id):

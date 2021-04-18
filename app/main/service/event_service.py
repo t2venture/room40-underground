@@ -31,9 +31,16 @@ def save_new_event(data):
         return response_object, 401
 
 
-def get_all_events(deal_id):
-
-    return Event.query.all()
+def get_all_events(deal_id="", week=False):
+    events = Event.query
+    if week:
+        start_date=datetime.datetime.now()
+        end_date = datetime.datetime.now()
+        while end_date.weekday() != 4:
+            end_date += datetime.timedelta(1)
+        events = events.filter(Event.time >= start_date).filter(Event.time <= end_date)
+        
+    return events.all()
 
 
 def get_a_event(event_id):

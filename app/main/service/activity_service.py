@@ -30,9 +30,24 @@ def save_new_activity(data):
         return response_object, 401
 
 
-def get_all_activities(company_id=""):
-    
-    return Activity.query.all()
+def get_all_activities(company_id="", due_date=None, priority="", title=""):
+
+    activities = Activity.query
+
+    if company_id and company_id != "":
+        activities = activities.filter_by(company_id=company_id)
+
+    if due_date and due_date != "":
+        due_date_dt = datetime.datetime.strptime(due_date, '%Y-%m-%dT%H:%M:%S')
+        activities = activities.filter(Activity.due <= due_date_dt)
+
+    if priority and priority != "":
+        activities = activities.filter(Activity.priority.ilike('%'+priority+'%'))
+
+    if title and title != "":
+        activities = activities.filter(Activity.title.ilike('%'+title+'%'))
+
+    return activities.all()
 
 
 def get_a_activity(activity_id):

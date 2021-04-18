@@ -12,15 +12,19 @@ _note = NoteDto.note
 class NoteList(Resource):
     @api.doc('list_of_notes for a note')
     @api.param('deal_id', 'deal this note is associated with')
-    @api.param('search_query', 'search through keywords, categories, and body')
+    @api.param('search_query', 'search through body')
+    @api.param('keyword_search', 'search through keywords')
+    @api.param('thesis', 'filter by thesis')
     @api.marshal_list_with(_note, envelope='data')
     def get(self):
         """List all notes"""
         parser = reqparse.RequestParser()
         parser.add_argument("deal_id", type=int)
         parser.add_argument("search_query", type=str)
+        parser.add_argument("keyword_search", type=str)
+        parser.add_argument("thesis", type=bool)
         args = parser.parse_args()
-        return get_all_notes(args['deal_id'], args['search_query'])
+        return get_all_notes(args['deal_id'], args['search_query'], args['keyword_search'], args['thesis'])
 
     @api.response(201, 'note successfully created.')
     @api.doc('create a new note')

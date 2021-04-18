@@ -28,18 +28,21 @@ def save_new_note(data):
         return response_object, 401
 
 
-def get_all_notes(deal_id="", search_query=""):
+def get_all_notes(deal_id="", search_query="", keyword_search="", thesis=False):
     
     notes = Note.query
-    if deal_id is not "":
+    if deal_id and deal_id != "":
         notes = notes.filter_by(deal_id=deal_id)
+        
+    if search_query and search_query != "":
+        notes = notes.filter(Note.description.ilike('%'+search_query+'%'))
     
-    if search_query is not "":
-        notes = notes.filter_by()
-    
-    # note_ids = [dn.note_id for dn in get_notes_from_deal(deal_id)]
-
-    return Note.query.all()
+    if keyword_search and keyword_search != "":
+        notes = notes.filter(Note.keywords.ilike('%'+keyword_search+'%'))
+   
+    if thesis:
+        notes = notes.filter_by(is_thesis=True)
+    return notes.all()
 
 
 def get_a_note(note_id):

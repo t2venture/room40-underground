@@ -12,21 +12,23 @@ _event = EventDto.event
 class EventList(Resource):
     @api.doc('list_of_events for a event')
     @api.param('deal_id', 'The deal identifier')
+    @api.param('week', 'Get events for the current week')
     @api.marshal_list_with(_event, envelope='data')
     def get(self):
         """List all events"""
         parser = reqparse.RequestParser()
         parser.add_argument("deal_id", type=int)
+        parser.add_argument("week", type=bool)
         args = parser.parse_args()
-        return get_all_events(args['deal_id'])
+        return get_all_events(args['deal_id'], args['week'])
 
     @api.response(201, 'event successfully created.')
     @api.doc('create a new event')
     @api.expect(_event, validate=True)
-    def post(self, deal_id):
+    def post(self):
         """Creates a new event """
         data = request.json
-        return save_new_event(deal_id, data=data)
+        return save_new_event(data=data)
 
 @api.route('/<event_id>')
 @api.param('event_id', 'The event identifier')
