@@ -174,7 +174,7 @@ def add_votes():
                 name=row["name"]
             )
             db.session.add(new_vote)
-    
+
 
 def add_deal_investors():
     with open(deal_investors_csv, mode='r') as csv_file:
@@ -193,24 +193,34 @@ def add_deal_investors():
 def upload_data():
     print("uploading users")
     add_users()
+    db.session.flush()
     print("uploading companies")
     add_companies()
+    db.session.flush()
     print("uploading deals")
     add_deals()
+    db.session.flush()
     print("uploading user companies")
     add_user_companies()
+    db.session.flush()
     print("uploading deal investors")
     add_deal_investors()
+    db.session.flush()
     print("uploading activities")
     add_activities()
+    db.session.flush()
     print("uploading assessments")
     add_assessments()
+    db.session.flush()
     print("uploading events")
     add_events()
+    db.session.flush()
     print("uploading highlights")
     add_highlights()
+    db.session.flush()
     print("uploading notes")
     add_notes()
+    db.session.flush()
     print("uploading votes")
     add_votes()
     print("done")
@@ -223,3 +233,4 @@ def clear_data():
         print('Clear table %s' % table)
         db.session.execute(table.delete())
     db.session.commit()
+    
