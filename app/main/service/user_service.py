@@ -26,6 +26,49 @@ def save_new_user(data):
         }
         return response_object, 409
 
+def update_user(user_id, data):
+
+    try:
+        user = get_a_user(user_id)
+
+        user.email=data['email'],
+        user.username=data['username'],
+        user.password=data['password'],
+        user.linkedin_url=data['linkedin_url'],
+        user.twitter_url=data['twitter_url'],
+        save_changes(user)
+
+        response_object = {
+                    'status': 'success',
+                    'message': 'Successfully registered.',
+                }
+        return response_object, 201
+
+    except Exception as e:
+        print(e)
+        response_object = {
+            'status': 'fail',
+            'message': 'Some error occurred. Please try again.'
+        }
+        return response_object, 401
+
+def delete_a_user(user_id):
+    try:
+        User.query.filter_by(id=user_id).delete()
+        db.session.commit()
+        response_object = {
+                    'status': 'success',
+                    'message': 'Successfully registered.',
+                }
+        return response_object, 201
+
+    except Exception as e:
+        print(e)
+        response_object = {
+            'status': 'fail',
+            'message': 'Some error occurred. Please try again.'
+        }
+        return response_object, 401
 
 def get_all_users(company_id=""):
     users=User.query
@@ -37,8 +80,8 @@ def get_all_users(company_id=""):
     return users.all()
 
 
-def get_a_user(public_id):
-    return User.query.filter_by(public_id=public_id).first()
+def get_a_user(user_id):
+    return User.query.filter_by(id=user_id).first()
 
 
 def save_changes(data):

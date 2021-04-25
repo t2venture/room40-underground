@@ -2,7 +2,7 @@ from flask import request
 from flask_restplus import Resource, reqparse
 
 from ..util.dto import EventDto
-from ..service.event_service import save_new_event, get_all_events, get_a_event
+from ..service.event_service import save_new_event, get_all_events, get_a_event, update_event, delete_a_event
 
 api = EventDto.api
 _event = EventDto.event
@@ -43,3 +43,17 @@ class Event(Resource):
             api.abort(404)
         else:
             return event
+
+    @api.response(201, 'event successfully created.')
+    @api.doc('update a event')
+    @api.expect(_event, validate=True)
+    def put(self, event_id):
+        """Update a event """
+        data = request.json
+        return update_event(event_id, data)
+
+    @api.response(201, 'event successfully deleted.')
+    @api.doc('delete a event')
+    def delete(self, event_id):
+        """Delete a event """
+        return delete_a_event(event_id)

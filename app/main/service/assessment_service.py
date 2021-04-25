@@ -4,7 +4,7 @@ import datetime
 from app.main import db
 from app.main.model.assessment import Assessment
 
-def save_new_assessment(company_id, data):
+def save_new_assessment(data):
     try:
         new_assessment = Assessment(
             quarter=data['quarter'],
@@ -29,7 +29,50 @@ def save_new_assessment(company_id, data):
         }
         return response_object, 401
 
+def update_assessment(assessment_id, data):
 
+    try:
+        assessment = get_a_assessment(assessment_id)
+
+        assessment.quarter=data['quarter'],
+        assessment.sentiment=data['sentiment'],
+        assessment.notes=data['notes'],
+        assessment.company_id=data['company_id']
+
+        save_changes(assessment)
+
+        response_object = {
+                    'status': 'success',
+                    'message': 'Successfully registered.',
+                }
+        return response_object, 201
+
+    except Exception as e:
+        print(e)
+        response_object = {
+            'status': 'fail',
+            'message': 'Some error occurred. Please try again.'
+        }
+        return response_object, 401
+
+def delete_a_assessment(assessment_id):
+    try:
+        Assessment.query.filter_by(id=assessment_id).delete()
+        db.session.commit()
+        response_object = {
+                    'status': 'success',
+                    'message': 'Successfully registered.',
+                }
+        return response_object, 201
+
+    except Exception as e:
+        print(e)
+        response_object = {
+            'status': 'fail',
+            'message': 'Some error occurred. Please try again.'
+        }
+        return response_object, 401
+        
 def get_all_assessments(company_id=""):
 
     assessments = Assessment.query

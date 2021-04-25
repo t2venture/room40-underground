@@ -2,7 +2,7 @@ from flask import request
 from flask_restplus import Resource, reqparse
 
 from ..util.dto import HighlightDto
-from ..service.highlight_service import save_new_highlight, get_all_highlights, get_a_highlight
+from ..service.highlight_service import save_new_highlight, get_all_highlights, get_a_highlight, update_highlight, delete_a_highlight
 
 api = HighlightDto.api
 _highlight = HighlightDto.highlight
@@ -41,3 +41,17 @@ class Note(Resource):
             api.abort(404)
         else:
             return highlight
+
+    @api.response(201, 'highlight successfully created.')
+    @api.doc('update a highlight')
+    @api.expect(_highlight, validate=True)
+    def put(self, highlight_id):
+        """Update a highlight """
+        data = request.json
+        return update_highlight(highlight_id, data)
+
+    @api.response(201, 'highlight successfully deleted.')
+    @api.doc('delete a highlight')
+    def delete(self, highlight_id):
+        """Delete a highlight """
+        return delete_a_highlight(highlight_id)

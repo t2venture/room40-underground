@@ -2,7 +2,7 @@ from flask import request
 from flask_restplus import Resource
 
 from ..util.dto import EventParticipantDto
-from ..service.event_participant_service import save_new_event_participant, get_all_event_participants, get_a_event_participant
+from ..service.event_participant_service import save_new_event_participant, get_all_event_participants, get_a_event_participant, update_event_participant, delete_a_event_participant
 
 api = EventParticipantDto.api
 _event_participant = EventParticipantDto.event_participant
@@ -37,3 +37,17 @@ class EventParticipant(Resource):
             api.abort(404)
         else:
             return ep
+
+    @api.response(201, 'event_participant successfully created.')
+    @api.doc('update a event_participant')
+    @api.expect(_event_participant, validate=True)
+    def put(self, event_participant_id):
+        """Update a event_participant """
+        data = request.json
+        return update_event_participant(event_participant_id, data)
+
+    @api.response(201, 'event_participant successfully deleted.')
+    @api.doc('delete a event_participant')
+    def delete(self, event_participant_id):
+        """Delete a event_participant """
+        return delete_a_event_participant(event_participant_id)

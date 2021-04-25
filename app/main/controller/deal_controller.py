@@ -2,7 +2,7 @@ from flask import request
 from flask_restplus import Resource
 
 from ..util.dto import DealDto
-from ..service.deal_service import save_new_deal, get_all_deals, get_a_deal
+from ..service.deal_service import save_new_deal, get_all_deals, get_a_deal, update_deal, delete_a_deal
 
 api = DealDto.api
 _deal = DealDto.deal
@@ -37,3 +37,17 @@ class Deal(Resource):
             api.abort(404)
         else:
             return deal
+
+    @api.response(201, 'deal successfully created.')
+    @api.doc('update a deal')
+    @api.expect(_deal, validate=True)
+    def put(self, deal_id):
+        """Update a deal """
+        data = request.json
+        return update_deal(deal_id, data)
+
+    @api.response(201, 'deal successfully deleted.')
+    @api.doc('delete a deal')
+    def delete(self, deal_id):
+        """Delete a deal """
+        return delete_a_deal(deal_id)

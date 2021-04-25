@@ -27,6 +27,50 @@ def save_new_note(data):
         }
         return response_object, 401
 
+def update_note(note_id, data):
+
+    try:
+        note = get_a_note(note_id)
+
+        note.description=data['description'],
+        note.category=data['category'],
+        note.is_thesis=bool(data['is_thesis']),
+        note.deal_id=data['deal_id'],
+        note.keywords=data['keywords']
+
+        save_changes(note)
+
+        response_object = {
+                    'status': 'success',
+                    'message': 'Successfully registered.',
+                }
+        return response_object, 201
+
+    except Exception as e:
+        print(e)
+        response_object = {
+            'status': 'fail',
+            'message': 'Some error occurred. Please try again.'
+        }
+        return response_object, 401
+
+def delete_a_note(note_id):
+    try:
+        Note.query.filter_by(id=note_id).delete()
+        db.session.commit()
+        response_object = {
+                    'status': 'success',
+                    'message': 'Successfully registered.',
+                }
+        return response_object, 201
+
+    except Exception as e:
+        print(e)
+        response_object = {
+            'status': 'fail',
+            'message': 'Some error occurred. Please try again.'
+        }
+        return response_object, 401
 
 def get_all_notes(deal_id="", search_query="", keyword_search="", thesis=False):
     

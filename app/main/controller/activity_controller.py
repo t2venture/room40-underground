@@ -2,7 +2,7 @@ from flask import request
 from flask_restplus import Resource, reqparse
 
 from ..util.dto import ActivityDto
-from ..service.activity_service import save_new_activity, get_all_activities, get_a_activity
+from ..service.activity_service import save_new_activity, get_all_activities, get_a_activity, update_activity, delete_a_activity
 
 api = ActivityDto.api
 _activity = ActivityDto.activity
@@ -47,3 +47,17 @@ class Activity(Resource):
             api.abort(404)
         else:
             return activity
+
+    @api.response(201, 'activity successfully created.')
+    @api.doc('update a activity')
+    @api.expect(_activity, validate=True)
+    def put(self, activity_id):
+        """Update a activity """
+        data = request.json
+        return update_activity(activity_id, data)
+
+    @api.response(201, 'activity successfully deleted.')
+    @api.doc('delete a activity')
+    def delete(self, activity_id):
+        """Delete a activity """
+        return delete_a_activity(activity_id)

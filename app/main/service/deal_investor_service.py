@@ -28,6 +28,52 @@ def save_new_deal_investor(data):
         }
         return response_object, 401
 
+def update_deal_investor(deal_investor_id, data):
+
+    try:
+        deal_investor = get_a_deal_investor(deal_investor_id)
+
+        deal_investor.deal_id=data['deal_id'],
+        deal_investor.investor_id=data['investor_id'],
+        deal_investor.amount=data['amount'],
+        deal_investor.date=datetime.datetime.strptime(data['date'], '%Y-%m-%dT%H:%M:%S'),
+        deal_investor.investment_type=data['investment_type'],
+        deal_investor.fund_invested=data['fund_invested'],
+
+        save_changes(deal_investor)
+
+        response_object = {
+                    'status': 'success',
+                    'message': 'Successfully registered.',
+                }
+        return response_object, 201
+
+    except Exception as e:
+        print(e)
+        response_object = {
+            'status': 'fail',
+            'message': 'Some error occurred. Please try again.'
+        }
+        return response_object, 401
+
+def delete_a_deal_investor(deal_investor_id):
+    try:
+        DealInvestor.query.filter_by(id=deal_investor_id).delete()
+        db.session.commit()
+        response_object = {
+                    'status': 'success',
+                    'message': 'Successfully registered.',
+                }
+        return response_object, 201
+
+    except Exception as e:
+        print(e)
+        response_object = {
+            'status': 'fail',
+            'message': 'Some error occurred. Please try again.'
+        }
+        return response_object, 401
+
 def get_all_deal_investors():
 
     return DealInvestor.query.all()

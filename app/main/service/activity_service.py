@@ -29,6 +29,49 @@ def save_new_activity(data):
         }
         return response_object, 401
 
+def update_activity(activity_id, data):
+
+    try:
+        activity = get_a_activity(activity_id)
+
+        activity.title=data['title'],
+        activity.priority=data['priority'],
+        activity.due=datetime.datetime.strptime(data['due'], '%Y-%m-%dT%H:%M:%S'),
+        activity.company_id=data['company_id']
+
+        save_changes(activity)
+
+        response_object = {
+                    'status': 'success',
+                    'message': 'Successfully registered.',
+                }
+        return response_object, 201
+
+    except Exception as e:
+        print(e)
+        response_object = {
+            'status': 'fail',
+            'message': 'Some error occurred. Please try again.'
+        }
+        return response_object, 401
+
+def delete_a_activity(activity_id):
+    try:
+        Activity.query.filter_by(id=activity_id).delete()
+        db.session.commit()
+        response_object = {
+                    'status': 'success',
+                    'message': 'Successfully registered.',
+                }
+        return response_object, 201
+
+    except Exception as e:
+        print(e)
+        response_object = {
+            'status': 'fail',
+            'message': 'Some error occurred. Please try again.'
+        }
+        return response_object, 401
 
 def get_all_activities(company_id="", due_date=None, priority="", title=""):
 

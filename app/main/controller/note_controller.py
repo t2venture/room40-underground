@@ -2,7 +2,7 @@ from flask import request
 from flask_restplus import Resource, reqparse
 
 from ..util.dto import NoteDto
-from ..service.note_service import save_new_note, get_all_notes, get_a_note
+from ..service.note_service import save_new_note, get_all_notes, get_a_note, update_note, delete_a_note
 
 api = NoteDto.api
 _note = NoteDto.note
@@ -47,3 +47,17 @@ class Note(Resource):
             api.abort(404)
         else:
             return note
+
+    @api.response(201, 'note successfully created.')
+    @api.doc('update a note')
+    @api.expect(_note, validate=True)
+    def put(self, note_id):
+        """Update a note """
+        data = request.json
+        return update_note(note_id, data)
+
+    @api.response(201, 'note successfully deleted.')
+    @api.doc('delete a note')
+    def delete(self, note_id):
+        """Delete a note """
+        return delete_a_note(note_id)

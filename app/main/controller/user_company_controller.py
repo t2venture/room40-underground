@@ -2,7 +2,7 @@ from flask import request
 from flask_restplus import Resource
 
 from ..util.dto import UserCompanyDto
-from ..service.user_company_service import save_new_user_company, get_all_user_companies, get_a_user_company
+from ..service.user_company_service import save_new_user_company, get_all_user_companies, get_a_user_company, update_user_company, delete_a_user_company
 
 api = UserCompanyDto.api
 _user_company = UserCompanyDto.user_company
@@ -37,3 +37,17 @@ class UserCompany(Resource):
             api.abort(404)
         else:
             return user_company
+
+    @api.response(201, 'user_company successfully created.')
+    @api.doc('update a user_company')
+    @api.expect(_user_company, validate=True)
+    def put(self, user_company_id):
+        """Update a user_company """
+        data = request.json
+        return update_user_company(user_company_id, data)
+
+    @api.response(201, 'user_company successfully deleted.')
+    @api.doc('delete a user_company')
+    def delete(self, user_company_id):
+        """Delete a user_company """
+        return delete_a_user_company(user_company_id)
