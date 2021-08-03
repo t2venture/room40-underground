@@ -141,3 +141,12 @@ class VoteDto:
         'name': fields.String(required=True, description='name of voter'),
         'stage': fields.String(required=True, description='stage of voting'),
     })
+
+class HouseunitDto:
+    api = Namespace('houseunit', description='houseunit related operations')
+    houseunit = api.model('houseunit', {
+        'id': fields.String(required=False, description='houseunit id'),
+        'majorcity': fields.String(required=True, description='majorcity'),
+        'area': fields.String(required=True, description='houseunit area'),
+        'address': fields.String(required=True, description='houseunit address'),
+    })

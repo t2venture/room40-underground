@@ -14,7 +14,7 @@ from .main.controller.event_participant_controller import api as event_participa
 from .main.controller.note_controller import api as note_ns
 from .main.controller.vote_controller import api as vote_ns
 from .main.controller.highlight_controller import api as highlight_ns
-
+from .main.controller.houseunit_controller import api as houseunit_ns
 blueprint = Blueprint('api', __name__)
 
 api = Api(blueprint,
@@ -37,3 +37,4 @@ api.add_namespace(deal_investor_ns, path="/deal_investor")
 api.add_namespace(highlight_ns, path="/highlight")
 api.add_namespace(event_participant_ns, path="/event_participant")
 api.add_namespace(vote_ns, path="/vote")
+api.add_namespace(houseunit_ns, path="/houseunit")

@@ -14,6 +14,7 @@ from app.main.model.note import Note
 from app.main.model.deal_investor import DealInvestor
 from app.main.model.event_participant import EventParticipant
 from app.main.model.user_company import UserCompany
+from app.main.model.houseunit import Houseunit
 
 import csv
 users_csv = 'app/main/util/data_files/users.csv'
@@ -26,7 +27,8 @@ events_csv = 'app/main/util/data_files/events.csv'
 highlights_csv = 'app/main/util/data_files/highlights.csv'
 notes_csv = 'app/main/util/data_files/notes.csv'
 user_companies_csv = 'app/main/util/data_files/user_companies.csv'
-votes_csv = 'app/main/util/data_files/votes.csv'   
+votes_csv = 'app/main/util/data_files/votes.csv'  
+houseunits_csv = 'app/main/util/data_files/houseunits.csv'
 
 def add_users():
     with open(users_csv, mode='r') as csv_file:
@@ -188,7 +190,17 @@ def add_deal_investors():
                 fund_invested=row["fund_invested"]
             )
             db.session.add(new_deal_investor)
-    
+
+def add_houseunits():
+    with open(houseunits_csv, mode='r') as csv_file:
+        csv_reader=csv.DictReader(csv_file)
+        for row in csv_reader:
+            new_houseunit=Houseunit(
+                address=row["address"],
+                majorcity=row["majorcity"],
+                area=row["area"]
+            )
+            db.session.add(new_houseunit)
 
 def upload_data():
     print("uploading users")
