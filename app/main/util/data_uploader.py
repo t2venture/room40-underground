@@ -202,6 +202,9 @@ def add_houseunits():
             )
             db.session.add(new_houseunit)
 
+def add_housemodels():
+    ###USE houseunit table to call function model and add the housemodel table
+
 def upload_data():
     print("uploading users")
     add_users()

@@ -150,3 +150,14 @@ class HouseunitDto:
         'area': fields.String(required=True, description='houseunit area'),
         'address': fields.String(required=True, description='houseunit address'),
     })
+
+
+class HousemodelDto:
+    api = Namespace('housemodel', description='housemodel related operations')
+    housemodel = api.model('housemodel', {
+        'id': fields.String(required=False, description='id'),
+        'houseunit_id': fields.String(required=True, description='houseunit_id'),
+        'project_oneyear': fields.String(required=True, description='project_oneyear'),
+        'project_twoyear': fields.String(required=True, description='project_twoyear'),
+        'project_fiveyear': fields.String(required=True, description='project_fiveyear'),
+    })
