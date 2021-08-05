@@ -142,19 +142,18 @@ class VoteDto:
         'stage': fields.String(required=True, description='stage of voting'),
     })
 
-class HouseunitDto:
-    api = Namespace('houseunit', description='houseunit related operations')
-    houseunit = api.model('houseunit', {
+class HouseUnitDto:
+    api = Namespace('house_unit', description='houseunit related operations')
+    house_unit = api.model('house_unit', {
         'id': fields.String(required=False, description='houseunit id'),
         'majorcity': fields.String(required=True, description='majorcity'),
         'area': fields.String(required=True, description='houseunit area'),
         'address': fields.String(required=True, description='houseunit address'),
     })
 
-
-class HousemodelDto:
-    api = Namespace('housemodel', description='housemodel related operations')
-    housemodel = api.model('housemodel', {
+class HouseModelDto:
+    api = Namespace('house_model', description='house_model related operations')
+    house_model = api.model('house_model', {
         'id': fields.String(required=False, description='id'),
         'houseunit_id': fields.String(required=True, description='houseunit_id'),
         'project_oneyear': fields.String(required=True, description='project_oneyear'),

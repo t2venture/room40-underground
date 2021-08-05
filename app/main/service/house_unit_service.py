@@ -2,17 +2,16 @@ import uuid
 import datetime
 
 from app.main import db
-from app.main.model.housemodel import Housemodel
+from app.main.model.house_unit import HouseUnit
 
-def save_new_housemodel(data):
+def save_new_house_unit(data):
     try:
-        new_housemodel = Housemodel(
-            houseunit_id=data['houseunit_id'],
-            project_oneyear=data['project_oneyear'],
-            project_twoyear=data['project_twoyear'],
-            project_fiveyear=data['project_fiveyear'],
+        new_house_unit = HouseUnit(
+            majorcity=data['majorcity'],
+            address=data['address'],
+            area=data['area'],
         )
-        save_changes(new_housemodel)
+        save_changes(new_house_unit)
         response_object = {
                 'status': 'success',
                 'message': 'Successfully registered.',
@@ -27,17 +26,16 @@ def save_new_housemodel(data):
         }
         return response_object, 401
 
-def update_housemodel(housemodel_id, data):
+def update_house_unit(house_unit_id, data):
 
     try:
-        housemodel = get_a_housemodel(housemodel_id)
+        house_unit = get_a_house_unit(house_unit_id)
 
-        housemodel.houseunit_id=data['houseunit_id'],
-        housemodel.project_oneyear=data['project_oneyear'],
-        housemodel.project_twoyear=data['project_twoyear'],
-	housemodel.project_fiveyear=data['project_fiveyear'],
+        house_unit.majorcity=data['houseunit'],
+        house_unit.address=data['address'],
+        house_unit.area=data['area'],
 
-        save_changes(housemodel)
+        save_changes(house_unit)
 
         response_object = {
                     'status': 'success',
@@ -53,9 +51,9 @@ def update_housemodel(housemodel_id, data):
         }
         return response_object, 401
 
-def delete_a_housemodel(housemodel_id):
+def delete_a_house_unit(house_unit_id):
     try:
-        Housemodel.query.filter_by(id=housemodel_id).delete()
+        HouseUnit.query.filter_by(id=house_unit_id).delete()
         db.session.commit()
         response_object = {
                     'status': 'success',
@@ -71,12 +69,13 @@ def delete_a_housemodel(housemodel_id):
         }
         return response_object, 401
 
-def get_all_housemodels(company_id=""):
-    return Housemodel.query.all()
+def get_all_house_units():
+    # Get all houseunits 
+    return HouseUnit.query.all()
 
 
-def get_a_Housemodel(housemodel_id):
-    return Housemodel.query.filter_by(id=housemodel_id).first()
+def get_a_house_unit(house_unit_id):
+    return HouseUnit.query.filter_by(id=house_unit_id).first()
 
 
 def save_changes(data):

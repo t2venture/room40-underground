@@ -14,7 +14,7 @@ from app.main.model.note import Note
 from app.main.model.deal_investor import DealInvestor
 from app.main.model.event_participant import EventParticipant
 from app.main.model.user_company import UserCompany
-from app.main.model.houseunit import Houseunit
+from app.main.model.house_unit import HouseUnit
 
 import csv
 users_csv = 'app/main/util/data_files/users.csv'
@@ -58,7 +58,6 @@ def add_companies():
                 pitchbook=row["pitchbook"]
             )
             db.session.add(new_company)
-    
 
 def add_deals():
     with open(deals_csv, mode='r') as csv_file:
@@ -202,7 +201,7 @@ def add_houseunits():
             )
             db.session.add(new_houseunit)
 
-def add_housemodels():
+# def add_housemodels():
     ###USE houseunit table to call function model and add the housemodel table
 
 def upload_data():
