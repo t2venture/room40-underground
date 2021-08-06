@@ -28,7 +28,7 @@ highlights_csv = 'app/main/util/data_files/highlights.csv'
 notes_csv = 'app/main/util/data_files/notes.csv'
 user_companies_csv = 'app/main/util/data_files/user_companies.csv'
 votes_csv = 'app/main/util/data_files/votes.csv'  
-houseunits_csv = 'app/main/util/data_files/houseunits.csv'
+house_units_csv = 'app/main/util/data_files/house_units.csv'
 
 def add_users():
     with open(users_csv, mode='r') as csv_file:
@@ -190,11 +190,11 @@ def add_deal_investors():
             )
             db.session.add(new_deal_investor)
 
-def add_houseunits():
-    with open(houseunits_csv, mode='r') as csv_file:
+def add_house_units():
+    with open(house_units_csv, mode='r') as csv_file:
         csv_reader=csv.DictReader(csv_file)
         for row in csv_reader:
-            new_houseunit=Houseunit(
+            new_houseunit=HouseUnit(
                 address=row["address"],
                 majorcity=row["majorcity"],
                 area=row["area"]
@@ -237,6 +237,9 @@ def upload_data():
     db.session.flush()
     print("uploading votes")
     add_votes()
+    db.session.flush()
+    print("uploading house_units")
+    add_house_units()
     print("done")
     db.session.commit()
 
