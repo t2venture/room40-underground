@@ -9,7 +9,7 @@ class HouseUnit(db.Model):
     __tablename__ = "house_unit"
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    majorcity = db.Column(db.String(255), unique=False, nullable=False)
-    address = db.Column(db.String(255), unique=False, nullable=False)
-    area = db.Column(db.String(255), unique=False, nullable=False)
-    
+    majorcity=db.Column(db.String(255), unique=False, nullable=False)
+    address=db.Column(db.String(255), unique=False, nullable=False)
+    building_sqft_area=db.Column(db.String(255), unique=False, nullable=True)
+    gross_sqft_area=db.Column(db.String(255), unique=False, nullable=True)   

@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 
+from typing import List
 import pandas as pd
 from datetime import datetime, timedelta
 import requests
@@ -9,16 +10,13 @@ import logging
 import os
 import matplotlib.pyplot as plt
 from numpy import array
-from keras.models import Sequential
-from keras.layers import LSTM
-from keras.layers import Dense
-from keras.layers import Bidirectional
-from keras.layers import TimeDistributed
-from keras.layers.convolutional import Conv1D
-from keras.layers.convolutional import MaxPooling1D
-from keras.layers import Flatten
-from keras.layers import ConvLSTM2D
-import keras
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import LSTM
+from tensorflow.keras.layers import Dense
+from tensorflow.keras.layers import Bidirectional
+from tensorflow.keras.layers import TimeDistributed
+from tensorflow.keras.layers import Flatten
+from tensorflow.keras.layers import ConvLSTM2D
 import tensorflow as tf
 import numpy as np
 import sklearn
@@ -118,6 +116,8 @@ def make_query_variables(Query, Variables, obj):
     raw_data=get_graphql_request_variables(Query, Variables)
     ans=serialize__to_json(raw_data, obj)
     return ans
+### THESE ARE TO BE USED BY ALL FUNCTIONS
+### FROM HERE OTHER FUNCTIONS START
 
 def neighborhood_list_query_asc_48209_austin():
     QI='''query MyQuery($previous_id: numeric!) {
@@ -136,11 +136,14 @@ def neighborhood_list_query_asc_48209_austin():
         }
       }
       address
+      building_sq_ft
+      gross_sq_ft
     }
     }
     }'''
     return QI
 
+## THIS RETURNS 5523 HOUSES IN AUSTIN, 48209
 def return_austin_houses():
   data_diff_demog=[]
   #Non-Empty Initialization
@@ -154,5 +157,16 @@ def return_austin_houses():
       break
     data_diff_demog=data_diff_demog+data_diff
     last_id=data_diff[len(data_diff)-1]['tax_assessor_id']
-    return data_diff_demog
+  return data_diff_demog
 
+#THIS PARSES GRAPHQL DICT INTO OUR SCHEMA FORM
+def return_list_houseunit(data_diff_demog):
+  List_HouseUnit=[]
+  for i in data_diff_demog:
+    MajorCity='Austin'
+    Address=i['tax_assessor__tax_assessor_id']['address']
+    Building_Sq_Ft=i['tax_assessor__tax_assessor_id']['building_sq_ft']
+    Gross_Sq_Ft=i['tax_assessor__tax_assessor_id']['gross_sq_ft']
+    Dict={"majorcity": MajorCity, "address": Address, "building_sq_ft": Building_Sq_Ft, "gross_sq_ft": Gross_Sq_Ft}
+    List_HouseUnit.append(Dict)
+  return List_HouseUnit

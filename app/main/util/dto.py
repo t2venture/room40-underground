@@ -147,7 +147,8 @@ class HouseUnitDto:
     house_unit = api.model('house_unit', {
         'id': fields.String(required=False, description='houseunit id'),
         'majorcity': fields.String(required=True, description='majorcity'),
-        'area': fields.String(required=True, description='houseunit area'),
+        'building_sqft_area': fields.String(required=True, description='houseunit building area'),
+        'gross_sqft_area': fields.String(required=True, description='housunit total area'),
         'address': fields.String(required=True, description='houseunit address'),
     })
 

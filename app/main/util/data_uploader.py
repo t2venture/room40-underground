@@ -15,7 +15,7 @@ from app.main.model.deal_investor import DealInvestor
 from app.main.model.event_participant import EventParticipant
 from app.main.model.user_company import UserCompany
 from app.main.model.house_unit import HouseUnit
-
+from app.main.util.projection import return_austin_houses, return_list_houseunit
 import csv
 users_csv = 'app/main/util/data_files/users.csv'
 activities_csv = 'app/main/util/data_files/activities.csv'
@@ -191,16 +191,11 @@ def add_deal_investors():
             db.session.add(new_deal_investor)
 
 def add_house_units():
-    with open(house_units_csv, mode='r') as csv_file:
-        csv_reader=csv.DictReader(csv_file)
-        for row in csv_reader:
-            new_houseunit=HouseUnit(
-                address=row["address"],
-                majorcity=row["majorcity"],
-                area=row["area"]
-            )
-            db.session.add(new_houseunit)
-
+    List_HouseUnit=return_list_houseunit(return_austin_houses())
+    for row in List_HouseUnit:
+        new_houseunit=HouseUnit(address=row["address"], majorcity=row["majorcity"],
+        building_sqft_area=row["building_sq_ft"], gross_sqft_area=row["gross_sq_ft"])
+        db.session.add(new_houseunit)
 # def add_housemodels():
     ###USE houseunit table to call function model and add the housemodel table
 

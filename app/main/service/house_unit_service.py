@@ -9,7 +9,8 @@ def save_new_house_unit(data):
         new_house_unit = HouseUnit(
             majorcity=data['majorcity'],
             address=data['address'],
-            area=data['area'],
+            building_sqft_area=data['building_sqft_area'],
+            gross_sqft_area=data['gross_sqft_area'],
         )
         save_changes(new_house_unit)
         response_object = {
@@ -33,7 +34,8 @@ def update_house_unit(house_unit_id, data):
 
         house_unit.majorcity=data['houseunit'],
         house_unit.address=data['address'],
-        house_unit.area=data['area'],
+        house_unit.building_sqft_area=data['building_sqft_area'],
+        house_unit.gross_sqft_area=data['gross_sqft_area'],
 
         save_changes(house_unit)
 
