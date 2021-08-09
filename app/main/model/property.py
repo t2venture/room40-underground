@@ -4,9 +4,9 @@ import jwt
 from app.main.model.blacklist import BlacklistToken
 from ..config import key
 
-class HouseUnit(db.Model):
+class Property(db.Model):
     """ HouseUnit Model for storing deal related details """
-    __tablename__ = "house_unit"
+    __tablename__ = "property"
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     majorcity=db.Column(db.String(255), unique=False, nullable=False)

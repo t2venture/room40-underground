@@ -143,8 +143,8 @@ def neighborhood_list_query_asc_48209_austin():
     }'''
     return QI
 
-## THIS RETURNS 5523 HOUSES IN AUSTIN, 48209
-def return_austin_houses():
+## THIS RETURNS 5523 PROPERTYS IN AUSTIN, 48209
+def return_austin_propertys():
   data_diff_demog=[]
   #Non-Empty Initialization
   last_id=1544919
@@ -160,13 +160,13 @@ def return_austin_houses():
   return data_diff_demog
 
 #THIS PARSES GRAPHQL DICT INTO OUR SCHEMA FORM
-def return_list_houseunit(data_diff_demog):
-  List_HouseUnit=[]
+def return_list_property(data_diff_demog):
+  List_Property=[]
   for i in data_diff_demog:
     MajorCity='Austin'
     Address=i['tax_assessor__tax_assessor_id']['address']
     Building_Sq_Ft=i['tax_assessor__tax_assessor_id']['building_sq_ft']
     Gross_Sq_Ft=i['tax_assessor__tax_assessor_id']['gross_sq_ft']
     Dict={"majorcity": MajorCity, "address": Address, "building_sq_ft": Building_Sq_Ft, "gross_sq_ft": Gross_Sq_Ft}
-    List_HouseUnit.append(Dict)
-  return List_HouseUnit
+    List_Property.append(Dict)
+  return List_Property

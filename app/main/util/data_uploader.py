@@ -5,13 +5,12 @@ from app.main import db
 from app.main.model.company import Company
 from app.main.model.user import User
 from app.main.model.user_company import UserCompany
-from app.main.model.house_unit import HouseUnit
-from app.main.util.projection import return_austin_houses, return_list_houseunit
+from app.main.model.property import Property
+from app.main.util.projection import return_austin_propertys, return_list_property
 import csv
 users_csv = 'app/main/util/data_files/users.csv'
 companies_csv = 'app/main/util/data_files/companies.csv'
 user_companies_csv = 'app/main/util/data_files/user_companies.csv'
-house_units_csv = 'app/main/util/data_files/house_units.csv'
 
 def add_users():
     with open(users_csv, mode='r') as csv_file:
@@ -55,15 +54,13 @@ def add_user_companies():
             db.session.add(new_user_company)
 
 
-def add_house_units():
-    List_HouseUnit=return_list_houseunit(return_austin_houses())
-    for row in List_HouseUnit:
-        new_houseunit=HouseUnit(address=row["address"], majorcity=row["majorcity"],
+def add_propertys():
+    List_Property=return_list_property(return_austin_propertys())
+    for row in List_Property:
+        new_property=Property(address=row["address"], majorcity=row["majorcity"],
         building_sqft_area=row["building_sq_ft"], gross_sqft_area=row["gross_sq_ft"])
-        db.session.add(new_houseunit)
-# def add_housemodels():
-    ###USE houseunit table to call function model and add the housemodel table
-
+        db.session.add(new_property)
+        
 def upload_data():
     print("uploading users")
     add_users()
@@ -74,8 +71,8 @@ def upload_data():
     print("uploading user companies")
     add_user_companies()
     db.session.flush()
-    print("uploading house_units")
-    add_house_units()
+    print("uploading propertys")
+    add_propertys()
     print("done")
     db.session.commit()
 
