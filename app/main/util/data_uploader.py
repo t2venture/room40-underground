@@ -6,7 +6,7 @@ from app.main.model.company import Company
 from app.main.model.user import User
 from app.main.model.user_company import UserCompany
 from app.main.model.property import Property
-from app.main.util.projection import return_austin_propertys, return_list_property
+from app.main.util.scrape_property import return_austin_propertys, return_list_property
 import csv
 users_csv = 'app/main/util/data_files/users.csv'
 companies_csv = 'app/main/util/data_files/companies.csv'
