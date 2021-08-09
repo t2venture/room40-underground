@@ -2,14 +2,9 @@ import unittest
 import datetime
 
 from app.main import db
-from app.main.model.activity import Activity
-from app.main.model.assessment import Assessment
 from app.main.model.deal import Deal
 from app.main.model.company import Company
-from app.main.model.event import Event
-from app.main.model.highlight import Highlight
 from app.main.model.user import User
-from app.main.model.vote import Vote
 from app.main.model.note import Note
 from app.main.model.deal_investor import DealInvestor
 from app.main.model.event_participant import EventParticipant
@@ -18,8 +13,6 @@ from app.main.model.house_unit import HouseUnit
 from app.main.util.projection import return_austin_houses, return_list_houseunit
 import csv
 users_csv = 'app/main/util/data_files/users.csv'
-activities_csv = 'app/main/util/data_files/activities.csv'
-assessments_csv = 'app/main/util/data_files/assessments.csv'
 companies_csv = 'app/main/util/data_files/companies.csv'
 deal_investors_csv = 'app/main/util/data_files/deal_investors.csv'
 deals_csv = 'app/main/util/data_files/deals.csv'
@@ -73,65 +66,6 @@ def add_deals():
             )
             db.session.add(new_deal)
 
-def add_activities():
-    with open(activities_csv, mode='r') as csv_file:
-        csv_reader = csv.DictReader(csv_file)
-        for row in csv_reader:
-            new_activity = Activity(
-                title=row["title"],
-                priority=row["priority"],
-                due=datetime.datetime.strptime(row['due'], '%Y-%m-%dT%H:%M:%S'),
-                company_id=row["company_id"],
-            )
-            db.session.add(new_activity)
-    
-
-def add_assessments():
-    with open(assessments_csv, mode='r') as csv_file:
-        csv_reader = csv.DictReader(csv_file)
-        for row in csv_reader:
-            new_assessment = Assessment(
-                quarter=row["quarter"],
-                sentiment=row["sentiment"],
-                notes=row["notes"],
-                company_id=row["company_id"],
-            )
-            db.session.add(new_assessment)
-    
-
-def add_events():
-    with open(events_csv, mode='r') as csv_file:
-        csv_reader = csv.DictReader(csv_file)
-        for row in csv_reader:
-            new_event = Event(
-                time=datetime.datetime.strptime(row['time'], '%Y-%m-%dT%H:%M:%S'),
-                link=row["link"],
-                description=row["description"],
-                notes=row["notes"],
-                event_type=row["event_type"],
-                deal_id=row["deal_id"],
-            )
-            db.session.add(new_event)
-            db.session.flush()
-            participants = row["participant_ids"].split('-')
-            for p in participants:
-                new_event_participant = EventParticipant(
-                    event_id=new_event.id,
-                    participant_id=p
-                )
-    
-
-def add_highlights():
-    with open(highlights_csv, mode='r') as csv_file:
-        csv_reader = csv.DictReader(csv_file)
-        for row in csv_reader:
-            new_highlight = Highlight(
-                is_active=bool(row["is_active"]),
-                notes=row["notes"],
-                company_id=row["company_id"],
-            )
-            db.session.add(new_highlight)
-    
 
 def add_notes():
     with open(notes_csv, mode='r') as csv_file:
@@ -157,24 +91,6 @@ def add_user_companies():
                 role=row["role"]
             )
             db.session.add(new_user_company)
-    
-
-def add_votes():
-    with open(votes_csv, mode='r') as csv_file:
-        csv_reader = csv.DictReader(csv_file)
-        for row in csv_reader:
-            new_vote = Vote(
-                team=row["team"],
-                team_notes=row["team_notes"],
-                market=row["market"],
-                market_notes=row["market_notes"],
-                product=row["product"],
-                product_notes=row["product_notes"],
-                deal_id=row["deal_id"],
-                stage=row["stage"],
-                name=row["name"]
-            )
-            db.session.add(new_vote)
 
 
 def add_deal_investors():
@@ -214,12 +130,6 @@ def upload_data():
     db.session.flush()
     print("uploading deal investors")
     add_deal_investors()
-    db.session.flush()
-    print("uploading activities")
-    add_activities()
-    db.session.flush()
-    print("uploading assessments")
-    add_assessments()
     db.session.flush()
     print("uploading events")
     add_events()

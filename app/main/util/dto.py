@@ -1,26 +1,5 @@
 from flask_restplus import Namespace, fields
 
-
-class ActivityDto:
-    api = Namespace('activity', description='activity related operations')
-    activity = api.model('activity', {
-        'id': fields.String(required=False, description='activity id'),
-        'title': fields.String(required=True, description='activity title'),
-        'priority': fields.String(required=True, description='activity priority'),
-        'due': fields.DateTime(required=True, description='activity_due_date', dt_format='rfc822'),
-        'company_id': fields.String(required=True, description='company activity'),
-    })
-
-class AssessmentDto:
-    api = Namespace('assessment', description='assessment related operations')
-    assessment = api.model('assessment', {
-        'id': fields.String(required=False, description='assessment id'),
-        'quarter': fields.String(required=True, description='assessment quarter'),
-        'sentiment': fields.String(required=True, description='assessmentrank'),
-        'notes': fields.String(required=True, description='assessment description'),
-        'company_id': fields.String(required=True, description='assessments company'),
-    })
-
 class AuthDto:
     api = Namespace('auth', description='authentication related operations')
     user_auth = api.model('auth_details', {
@@ -74,26 +53,6 @@ class EventParticipantDto:
         'participant_id': fields.String(required=True, description='user id'),
     })
 
-class EventDto:
-    api = Namespace('event', description='event related operations')
-    event = api.model('event', {
-        'id': fields.String(required=False, description='event id'),
-        'time': fields.DateTime(required=True, description='time of event', dt_format='rfc822'),
-        'link': fields.String(description='event link'),
-        'description': fields.String(required=True, description='event description'),
-        'notes': fields.String(description='event notes'),
-        'event_type': fields.String(description='event type'),
-        'deal_id': fields.String(required=True, description='events deal'),
-    })
-class HighlightDto:
-    api = Namespace('highlight', description='highlights')
-    highlight = api.model('highlight', {
-        'id': fields.String(required=False, description='highlight id'),
-        'notes': fields.String(required=True, description='highlight notes'),
-        'is_active': fields.String(description='active displayed highlight'),
-        'company_id': fields.String(required=True, description='highlight for company'),
-    })
-
 class NoteDto:
     api = Namespace('note', description='note related operations')
     note = api.model('note', {
@@ -125,21 +84,6 @@ class UserDto:
         'public_id': fields.String(description='user Identifier'),
         'linkedin_url': fields.String(description='user LinkedIn'),
         'twitter_url': fields.String(description='user Twitter')
-    })
-
-class VoteDto:
-    api = Namespace('vote', description='vote related operations')
-    vote = api.model('vote', {
-        'id': fields.String(required=False, description='vote id'),
-        'team': fields.String(required=True, description='team rank'),
-        'team_notes': fields.String(required=True, description='team description'),
-        'market': fields.String(required=True, description='market rank'),
-        'market_notes': fields.String(required=True, description='market description'),
-        'product': fields.String(required=True, description='product rank'),
-        'product_notes': fields.String(required=True, description='product description'),
-        'deal_id': fields.String(required=True, description='deal voted on'),
-        'name': fields.String(required=True, description='name of voter'),
-        'stage': fields.String(required=True, description='stage of voting'),
     })
 
 class HouseUnitDto:
