@@ -61,3 +61,11 @@ class PropertyModelDto:
         'project_twoyear': fields.String(required=True, description='project_twoyear'),
         'project_fiveyear': fields.String(required=True, description='project_fiveyear'),
     })
+
+class PortfolioDto:
+    api = Namespace('portfolio', description='portfolio related operations')
+    portfolio = api.model('portfolio_model', {
+        'id': fields.String(required=False, description='id'),
+        'title': fields.String(required=True, description='title of the portfolio'),
+        'description': fields.String(required=True, description='description of portfolio'),
+    })

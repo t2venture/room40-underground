@@ -49,5 +49,5 @@ class PropertyModel(Resource):
     @api.response(201, 'property_model successfully deleted.')
     @api.doc('delete a property_model')
     def delete(self, property_model_id):
-        """Delete a property_model """
+        """Delete a property"""
         return delete_a_property_model(property_model_id)
