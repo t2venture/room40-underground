@@ -69,3 +69,11 @@ class PortfolioDto:
         'title': fields.String(required=True, description='title of the portfolio'),
         'description': fields.String(required=True, description='description of portfolio'),
     })
+
+class PropertyPortfolioDto:
+    api = Namespace('property_portfolio', description='property and portfolio link related operations')
+    property_portfolio=api.model('property_portfolio', {
+        'id': fields.String(required=False, description = 'id'),
+	    'property_id': fields.String(required=True, description = 'id of the property'),
+	    'portfolio_id': fields.String(required=True, description = 'id of portfolio'),
+    })

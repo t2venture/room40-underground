@@ -8,6 +8,7 @@ from .main.controller.user_company_controller import api as user_company_ns
 from .main.controller.property_controller import api as property_ns
 from .main.controller.property_model_controller import api as property_model_ns
 from .main.controller.portfolio_controller import api as portfolio_ns
+from .main.controller.property_portfolio_controller import api as property_portfolio_ns
 
 blueprint = Blueprint('api', __name__)
 
@@ -25,3 +26,4 @@ api.add_namespace(company_ns, path="/company")
 api.add_namespace(property_ns, path="/property")
 api.add_namespace(property_model_ns, path="/property_model")
 api.add_namespace(portfolio_ns, path="/portfolio")
+api.add_namespace(property_portfolio_ns, path="/property_portfolio")
