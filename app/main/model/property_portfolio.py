@@ -8,4 +8,5 @@ class PropertyPortfolio(db.Model):
 	"""Property Portfolio model for storing which property goes to which portfolio"""
 	__tablename__="property_portfolio"
 	id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-	
+	property_id=db.Column(db.Integer, db.ForeignKey('property.id'))
+	portfolio_id=db.Column(db.Integer, db.ForeignKey('portfolio.id'))
