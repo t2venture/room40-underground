@@ -67,8 +67,14 @@ def delete_a_property_portfolio(property_portfolio_id):
         }
         return response_object, 401
 
-def get_all_property_portfolios(company_id=""):
+def get_all_property_portfolios():
     return PropertyPortfolio.query.all()
+
+def get_propertys_from_portfolio(portfolio_id):
+    return PropertyPortfolio.query.filter_by(portfolio_id=portfolio_id).all()
+
+def get_portfolios_from_property(property_id):
+    return PropertyPortfolio.query.filter_by(property_id=property_id).all()
 
 def get_a_property_portfolio(property_portfolio_id):
     return PropertyPortfolio.query.filter_by(id=property_portfolio_id).first()

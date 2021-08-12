@@ -1,5 +1,5 @@
 from flask import request
-from flask_restplus import Resource
+from flask_restplus import Resource, reqparse
 
 from ..util.dto import PortfolioDto
 from ..service.portfolio_service import save_new_portfolio, get_all_portfolios, get_a_portfolio, update_portfolio, delete_a_portfolio
@@ -11,10 +11,14 @@ _portfolio = PortfolioDto.portfolio
 @api.route('/')
 class PortfolioList(Resource):
     @api.doc('list_of_portfolios for a portfolio_model')
+    @api.param('property_id', 'property id to search portfolios for')
     @api.marshal_list_with(_portfolio, envelope='data')
     def get(self):
         """List all portfolios"""
-        return get_all_portfolios()
+        parser = reqparse.RequestParser()
+        parser.add_argument("property_id", type=int)
+        args = parser.parse_args()
+        return get_all_portfolios(args['property_id'])
 
     @api.response(201, 'portfolio successfully created.')
     @api.doc('create a new portfolio')

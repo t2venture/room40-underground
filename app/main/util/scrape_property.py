@@ -8,7 +8,6 @@ import logging
 import os
 import matplotlib.pyplot as plt
 from numpy import array
-'''
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import LSTM
 from tensorflow.keras.layers import Dense
@@ -17,13 +16,11 @@ from tensorflow.keras.layers import TimeDistributed
 from tensorflow.keras.layers import Flatten
 from tensorflow.keras.layers import ConvLSTM2D
 import tensorflow as tf
-'''
+
 import numpy as np
-'''
 import sklearn
 from sklearn import model_selection
 from sklearn.metrics import mean_squared_error
-'''
 import math
 
 
@@ -142,13 +139,15 @@ def neighborhood_list_query_asc_48209_austin():
       address
       building_sq_ft
       gross_sq_ft
+      latitude
+      longitude
     }
     }
     }'''
     return QI
 
 ## THIS RETURNS 5523 PROPERTYS IN AUSTIN, 48209
-def return_austin_propertys():
+def return_austin_48209_propertys():
   data_diff_demog=[]
   #Non-Empty Initialization
   last_id=1544919
@@ -164,13 +163,15 @@ def return_austin_propertys():
   return data_diff_demog
 
 #THIS PARSES GRAPHQL DICT INTO OUR SCHEMA FORM
-def return_list_property(data_diff_demog):
+def return_list_austin_48209_property(data_diff_demog):
   List_Property=[]
   for i in data_diff_demog:
     MajorCity='Austin'
     Address=i['tax_assessor__tax_assessor_id']['address']
     Building_Sq_Ft=i['tax_assessor__tax_assessor_id']['building_sq_ft']
     Gross_Sq_Ft=i['tax_assessor__tax_assessor_id']['gross_sq_ft']
-    Dict={"majorcity": MajorCity, "address": Address, "building_sq_ft": Building_Sq_Ft, "gross_sq_ft": Gross_Sq_Ft}
+    Latitude=i['tax_assessor__tax_assessor_id']['latitude']
+    Longitude=i['tax_assessor__tax_assessor_id']['longitude']
+    Dict={"majorcity": MajorCity, "address": Address, "building_sq_ft": Building_Sq_Ft, "gross_sq_ft": Gross_Sq_Ft, "latitude": Latitude, "longitude": Longitude}
     List_Property.append(Dict)
   return List_Property

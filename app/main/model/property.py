@@ -12,4 +12,6 @@ class Property(db.Model):
     majorcity=db.Column(db.String(255), unique=False, nullable=False)
     address=db.Column(db.String(255), unique=False, nullable=False)
     building_sqft_area=db.Column(db.String(255), unique=False, nullable=True)
-    gross_sqft_area=db.Column(db.String(255), unique=False, nullable=True)   
+    gross_sqft_area=db.Column(db.String(255), unique=False, nullable=True)
+    latitude=db.Column(db.String(255), unique=False, nullable=False)
+    longitude=db.Column(db.String(255), unique=False, nullable=False)

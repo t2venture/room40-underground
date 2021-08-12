@@ -50,6 +50,8 @@ class PropertyDto:
         'building_sqft_area': fields.String(required=True, description='property building area'),
         'gross_sqft_area': fields.String(required=True, description='property total area'),
         'address': fields.String(required=True, description='property address'),
+        'latitude': fields.String(required=True, description='latitude of the property'),
+        'longitude': fields.String(required=True, description='longitude of the property')
     })
 
 class PropertyModelDto:
