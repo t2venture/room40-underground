@@ -120,9 +120,9 @@ def make_query_variables(Query, Variables, obj):
 ### FROM HERE OTHER FUNCTIONS START
 
 
-def neighborhood_list_query_asc_48209_austin():
+def neighborhood_list_query_asc_austin(fips):
     QI='''query MyQuery($previous_id: numeric!) {
-    usa_avm(where: {tax_assessor__tax_assessor_id: {_and: {fips_code: {_eq: "48209"}, city: {_eq: "AUSTIN"}, tax_assessor_id: {_gt: $previous_id}}}}, distinct_on: tax_assessor_id, order_by: {tax_assessor_id: asc}, limit: 100) {
+    usa_avm(where: {tax_assessor__tax_assessor_id: {_and: {fips_code: {_eq: "'''+fips+'''"}, city: {_eq: "AUSTIN"}, tax_assessor_id: {_gt: $previous_id}}}}, distinct_on: tax_assessor_id, order_by: {tax_assessor_id: asc}, limit: 100) {
     tax_assessor_id
     tax_assessor__tax_assessor_id {
       parcel_boundary__tax_assessor_id {
@@ -146,13 +146,13 @@ def neighborhood_list_query_asc_48209_austin():
     }'''
     return QI
 
-## THIS RETURNS 5523 PROPERTYS IN AUSTIN, 48209
-def return_austin_48209_propertys():
+## THIS RETURNS 5523+1400=6923 PROPERTYS IN AUSTIN, 48209
+def return_austin_48209_48453_propertys():
   data_diff_demog=[]
   #Non-Empty Initialization
   last_id=1544919
   while (1):
-    QI=neighborhood_list_query_asc_48209_austin()
+    QI=neighborhood_list_query_asc_austin("48209")
     VI={"previous_id":last_id}
     OI="usa_avm"
     data_diff=make_query_variables(QI, VI, OI)
@@ -160,10 +160,22 @@ def return_austin_48209_propertys():
       break
     data_diff_demog=data_diff_demog+data_diff
     last_id=data_diff[len(data_diff)-1]['tax_assessor_id']
+  
+  last_id=816688
+  while (1):
+    QI=neighborhood_list_query_asc_austin("48453")
+    VI={"previous_id":last_id}
+    OI="usa_avm"
+    data_diff=make_query_variables(QI, VI, OI)
+    if (not data_diff):
+      break
+    data_diff_demog=data_diff_demog+data_diff
+    last_id=data_diff[len(data_diff)-1]['tax_assessor_id']
+  
   return data_diff_demog
 
 #THIS PARSES GRAPHQL DICT INTO OUR SCHEMA FORM
-def return_list_austin_48209_property(data_diff_demog):
+def return_list_austin_property(data_diff_demog):
   List_Property=[]
   for i in data_diff_demog:
     MajorCity='Austin'

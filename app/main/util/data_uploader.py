@@ -6,7 +6,7 @@ from app.main.model.company import Company
 from app.main.model.user import User
 from app.main.model.user_company import UserCompany
 from app.main.model.property import Property
-from app.main.util.scrape_property import return_list_austin_48209_property, return_austin_48209_propertys
+from app.main.util.scrape_property import return_list_austin_property, return_austin_48209_48453_propertys
 import csv
 users_csv = 'app/main/util/data_files/users.csv'
 companies_csv = 'app/main/util/data_files/companies.csv'
@@ -55,7 +55,7 @@ def add_user_companies():
 
 
 def add_propertys():
-    List_Property=return_list_austin_48209_property(return_austin_48209_propertys())
+    List_Property=return_list_austin_property(return_austin_48209_48453_propertys())
     for row in List_Property:
         new_property=Property(address=row["address"], majorcity=row["majorcity"],
         building_sqft_area=row["building_sq_ft"], gross_sqft_area=row["gross_sq_ft"],

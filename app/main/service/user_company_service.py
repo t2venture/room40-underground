@@ -74,6 +74,8 @@ def get_users_from_company(company_id):
 
     return UserCompany.query.filter_by(company_id=company_id).all()
 
+def get_companys_from_user(user_id):
+    return UserCompany.query.filter_by(user_id=user_id).all()
 
 def get_a_user_company(user_company_id):
     

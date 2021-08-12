@@ -78,11 +78,13 @@ def delete_a_property(property_id):
         }
         return response_object, 401
 
-def get_all_propertys(portfolio_id=""):
+def get_all_propertys(portfolio_id="", address=""):
     propertys=Property.query
     if portfolio_id and portfolio_id!="":
         property_ids=[pt.property_id for pt in get_propertys_from_portfolio(portfolio_id)]
         propertys=propertys.filter(Property.id.in_(property_ids))
+    if address and address!="":
+        propertys=propertys.filter_by(address=address)
     return propertys.all()
 
 

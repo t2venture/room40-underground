@@ -1,5 +1,5 @@
 from flask import request
-from flask_restplus import Resource
+from flask_restplus import Resource, reqparse
 
 from ..util.dto import CompanyDto
 from ..service.company_service import save_new_company, get_all_companies, get_a_company, update_company, delete_a_company
@@ -11,10 +11,14 @@ _company = CompanyDto.company
 @api.route('/')
 class CompanyList(Resource):
     @api.doc('list_of_companies for a company')
+    @api.param('user_id', 'user to search the corresponding company')
     @api.marshal_list_with(_company, envelope='data')
     def get(self):
         """List all companies"""
-        return get_all_companies()
+        parser = reqparse.RequestParser()
+        parser.add_argument("user_id", type=int)
+        args = parser.parse_args()
+        return get_all_companies(args["user_id"])
 
     @api.response(201, 'Company successfully created.')
     @api.doc('create a new company')

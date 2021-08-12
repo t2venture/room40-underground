@@ -3,6 +3,7 @@ import datetime
 
 from app.main import db
 from app.main.model.company import Company
+from app.main.service.user_company_service import get_companys_from_user
 
 def save_new_company(data):
     try:
@@ -77,8 +78,12 @@ def delete_a_company(company_id):
         }
         return response_object, 401
 
-def get_all_companies():
-    return Company.query.all()
+def get_all_companies(user_id=""):
+    companies=Company.query
+    if user_id and user_id!="":
+        company_ids=[uc.company_id for uc in get_companys_from_user(user_id)]
+        companies=companies.filter(Company.id.in_(company_ids))
+    return companies.all()
 
 
 def get_a_company(company_id):
