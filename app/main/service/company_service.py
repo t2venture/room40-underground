@@ -3,6 +3,7 @@ import datetime
 
 from app.main import db
 from app.main.model.company import Company
+from app.main.model.user_company import UserCompany
 from app.main.service.user_company_service import get_companys_from_user
 
 def save_new_company(data):
@@ -63,6 +64,8 @@ def update_company(company_id, data):
 def delete_a_company(company_id):
     try:
         Company.query.filter_by(id=company_id).delete()
+        db.session.commit()
+        UserCompany.query.filter_by(company_id=company_id).delete()
         db.session.commit()
         response_object = {
                     'status': 'success',

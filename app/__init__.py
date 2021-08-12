@@ -13,9 +13,9 @@ from .main.controller.property_portfolio_controller import api as property_portf
 blueprint = Blueprint('api', __name__)
 
 api = Api(blueprint,
-          title='Room 40 API',
+          title='Lasso Real Estate',
           version='1.0',
-          description='The development environment for endpoints for the Room 40 superapp. One app to rule them All.',
+          description='The development environment for endpoints for the Lasso Real Estate App.',
           contact='luke@fromstandard.com',
           )
 

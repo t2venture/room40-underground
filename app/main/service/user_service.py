@@ -3,6 +3,7 @@ import datetime
 
 from app.main import db
 from app.main.model.user import User
+from app.main.model.user_company import UserCompany
 from app.main.service.user_company_service import get_users_from_company
 
 def save_new_user(data):
@@ -55,6 +56,8 @@ def update_user(user_id, data):
 def delete_a_user(user_id):
     try:
         User.query.filter_by(id=user_id).delete()
+        db.session.commit()
+        UserCompany.query.filter_by(user_id=user_id).delete()
         db.session.commit()
         response_object = {
                     'status': 'success',
