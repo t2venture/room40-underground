@@ -21,9 +21,9 @@ class PropertyList(Resource):
         """List all propertys"""
         parser = reqparse.RequestParser()
         parser.add_argument("portfolio_id", type=int)
-        parser.add_argument("address", type=String)
-        parser.add_argument("street", type=String)
-        parser.add_argument("housenumber", type=String)
+        parser.add_argument("address", type=str)
+        parser.add_argument("street", type=str)
+        parser.add_argument("housenumber", type=str)
         args = parser.parse_args()
         return get_all_propertys(args['portfolio_id'], args['address'], args['street'], args['housenumber'])
 
