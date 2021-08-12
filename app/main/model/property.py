@@ -15,3 +15,5 @@ class Property(db.Model):
     gross_sqft_area=db.Column(db.String(255), unique=False, nullable=True)
     latitude=db.Column(db.String(255), unique=False, nullable=False)
     longitude=db.Column(db.String(255), unique=False, nullable=False)
+    street=db.Column(db.String(255), unique=False, nullable=True)
+    housenumber=db.Column(db.String(255), unique=False, nullable=True)

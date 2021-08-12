@@ -184,6 +184,16 @@ def return_list_austin_property(data_diff_demog):
     Gross_Sq_Ft=i['tax_assessor__tax_assessor_id']['gross_sq_ft']
     Latitude=i['tax_assessor__tax_assessor_id']['latitude']
     Longitude=i['tax_assessor__tax_assessor_id']['longitude']
-    Dict={"majorcity": MajorCity, "address": Address, "building_sq_ft": Building_Sq_Ft, "gross_sq_ft": Gross_Sq_Ft, "latitude": Latitude, "longitude": Longitude}
+    Street=strip_housenumber_street(Address)[1]
+    HouseNumber=strip_housenumber_street(Address)[0]
+    Dict={"majorcity": MajorCity, "address": Address, "building_sq_ft": Building_Sq_Ft,
+    "gross_sq_ft": Gross_Sq_Ft, "latitude": Latitude, "longitude": Longitude,
+    "street": Street, "housenumber": HouseNumber}
     List_Property.append(Dict)
   return List_Property
+
+def strip_housenumber_street(addr):
+  st=addr.split(' ')
+  starray=tuple(st[1:])
+  ans=' '.join(starray)
+  return (st[0], ans)

@@ -14,14 +14,18 @@ class PropertyList(Resource):
     @api.doc('list_of_propertys for a property')
     @api.param('portfolio_id', 'portfolio id to search properties in')
     @api.param('address', 'address to search properties for')
+    @api.param('street', 'street to search properties for')
+    @api.param('house_number', 'house number to search properties for')
     @api.marshal_list_with(_property, envelope='data')
     def get(self):
         """List all propertys"""
         parser = reqparse.RequestParser()
         parser.add_argument("portfolio_id", type=int)
         parser.add_argument("address", type=String)
+        parser.add_argument("street", type=String)
+        parser.add_argument("housenumber", type=String)
         args = parser.parse_args()
-        return get_all_propertys(args['portfolio_id'], args['address'])
+        return get_all_propertys(args['portfolio_id'], args['address'], args['street'], args['housenumber'])
 
     @api.response(201, 'property successfully created.')
     @api.doc('create a new property')
