@@ -4,11 +4,10 @@ import jwt
 from app.main.model.blacklist import BlacklistToken
 from ..config import key
 
-class UserCompany(db.Model):
-    """UserCompany Model is used to link users to their respective companies"""
-    __tablename__ = "user_company"
+class UserTeam(db.Model):
+    """UserTeam Model is used to link users within a team"""
+    __tablename__ = "user_team"
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    company_id = db.Column(db.Integer, db.ForeignKey('company.id'))
-    role = db.Column(db.String(255), nullable=True)
+    team_id = db.Column(db.Integer, db.ForeignKey('team.id'))

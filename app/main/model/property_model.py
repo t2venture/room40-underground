@@ -12,3 +12,6 @@ class PropertyModel(db.Model):
     project_oneyear = db.Column(db.Integer, unique=False, nullable=False)
     project_twoyear = db.Column(db.Integer, unique=False, nullable=False)
     project_fiveyear = db.Column(db.Integer, unique=False, nullable=False)
+    threemonth_corr=db.Column(db.Float, unique=False, nullable=False)
+    sixmonth_corr=db.Column(db.Float, unique=False, nullable=False)
+    noise=db.Column(db.Float, unique=False, nullable=True)

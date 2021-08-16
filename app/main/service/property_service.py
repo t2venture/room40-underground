@@ -86,7 +86,7 @@ def delete_a_property(property_id):
         }
         return response_object, 401
 
-def get_all_propertys(portfolio_id="", address="", street="", housenumber=""):
+def get_all_propertys(portfolio_id="", address="", street="", housenumber="", min_area=0, max_area=999999, north=89.99, south=-89.99, east=179.99, west=-179.99):
     propertys=Property.query
     if portfolio_id and portfolio_id!="":
         property_ids=[pt.property_id for pt in get_propertys_from_portfolio(portfolio_id)]
@@ -97,8 +97,19 @@ def get_all_propertys(portfolio_id="", address="", street="", housenumber=""):
         propertys=propertys.filter(Property.street.like(street))
     if housenumber and housenumber!="":
         propertys=propertys.filter(Property.housenumber.like(housenumber))
+    if min_area and min_area>0:
+        propertys=propertys.filter(Property.building_sqft_area>min_area)
+    if max_area and max_area<999999:
+        propertys=propertys.filter(Property.building_sqft_area<max_area)
+    if north and north!=89.99:
+        propertys=propertys.filter(Property.latitude<north)
+    if south and south!=-89.99:
+        propertys=propertys.filter(Property.latitude>south)
+    if east and east!=179.99:
+        propertys=propertys.filter(Property.longitude<east)
+    if west and west!=-179.99:
+        propertys=propertys.filter(Property.longitude>west)
     return propertys.all()
-
 
 def get_a_property(property_id):
     return Property.query.filter_by(id=property_id).first()

@@ -16,6 +16,12 @@ class PropertyList(Resource):
     @api.param('address', 'address to search properties for')
     @api.param('street', 'street to search properties for')
     @api.param('house_number', 'house number to search properties for')
+    @api.param('min_area', 'minimum area of the property')
+    @api.param('max_area', 'maximum area of the property')
+    @api.param('north', 'northernmost latitude to search in')
+    @api.param('south', 'southernmost latitude to search in')
+    @api.param('east', 'easternmost longitude to search in')
+    @api.param('west', 'westernmost longitude to search in')
     @api.marshal_list_with(_property, envelope='data')
     def get(self):
         """List all propertys"""
@@ -24,8 +30,14 @@ class PropertyList(Resource):
         parser.add_argument("address", type=str)
         parser.add_argument("street", type=str)
         parser.add_argument("housenumber", type=str)
+        parser.add_argument("min_area", type=int)
+        parser.add_argument("max_area", type=int)
+        parser.add_argument("north", type=float)
+        parser.add_argument("south", type=float)
+        parser.add_argument("east", type=float)
+        parser.add_argument("west", type=float)
         args = parser.parse_args()
-        return get_all_propertys(args['portfolio_id'], args['address'], args['street'], args['housenumber'])
+        return get_all_propertys(args['portfolio_id'], args['address'], args['street'], args['housenumber'], args["min_area"], args["max_area"])
 
     @api.response(201, 'property successfully created.')
     @api.doc('create a new property')

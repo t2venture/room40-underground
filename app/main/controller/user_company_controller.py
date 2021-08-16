@@ -25,7 +25,7 @@ class UserCompanyList(Resource):
         return save_new_user_company(data=data)
 
 @api.route('/<user_company_id>')
-@api.param('user_company_id', 'The event participant identifier')
+@api.param('user_company_id', 'The user_company identifier')
 @api.response(404, 'user_company not found.')
 class UserCompany(Resource):
     @api.doc('get a user_company')

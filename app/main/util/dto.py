@@ -27,7 +27,15 @@ class UserCompanyDto:
         'id': fields.String(required=False, description='user company id'),
         'user_id': fields.String(required=True, description='user id'),
         'company_id': fields.String(required=True, description='company id'),
-        'role': fields.String(required=True, description='user password'),
+        'role': fields.String(required=False, description='user password'),
+    })
+
+class UserTeamDto:
+    api=Namespace('user team', description='user team related operations')
+    user_team = api.model('user_team', {
+        'id': fields.String(required=False, description='user team id'),
+        'user_id': fields.String(required=True, description='user id'),
+        'team_id': fields.String(required=True, description='team id'),
     })
 
 class UserDto:
@@ -64,6 +72,9 @@ class PropertyModelDto:
         'project_oneyear': fields.String(required=True, description='project_oneyear'),
         'project_twoyear': fields.String(required=True, description='project_twoyear'),
         'project_fiveyear': fields.String(required=True, description='project_fiveyear'),
+        'threemonth_corr': fields.String(required=True, description='seasonal trend for 3 months'),
+        'sixmonth_corr': fields.String(required=True, description='seasonal trend for 6 months'),
+        'noise': fields.String(required=False, description='how noisy the movement of value is')
     })
 
 class PortfolioDto:
@@ -80,4 +91,22 @@ class PropertyPortfolioDto:
         'id': fields.String(required=False, description = 'id'),
 	    'property_id': fields.String(required=True, description = 'id of the property'),
 	    'portfolio_id': fields.String(required=True, description = 'id of portfolio'),
+    })
+
+class RentDto:
+    api = Namespace('rent', description='rent related operations')
+    rent=api.model('rent', {
+        'id': fields.String(required=False, description='id of the rent'),
+        'bedroom_count': fields.String(required=True, description='number of bedrooms in the rent unit'),
+        'bathroom_count': fields.String(required=True, description='number of bathrooms in the rent unit'),
+        'rounded_sqft_area': fields.String(required=True, description='area in sq ft rounded to the nearest 100'),
+        'rent_amount': fields.String(required=False, description='monthly rent of the unit'),
+    })
+
+class TeamDto:
+    api = Namespace('team', description='team related operations')
+    team=api.model('team', {
+        'id': fields.String(required=False, description='id of the team'),
+        'name': fields.String(required=True, description='name of the team'),
+        'company_id': fields.String(required=True, description='id of the company the team is part of'),
     })
