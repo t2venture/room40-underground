@@ -61,7 +61,12 @@ class PropertyDto:
         'latitude': fields.String(required=True, description='latitude of the property'),
         'longitude': fields.String(required=True, description='longitude of the property'),
         'street': fields.String(required=False, description='street name of the property'),
-        'housenumber': fields.String(required=False, description='house number of the property')
+        'housenumber': fields.String(required=False, description='house number of the property'),
+        'state': fields.String(required=False, description='state in which the property is'),
+        'fips_code': fields.String(required=False, description='fips code'),
+        'usage_code': fields.String(required=False, description='usage code'),
+        'bd_rms': fields.String(required=False, description='number of bedrooms'),
+        'bt_rms': fields.String(required=False, description='number of bathrooms'),
     })
 
 class PropertyModelDto:

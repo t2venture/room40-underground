@@ -21,6 +21,11 @@ def save_new_property(data):
             longitude=data['longitude'],
             street=data['street'],
             housenumber=data['housenumber'],
+            state=data['state'],
+            fips_code=data['fips_code'],
+            usage_code=data['usage_code'],
+            bd_rms=data['bd_rms'],
+            bt_rms=data['bt_rms'],
         )
         save_changes(new_property)
         response_object = {
@@ -50,6 +55,11 @@ def update_property(property_id, data):
         property.longitude=data['longitude'],
         property.street=data['street'],
         property.housenumber=data['housenumber']
+        property.state=data['state'],
+        property.fips_code=data['fips_code'],
+        property.usage_code=data['usage_code'],
+        property.bd_rms=data['bd_rms'],
+        property.bt_rms=data['bt_rms'],
         save_changes(property)
 
         response_object = {
