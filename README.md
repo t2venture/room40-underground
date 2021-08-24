@@ -1,1 +1,7 @@
 # room40-underground
+
+#RUN python manage.py db init
+#RUN python manage.py db migrate
+#RUN python manage.py db upgrade
+#RUN python manage.py populate_db
+#RUN FLASK_APP=manage.py flask run

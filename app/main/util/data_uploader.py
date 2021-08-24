@@ -59,7 +59,8 @@ def add_propertys():
     for row in List_Property:
         new_property=Property(address=row["address"], majorcity=row["majorcity"],
         building_sqft_area=row["building_sq_ft"], gross_sqft_area=row["gross_sq_ft"],
-        latitude=row['latitude'], longitude=row['longitude'], street=row['street'], housenumber=row['housenumber'])
+        latitude=row['latitude'], longitude=row['longitude'], street=row['street'], housenumber=row['housenumber'],
+        usage_code=row['usage_code'], bd_rms=row["bed_count"], bt_rms=row["bath_count"])
         db.session.add(new_property)
         
 def upload_data():

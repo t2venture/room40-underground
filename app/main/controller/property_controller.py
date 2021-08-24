@@ -37,7 +37,8 @@ class PropertyList(Resource):
         parser.add_argument("east", type=float)
         parser.add_argument("west", type=float)
         args = parser.parse_args()
-        return get_all_propertys(args['portfolio_id'], args['address'], args['street'], args['housenumber'], args["min_area"], args["max_area"])
+        return get_all_propertys(args['portfolio_id'], args['address'], args['street'], args['housenumber'], args["min_area"], args["max_area"],
+        args['north'], args['south'], args['east'], args['west'])
 
     @api.response(201, 'property successfully created.')
     @api.doc('create a new property')

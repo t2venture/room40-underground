@@ -180,7 +180,8 @@ def return_raw_propertys():
           break
         data_diff_houses=data_diff_houses+data_diff
         previous_id=data_diff[len(data_diff)-1]['tax_assessor_id']
-        if len(data_diff_houses)>=200:
+        ###THIS IS FOR TESTING REMOVE THE 200 LIMIT WHEN DEPLOYING
+        if len(data_diff_houses)>=300:
           break
       dict_of_propertys_in_fips_city[fips_number]=data_diff_houses
   return dict_of_propertys_in_fips_city
@@ -194,7 +195,27 @@ def return_list_property(data_diff_demog):
     for fips_dict in dict_of_fips[city]:
       fips=fips_dict['fips_code']
       for i in dict_of_propertys_in_fips_city[fips]:
+        if not i['latitude']:
+          continue
+        if not i['longitude']:
+          continue
+        if not i['property_use_standardized_code']:
+          continue
+        if i['property_use_standardized_code']!="385":
+          continue
+        if not i['bed_count']:
+          continue
+        if not i['building_sq_ft']:
+          continue
+        '''
+        if(i['bed_count']<3 or i['bed_count']>3):
+          continue
+        '''
+        if(i['building_sq_ft'] > 2300 or i['building_sq_ft'] < 1700):
+          continue
+    
         MajorCity=city
+        UsageCode=i['property_use_standardized_code']
         Address=i['address']
         Building_Sq_Ft=i['building_sq_ft']
         Gross_Sq_Ft=i['gross_sq_ft']
@@ -204,11 +225,15 @@ def return_list_property(data_diff_demog):
         HouseNumber=strip_housenumber_street(Address)[0]
         Dict={"majorcity": MajorCity, "address": Address, "building_sq_ft": Building_Sq_Ft, 
         "gross_sq_ft": Gross_Sq_Ft, "latitude": Latitude, "longitude": Longitude,
-        "street": Street, "housenumber": HouseNumber}
+        "street": Street, "housenumber": HouseNumber, "usage_code": UsageCode}
         List_Property.append(Dict)
   return List_Property
 
 def strip_housenumber_street(addr):
+  if not addr:
+    return ('','')
+  if ' ' not in addr:
+    return ('', addr)
   st=addr.split(' ')
   starray=tuple(st[1:])
   ans=' '.join(starray)
