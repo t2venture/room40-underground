@@ -147,6 +147,7 @@ def unique_fips_query(city, state):
 
 def calculate_fips_dict():
   dict_of_fips=dict()
+  #VARIABLE TO CHANGE
   cities=[("CHATTANOOGA", "TN"), ("CHATTANOOGA", "GA"), ("AUSTIN", "TX")]
   for city in cities:
     dict_of_fips[city[0]]=[]
@@ -161,49 +162,50 @@ def calculate_fips_dict():
 
 
 #######################
-def return_austin_48209_48453_propertys():
-  data_diff_demog=[]
-  #Non-Empty Initialization
-  last_id=1544919
-  while (1):
-    QI=neighborhood_list_query_asc_austin("48209")
-    VI={"previous_id":last_id}
-    OI="usa_avm"
-    data_diff=make_query_variables(QI, VI, OI)
-    if (not data_diff):
-      break
-    data_diff_demog=data_diff_demog+data_diff
-    last_id=data_diff[len(data_diff)-1]['tax_assessor_id']
-  
-  last_id=816688
-  while (1):
-    QI=neighborhood_list_query_asc_austin("48453")
-    VI={"previous_id":last_id}
-    OI="usa_avm"
-    data_diff=make_query_variables(QI, VI, OI)
-    if (not data_diff):
-      break
-    data_diff_demog=data_diff_demog+data_diff
-    last_id=data_diff[len(data_diff)-1]['tax_assessor_id']
-  
-  return data_diff_demog
+def return_raw_propertys():
+  dict_of_fips=calculate_fips_dict()
+  dict_of_propertys_in_fips_city=dict()
+  for city_name in dict_of_fips.keys():
+    fips_list=dict_of_fips[city_name]
+    for fips_map in fips_list:
+      fips_number=fips_map["fips_code"]
+      data_diff_houses=[]
+      previous_id=1
+      while(1):
+        QI=list_houses_fips_city(fips_number, city_name) 
+        VI={"previous_id": previous_id}
+        OI="tax_assessor"
+        data_diff=make_query_variables(QI, VI, OI)
+        if not data_diff:
+          break
+        data_diff_houses=data_diff_houses+data_diff
+        previous_id=data_diff[len(data_diff)-1]['tax_assessor_id']
+        if len(data_diff_houses)>=200:
+          break
+      dict_of_propertys_in_fips_city[fips_number]=data_diff_houses
+  return dict_of_propertys_in_fips_city
 
 #THIS PARSES GRAPHQL DICT INTO OUR SCHEMA FORM
-def return_list_austin_property(data_diff_demog):
+def return_list_property(data_diff_demog):
   List_Property=[]
-  for i in data_diff_demog:
-    MajorCity='Austin'
-    Address=i['tax_assessor__tax_assessor_id']['address']
-    Building_Sq_Ft=i['tax_assessor__tax_assessor_id']['building_sq_ft']
-    Gross_Sq_Ft=i['tax_assessor__tax_assessor_id']['gross_sq_ft']
-    Latitude=i['tax_assessor__tax_assessor_id']['latitude']
-    Longitude=i['tax_assessor__tax_assessor_id']['longitude']
-    Street=strip_housenumber_street(Address)[1]
-    HouseNumber=strip_housenumber_street(Address)[0]
-    Dict={"majorcity": MajorCity, "address": Address, "building_sq_ft": Building_Sq_Ft,
-    "gross_sq_ft": Gross_Sq_Ft, "latitude": Latitude, "longitude": Longitude,
-    "street": Street, "housenumber": HouseNumber}
-    List_Property.append(Dict)
+  dict_of_fips=calculate_fips_dict()
+  dict_of_propertys_in_fips_city=return_raw_propertys()
+  for city in dict_of_fips.keys():
+    for fips_dict in dict_of_fips[city]:
+      fips=fips_dict['fips_code']
+      for i in dict_of_propertys_in_fips_city[fips]:
+        MajorCity=city
+        Address=i['address']
+        Building_Sq_Ft=i['building_sq_ft']
+        Gross_Sq_Ft=i['gross_sq_ft']
+        Latitude=i['latitude']
+        Longitude=i['longitude']
+        Street=strip_housenumber_street(Address)[1]
+        HouseNumber=strip_housenumber_street(Address)[0]
+        Dict={"majorcity": MajorCity, "address": Address, "building_sq_ft": Building_Sq_Ft, 
+        "gross_sq_ft": Gross_Sq_Ft, "latitude": Latitude, "longitude": Longitude,
+        "street": Street, "housenumber": HouseNumber}
+        List_Property.append(Dict)
   return List_Property
 
 def strip_housenumber_street(addr):
