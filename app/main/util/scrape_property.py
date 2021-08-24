@@ -8,14 +8,7 @@ import logging
 import os
 import matplotlib.pyplot as plt
 from numpy import array
-from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import LSTM
-from tensorflow.keras.layers import Dense
-from tensorflow.keras.layers import Bidirectional
-from tensorflow.keras.layers import TimeDistributed
-from tensorflow.keras.layers import Flatten
-from tensorflow.keras.layers import ConvLSTM2D
-import tensorflow as tf
+
 
 import numpy as np
 import sklearn
@@ -118,35 +111,56 @@ def make_query_variables(Query, Variables, obj):
     return ans
 ### THESE ARE TO BE USED BY ALL FUNCTIONS
 ### FROM HERE OTHER FUNCTIONS START
-
-
-def neighborhood_list_query_asc_austin(fips):
-    QI='''query MyQuery($previous_id: numeric!) {
-    usa_avm(where: {tax_assessor__tax_assessor_id: {_and: {fips_code: {_eq: "'''+fips+'''"}, city: {_eq: "AUSTIN"}, tax_assessor_id: {_gt: $previous_id}}}}, distinct_on: tax_assessor_id, order_by: {tax_assessor_id: asc}, limit: 100) {
+def list_houses_fips_city(fips, city):
+  ans='''query MyQuery($previous_id: numeric!) {
+  tax_assessor(where: {_and: {fips_code: {_eq: "'''+fips+'''"}, city: {_eq: "'''+city+'''"}, tax_assessor_id: {_gt: $previous_id}}}, distinct_on: tax_assessor_id, order_by: {tax_assessor_id: asc}, limit: 100) {
     tax_assessor_id
-    tax_assessor__tax_assessor_id {
-      parcel_boundary__tax_assessor_id {
-        fips_code
+    address
+    building_sq_ft
+    gross_sq_ft
+    latitude
+    longitude
+    units_count
+    property_use_standardized_code
+    bed_count
+    bath_count
+    zip
+    tax_assessor_usa_neighborhood_boundary__bridge {
+      usa_neighborhood_boundary__geography_id {
+        geography_id
+        geography_code
+        boundary_id
+        area
       }
-      tax_assessor_usa_neighborhood_boundary__bridge {
-        usa_neighborhood_boundary__geography_id {
-          geography_id
-          geography_code
-          boundary_id
-          area
-        }
-      }
-      address
-      building_sq_ft
-      gross_sq_ft
-      latitude
-      longitude
     }
-    }
-    }'''
-    return QI
+  }
+  }'''
+  return ans
 
-## THIS RETURNS 5523+1400=6923 PROPERTYS IN AUSTIN, 48209
+def unique_fips_query(city, state):
+  ans='''query MyQuery {
+  tax_assessor(distinct_on: fips_code, where: {_and: {city: {_eq: "'''+city+'''"}, state: {_eq: "'''+state+'''"}}}) {
+    fips_code
+  }
+  }'''
+  return ans
+
+def calculate_fips_dict():
+  dict_of_fips=dict()
+  cities=[("CHATTANOOGA", "TN"), ("CHATTANOOGA", "GA"), ("AUSTIN", "TX")]
+  for city in cities:
+    dict_of_fips[city[0]]=[]
+  for city in cities:
+    QI=unique_fips_query(city[0], city[1])
+    OI="tax_assessor"
+    data_cherre=make_query(QI, OI)
+    dict_of_fips[city[0]]=dict_of_fips[city[0]]+data_cherre
+  return dict_of_fips
+
+
+
+
+#######################
 def return_austin_48209_48453_propertys():
   data_diff_demog=[]
   #Non-Empty Initialization
