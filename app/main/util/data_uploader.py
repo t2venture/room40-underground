@@ -6,7 +6,9 @@ from app.main.model.company import Company
 from app.main.model.user import User
 from app.main.model.user_company import UserCompany
 from app.main.model.property import Property
-from app.main.util.scrape_property import return_list_property, return_raw_propertys, obtain_time_series_dict, obtain_dict_vals
+from app.main.util.scrape_property import obtain_autocorrs, obtain_train_test_lists, return_list_property, return_raw_propertys, obtain_time_series_dict, obtain_dict_vals, obtain_train_test_lists
+from app.main.util.project_values import project_arima
+
 import csv
 users_csv = 'app/main/util/data_files/users.csv'
 companies_csv = 'app/main/util/data_files/companies.csv'
@@ -56,12 +58,17 @@ def add_user_companies():
 
 def add_propertys():
     List_Property=return_list_property(return_raw_propertys())
+    dict_of_values=obtain_dict_vals(obtain_time_series_dict(List_Property))
+    train_list_of_med_val, train_list_of_max_val, train_list_of_min_val, test_list_of_med_val, test_list_of_max_val, test_list_of_min_val=obtain_train_test_lists(dict_of_values)
+    autocorr_dict=obtain_autocorrs(train_list_of_med_val, test_list_of_med_val)
     for row in List_Property:
         new_property=Property(address=row["address"], majorcity=row["majorcity"],
         building_sqft_area=row["building_sq_ft"], gross_sqft_area=row["gross_sq_ft"],
         latitude=row['latitude'], longitude=row['longitude'], street=row['street'], housenumber=row['housenumber'],
         usage_code=row['usage_code'], bd_rms=row["bed_count"], bt_rms=row["bath_count"])
         db.session.add(new_property)
+    
+
 def upload_data():
     print("uploading users")
     add_users()
