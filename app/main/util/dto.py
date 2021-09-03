@@ -78,8 +78,7 @@ class PropertyModelDto:
         'project_twoyear': fields.String(required=True, description='project_twoyear'),
         'project_fiveyear': fields.String(required=True, description='project_fiveyear'),
         'threemonth_corr': fields.String(required=True, description='seasonal trend for 3 months'),
-        'sixmonth_corr': fields.String(required=True, description='seasonal trend for 6 months'),
-        'noise': fields.String(required=False, description='how noisy the movement of value is')
+        'sixmonth_corr': fields.String(required=True, description='seasonal trend for 6 months')
     })
 
 class PortfolioDto:
@@ -96,6 +95,14 @@ class PropertyPortfolioDto:
         'id': fields.String(required=False, description = 'id'),
 	    'property_id': fields.String(required=True, description = 'id of the property'),
 	    'portfolio_id': fields.String(required=True, description = 'id of portfolio'),
+    })
+
+class TeamPortfolioDto:
+    api=Namespace('team_portfolio', description='team and portfolio link related operations')
+    team_portfolio=api.model('team_portfolio', {
+        'id': fields.String(required=False, description='id'),
+        'team_id': fields.String(required=True, description= 'id of the team'),
+        'portfolio_id': fields.String(required=True, description = 'id of portfolio'),
     })
 
 class RentDto:

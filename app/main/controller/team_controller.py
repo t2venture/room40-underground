@@ -11,10 +11,14 @@ _team = TeamDto.team
 @api.route('/')
 class TeamList(Resource):
     @api.doc('list_of_teams for a team')
+    @api.param('user_id', 'user to search for teams for')
     @api.marshal_list_with(_team, envelope='data')
     def get(self):
         """List all teams"""
-        return get_all_teams()
+        parser = reqparse.RequestParser()
+        parser.add_argument("user_id", type=int)
+        args = parser.parse_args()
+        return get_all_teams(args["user_id"])
 
     @api.response(201, 'Team successfully created.')
     @api.doc('create a new team')

@@ -11,6 +11,7 @@ from .main.controller.property_controller import api as property_ns
 from .main.controller.property_model_controller import api as property_model_ns
 from .main.controller.portfolio_controller import api as portfolio_ns
 from .main.controller.property_portfolio_controller import api as property_portfolio_ns
+from .main.controller.team_portfolio_controller import api as team_portfolio_ns
 from .main.controller.rent_controller import api as rent_ns
 from .main.controller.team_controller import api as team_ns
 
@@ -34,3 +35,4 @@ api.add_namespace(portfolio_ns, path="/portfolio")
 api.add_namespace(property_portfolio_ns, path="/property_portfolio")
 api.add_namespace(rent_ns, path="/rent")
 api.add_namespace(team_ns, path="/team")
+api.add_namespace(team_portfolio_ns, path="/team_portfolio")

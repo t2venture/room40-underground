@@ -2,19 +2,15 @@ import uuid
 import datetime
 
 from app.main import db
-from app.main.model.property_model import PropertyModel
+from app.main.model.team_portfolio import TeamPortfolio
 
-def save_new_property_model(data):
+def save_new_team_portfolio(data):
     try:
-        new_property_model = PropertyModel(
-            property_id=data['property_id'],
-            project_oneyear=data['project_oneyear'],
-            project_twoyear=data['project_twoyear'],
-            project_fiveyear=data['project_fiveyear'],
-            threemonth_corr=data['threemonth_corr'],
-            sixmonth_corr=data['sixmonth_corr'],
+        new_team_portfolio = TeamPortfolio(
+            team_id=data['team_id'],
+	    portfolio_id=data['portfolio_id']
         )
-        save_changes(new_property_model)
+        save_changes(new_team_portfolio)
         response_object = {
                 'status': 'success',
                 'message': 'Successfully registered.',
@@ -29,18 +25,15 @@ def save_new_property_model(data):
         }
         return response_object, 401
 
-def update_property_model(property_model_id, data):
+def update_team_portfolio(team_portfolio_id, data):
 
     try:
-        property_model = get_a_property_model(property_model_id)
+        team_portfolio = get_a_team_portfolio(team_portfolio_id)
 
-        property_model.property_id=data['property_id'],
-        property_model.project_oneyear=data['project_oneyear'],
-        property_model.project_twoyear=data['project_twoyear'],
-        property_model.project_fiveyear=data['project_fiveyear'],
-        property_model.threemonth_corr=data['threemonth_corr'],
-        property_model.sixmonth_corr=data['sixmonth_corr'],
-        save_changes(property_model)
+        team_portfolio.team_id=data['team_id'],
+        team_portfolio.portfolio_id=data['portfolio_id']
+
+        save_changes(team_portfolio)
 
         response_object = {
                     'status': 'success',
@@ -56,9 +49,9 @@ def update_property_model(property_model_id, data):
         }
         return response_object, 401
 
-def delete_a_property_model(property_model_id):
+def delete_a_team_portfolio(team_portfolio_id):
     try:
-        PropertyModel.query.filter_by(id=property_model_id).delete()
+        TeamPortfolio.query.filter_by(id=team_portfolio_id).delete()
         db.session.commit()
         response_object = {
                     'status': 'success',
@@ -74,11 +67,17 @@ def delete_a_property_model(property_model_id):
         }
         return response_object, 401
 
-def get_all_property_models():
-    return PropertyModel.query.all()
+def get_all_team_portfolios():
+    return TeamPortfolio.query.all()
 
-def get_a_property_model(property_model_id):
-    return PropertyModel.query.filter_by(id=property_model_id).first()
+def get_teams_from_portfolio(portfolio_id):
+    return TeamPortfolio.query.filter_by(portfolio_id=portfolio_id).all()
+
+def get_portfolios_from_team(team_id):
+    return TeamPortfolio.query.filter_by(team_id=team_id).all()
+
+def get_a_team_portfolio(team_portfolio_id):
+    return TeamPortfolio.query.filter_by(id=team_portfolio_id).first()
 
 def save_changes(data):
     db.session.add(data)

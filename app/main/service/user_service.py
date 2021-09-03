@@ -4,8 +4,9 @@ import datetime
 from app.main import db
 from app.main.model.user import User
 from app.main.model.user_company import UserCompany
+from app.main.model.user_team import UserTeam
 from app.main.service.user_company_service import get_users_from_company
-
+from app.main.service.user_team_service import get_users_from_team
 def save_new_user(data):
     user = User.query.filter_by(email=data['email']).first()
     if not user:
@@ -59,6 +60,8 @@ def delete_a_user(user_id):
         db.session.commit()
         UserCompany.query.filter_by(user_id=user_id).delete()
         db.session.commit()
+        UserTeam.query.filter_by(user_id=user_id).delete()
+        db.session.commit()
         response_object = {
                     'status': 'success',
                     'message': 'Successfully registered.',
@@ -73,13 +76,16 @@ def delete_a_user(user_id):
         }
         return response_object, 401
 
-def get_all_users(company_id=""):
+def get_all_users(company_id="", team_id=""):
     users=User.query
 
     if company_id and company_id != "":
         user_ids = [uc.user_id for uc in get_users_from_company(company_id)]
         users = users.filter(User.id.in_(user_ids))
 
+    if team_id and team_id!="":
+        users_ids=[ut.user_id for ut in get_users_from_team(team_id)]
+        users=users.filter(User.id.in_(users_ids))
     return users.all()
 
 

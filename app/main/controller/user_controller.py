@@ -12,13 +12,15 @@ _user = UserDto.user
 class UserList(Resource):
     @api.doc('list_of_registered_users')
     @api.param('company_id', 'company to search for users in')
+    @api.param('team_id', 'team to search for users in')
     @api.marshal_list_with(_user, envelope='data')
     def get(self):
         """List all registered users"""
         parser = reqparse.RequestParser()
         parser.add_argument("company_id", type=int)
+        parser.add_argument("team_id", type=int)
         args = parser.parse_args()
-        return get_all_users(args['company_id'])
+        return get_all_users(args['company_id'], args['team_id'])
 
     @api.response(201, 'User successfully created.')
     @api.doc('create a new user')
