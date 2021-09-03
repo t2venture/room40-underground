@@ -1,3 +1,4 @@
+from app.main.model.property_model import PropertyModel
 import unittest
 import datetime
 
@@ -8,6 +9,8 @@ from app.main.model.user_company import UserCompany
 from app.main.model.property import Property
 from app.main.util.scrape_property import obtain_autocorrs, obtain_train_test_lists, return_list_property, return_raw_propertys, obtain_time_series_dict, obtain_dict_vals, obtain_train_test_lists
 from app.main.util.project_values import project_arima
+from app.main.service.property_service import get_all_propertys
+
 
 import csv
 users_csv = 'app/main/util/data_files/users.csv'
@@ -67,8 +70,17 @@ def add_propertys():
         latitude=row['latitude'], longitude=row['longitude'], street=row['street'], housenumber=row['housenumber'],
         usage_code=row['usage_code'], bd_rms=row["bed_count"], bt_rms=row["bath_count"])
         db.session.add(new_property)
-    
-
+        pids=[p.id for p in get_all_propertys(address=row["address"])]
+        pid=pids[0]
+        fc1yr, fc2yr = project_arima(row["address"], train_list_of_med_val, test_list_of_med_val)
+        ####5 yr forecast set to garbage
+        fc5yr = 999999
+        autocorr=autocorr_dict[row["address"]]
+        m3ac=autocorr[3]
+        m6ac=autocorr[6]
+        new_property_model=PropertyModel(property_id=pid, project_oneyear=fc1yr,
+        project_twoyear=fc2yr, project_5yr=fc5yr, threemonth_corr=m3ac, sixmonth_corr=m6ac)
+        db.session.add(new_property_model)
 def upload_data():
     print("uploading users")
     add_users()

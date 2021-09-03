@@ -12,15 +12,18 @@ from statsmodels.tsa.stattools import adfuller
 from numpy import log
 from statsmodels.tsa.stattools import acf
 from statsmodels.tsa.arima_model import ARIMA
-
+import numpy as np
 def project_arima(addr, train_list_of_med_val, test_list_of_med_val):
-	#USING NON DIFFERENCED HERE
-	X=train_list_of_med_val[0]+test_list_of_med_val[0]
-	df=pd.DataFrame(X, columns=['value'])
-	model = ARIMA(df.value, order=(1, 0, 0)) 
-	fitted = model.fit(disp=-1)  
-	fc, se, conf = fitted.forecast(24, alpha=0.05) 
-	return fc
+    X=train_list_of_med_val[0]+test_list_of_med_val[0]
+    df=pd.DataFrame(X, columns=['value'])
+    model = ARIMA(df.value, order=(1, 0, 0)) 
+    fitted=model.fit(disp=-1)
+    fc1yr=fitted.forecast(12)[0]
+    model = ARIMA(df.value, order=(1, 0, 0))
+    fitted=model.fit(disp=-1)
+    fc2yr=fitted.forecast(24)[0]
+    return fc1yr, fc2yr
+
 
 def forecast_accuracy(forecast, actual):
     mape = np.mean(np.abs(forecast - actual)/np.abs(actual))  # MAPE
