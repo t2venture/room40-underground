@@ -70,8 +70,9 @@ def add_propertys():
         latitude=row['latitude'], longitude=row['longitude'], street=row['street'], housenumber=row['housenumber'],
         usage_code=row['usage_code'], bd_rms=row["bed_count"], bt_rms=row["bath_count"])
         db.session.add(new_property)
-        pids=[p.id for p in get_all_propertys(address=row["address"])]
-        pid=pids[0]
+        db.flush()
+        pid=new_property.id
+        ##FOR OTHER ALGOS, JUST CHANGE PROJECT_ARIMA FROM PROJECT_VALUES FILE
         fc1yr, fc2yr = project_arima(row["address"], train_list_of_med_val, test_list_of_med_val)
         ####5 yr forecast set to garbage
         fc5yr = 999999

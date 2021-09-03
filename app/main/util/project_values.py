@@ -13,6 +13,7 @@ from numpy import log
 from statsmodels.tsa.stattools import acf
 from statsmodels.tsa.arima_model import ARIMA
 import numpy as np
+
 def project_arima(addr, train_list_of_med_val, test_list_of_med_val):
     X=train_list_of_med_val[0]+test_list_of_med_val[0]
     df=pd.DataFrame(X, columns=['value'])
@@ -37,7 +38,6 @@ def forecast_accuracy(forecast, actual):
     maxs = np.amax(np.hstack([forecast[:,None], 
                               actual[:,None]]), axis=1)
     minmax = 1 - np.mean(mins/maxs)             # minmax
-    acf1 = acf(fc-test)[1]                      # ACF1
     return({'mape':mape, 'me':me, 'mae': mae, 
-            'mpe': mpe, 'rmse':rmse, 'acf1':acf1, 
+            'mpe': mpe, 'rmse':rmse, 
             'corr':corr, 'minmax':minmax})
