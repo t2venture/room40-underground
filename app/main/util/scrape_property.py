@@ -8,7 +8,7 @@ import logging
 import os
 import matplotlib.pyplot as plt
 from numpy import array
-
+from random import randrange
 
 import numpy as np
 import sklearn
@@ -203,12 +203,6 @@ def return_list_property(data_diff_demog):
           continue
         if not i['building_sq_ft']:
           continue
-        '''
-        if(i['bed_count']<3 or i['bed_count']>3):
-          continue
-        '''
-        if(i['building_sq_ft'] > 2300 or i['building_sq_ft'] < 1700):
-          continue
     
         MajorCity=city
         UsageCode=i['property_use_standardized_code']
@@ -224,6 +218,106 @@ def return_list_property(data_diff_demog):
         "street": Street, "housenumber": HouseNumber, "usage_code": UsageCode}
         List_Property.append(Dict)
   return List_Property
+
+def time_series_query(address_input, city):
+    QI='''query MyQuery {
+    usa_avm(where: {tax_assessor__tax_assessor_id: {_and: {city: {_eq: "'''+city+'''"}, address: {_eq: "'''+address_input+'''"}}}}) {
+    estimated_max_value_amount
+    estimated_min_value_amount
+    estimated_value_amount
+    valuation_date
+    tax_assessor__tax_assessor_id {
+      address
+      fips_code
+      gross_sq_ft
+      city
+    }
+    tax_assessor_id
+    }
+    }'''
+    return QI
+
+def obtain_time_series_dict(Array):
+  Obj_Input="usa_avm"
+  dict_of_ind_houses=dict()
+  ###change this to len(Array) later
+  for i in range(100):
+    ad_input=Array[i]['address']
+    city=Array[i]['majorcity']
+    js_output=make_query(time_series_query(ad_input, city), Obj_Input)
+    dict_of_ind_houses[ad_input]=js_output
+    dict_of_ind_houses[ad_input]=sorted(dict_of_ind_houses[ad_input], key=lambda x:x ['valuation_date'])
+    return dict_of_ind_houses
+
+
+time_period={'2018-01-22':1, '2018-02-22':2, '2018-03-23':3, '2018-04-20':4, '2018-05-25':5, '2018-06-25':6, '2018-07-20':7,
+             '2018-08-20':8, '2018-09-19':9, '2018-10-23':10, '2018-11-20':11, '2018-12-21':12, '2019-06-21':18, '2019-07-25':19,
+             '2019-08-22':20, '2019-09-23':21, '2019-10-22':22, '2019-11-22':23, '2019-12-27':24, '2020-01-22':25, '2020-02-20':26,
+             '2020-03-20':27, '2020-04-24':28, '2020-05-22':29, '2020-06-19':30, '2020-07-24':31, '2020-08-21':32, '2020-09-21':33,
+             '2020-10-23':34, '2020-11-20':35, '2020-12-24':36, '2021-02-09':38, '2021-03-12':39, '2021-04-09':40}
+
+
+def obtain_dict_vals(dict_of_ind_houses):
+  dict_of_values=[]
+  for i in dict_of_ind_houses.keys():
+    if len(dict_of_ind_houses[i]==34):
+      dict_of_values[i]=dict()
+      for j in dict_of_ind_houses[i]:
+        dict_of_values[i][time_period[j['valuation_date']]]=[j['estimated_max_value_amount'],j['estimated_min_value_amount'],j['estimated_value_amount']]
+  for i in dict_of_values.keys():
+    dict_of_values[i][13]=[(dict_of_values[i][12][0]*5+dict_of_values[i][18][0]*1)/6, (dict_of_values[i][12][1]*5+dict_of_values[i][18][1]*1)/6, (dict_of_values[i][12][2]*5+dict_of_values[i][18][2]*1)/6]
+    dict_of_values[i][14]=[(dict_of_values[i][12][0]*4+dict_of_values[i][18][0]*2)/6, (dict_of_values[i][12][1]*4+dict_of_values[i][18][1]*2)/6, (dict_of_values[i][12][2]*4+dict_of_values[i][18][2]*2)/6]
+    dict_of_values[i][15]=[(dict_of_values[i][12][0]*3+dict_of_values[i][18][0]*3)/6, (dict_of_values[i][12][1]*3+dict_of_values[i][18][1]*3)/6, (dict_of_values[i][12][2]*3+dict_of_values[i][18][2]*3)/6]
+    dict_of_values[i][16]=[(dict_of_values[i][12][0]*2+dict_of_values[i][18][0]*4)/6, (dict_of_values[i][12][1]*2+dict_of_values[i][18][1]*4)/6, (dict_of_values[i][12][2]*2+dict_of_values[i][18][2]*4)/6]
+    dict_of_values[i][17]=[(dict_of_values[i][12][0]*1+dict_of_values[i][18][0]*5)/6, (dict_of_values[i][12][1]*1+dict_of_values[i][18][1]*5)/6, (dict_of_values[i][12][2]*1+dict_of_values[i][18][2]*5)/6]
+    dict_of_values[i][37]=[(dict_of_values[i][36][0]+dict_of_values[i][38][0])/2, (dict_of_values[i][36][1]+dict_of_values[i][38][1])/2, (dict_of_values[i][36][2]+dict_of_values[i][38][2])/2]
+  return dict_of_values
+
+def obtain_train_test_lists(dict_of_values):
+  train_list_of_med_val=dict()
+  train_list_of_max_val=dict()
+  train_list_of_min_val=dict()
+  for i in dict_of_values.keys():
+    med=[]
+    min=[]
+    max=[]
+    for j in range(1,25):
+      med.append(dict_of_values[i][j][2])
+      min.append(dict_of_values[i][j][1])
+      max.append(dict_of_values[i][j][0])
+    train_list_of_med_val[i]=med
+    train_list_of_max_val[i]=max
+    train_list_of_min_val[i]=min
+
+  test_list_of_med_val=dict()
+  test_list_of_max_val=dict()
+  test_list_of_min_val=dict()
+  for i in dict_of_values.keys():
+    med=[]
+    min=[]
+    max=[]
+    for j in range(26,41):
+      med.append(dict_of_values[i][j][2])
+      min.append(dict_of_values[i][j][1])
+      max.append(dict_of_values[i][j][0])
+    test_list_of_med_val[i]=med
+    test_list_of_max_val[i]=max
+    test_list_of_min_val[i]=min
+  return train_list_of_med_val, train_list_of_max_val, train_list_of_min_val, test_list_of_med_val, test_list_of_max_val, test_list_of_min_val
+
+def obtain_autocorrs(train_list_of_med_val, test_list_of_med_val):
+  autocorr_dict=dict()
+  for addr in train_list_of_med_val.keys():
+    l1=pd.DataFrame(train_list_of_med_val[addr])
+    l2=pd.DataFrame(test_list_of_med_val[addr])
+    l=pd.concat([l1,l2])
+    corr_dict=dict()
+    for j in range(13):
+      ans=l[0].autocorr(lag=j)
+      corr_dict[j]=ans
+    autocorr_dict[addr]=corr_dict
+  return autocorr_dict
+
 
 def strip_housenumber_street(addr):
   if not addr:
@@ -359,30 +453,5 @@ def get_household_stats(i):
   hh = {1990: hh_1990, 2000: hh_2000, 2021: hh_2021, 2026: hh_2026, 2031: hh_2031}
 
   return hh
-'''
-def summarize_demographics():
-  total_pop = 0
-  vars = dict()
-  #####
-  for j in dict_of_geog_demog_year.keys():
-    data = dict_of_geog_demog_year[j]
-    for i in data:
-      if i['year']==2021:
-        curr_county_pop, curr_avg_age = get_total_pop(i)
 
-        age_stats = get_age_stats(i, curr_avg_age)
 
-        pop_stats = get_pop_stats(i, curr_county_pop)
-
-        hh_stats = get_household_stats(i)
-
-        race_stats = get_race_stats(i, pop_stats[1990], pop_stats[2000], pop_stats[2021], pop_stats[2026])
-
-        education_stats = get_education_stats(i)
-
-        income = i['median_household_income']
-
-        total_pop = total_pop + curr_county_pop
-
-        vars[j] = {'pop': curr_county_pop, 'age': age_stats, 'pop': pop_stats, 'hh': hh_stats, 'race': race_stats, 'education': education_stats, 'income': income}
-'''   

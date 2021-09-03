@@ -12,13 +12,15 @@ _portfolio = PortfolioDto.portfolio
 class PortfolioList(Resource):
     @api.doc('list_of_portfolios for a portfolio_model')
     @api.param('property_id', 'property id to search portfolios for')
+    @api.param('team_id', 'team_id to search portfolios for')
     @api.marshal_list_with(_portfolio, envelope='data')
     def get(self):
         """List all portfolios"""
         parser = reqparse.RequestParser()
         parser.add_argument("property_id", type=int)
+        parser.add_argument("team_id", type=int)
         args = parser.parse_args()
-        return get_all_portfolios(args['property_id'])
+        return get_all_portfolios(args['property_id'], args['team_id'])
 
     @api.response(201, 'portfolio successfully created.')
     @api.doc('create a new portfolio')

@@ -6,7 +6,7 @@ from app.main.model.company import Company
 from app.main.model.user import User
 from app.main.model.user_company import UserCompany
 from app.main.model.property import Property
-from app.main.util.scrape_property import return_list_property, return_raw_propertys
+from app.main.util.scrape_property import return_list_property, return_raw_propertys, obtain_time_series_dict, obtain_dict_vals
 import csv
 users_csv = 'app/main/util/data_files/users.csv'
 companies_csv = 'app/main/util/data_files/companies.csv'
@@ -62,7 +62,6 @@ def add_propertys():
         latitude=row['latitude'], longitude=row['longitude'], street=row['street'], housenumber=row['housenumber'],
         usage_code=row['usage_code'], bd_rms=row["bed_count"], bt_rms=row["bath_count"])
         db.session.add(new_property)
-        
 def upload_data():
     print("uploading users")
     add_users()
