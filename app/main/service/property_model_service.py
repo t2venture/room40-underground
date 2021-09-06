@@ -13,6 +13,10 @@ def save_new_property_model(data):
             project_fiveyear=data['project_fiveyear'],
             threemonth_corr=data['threemonth_corr'],
             sixmonth_corr=data['sixmonth_corr'],
+            lower_series=data['lower_series'],
+            median_series=data['median_series'],
+            upper_series=data['upper_series'],
+            model_metrics=data['model_metrics'],
         )
         save_changes(new_property_model)
         response_object = {
@@ -40,6 +44,10 @@ def update_property_model(property_model_id, data):
         property_model.project_fiveyear=data['project_fiveyear'],
         property_model.threemonth_corr=data['threemonth_corr'],
         property_model.sixmonth_corr=data['sixmonth_corr'],
+        property_model.lower_series=data['lower_series'],
+        property_model.median_series=data['median_series'],
+        property_model.upper_series=data['upper_series'],
+        property_model.model_metrics=data['model_metrics'],
         save_changes(property_model)
 
         response_object = {
@@ -79,6 +87,9 @@ def get_all_property_models():
 
 def get_a_property_model(property_model_id):
     return PropertyModel.query.filter_by(id=property_model_id).first()
+
+def get_a_property_model_by_property_id(property_id):
+    return PropertyModel.query.filter_by(property_id=property_id).first()
 
 def save_changes(data):
     db.session.add(data)

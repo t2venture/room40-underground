@@ -78,7 +78,11 @@ class PropertyModelDto:
         'project_twoyear': fields.String(required=True, description='project_twoyear'),
         'project_fiveyear': fields.String(required=True, description='project_fiveyear'),
         'threemonth_corr': fields.String(required=True, description='seasonal trend for 3 months'),
-        'sixmonth_corr': fields.String(required=True, description='seasonal trend for 6 months')
+        'sixmonth_corr': fields.String(required=True, description='seasonal trend for 6 months'),
+        'lower_series': fields.String(required=False, description='lower series'),
+        'median_series': fields.String(required=False, description='median series'),
+        'upper_series': fields.String(required=False, description='upper series'),
+        'model_series': fields.String(required=False, description='model series')
     })
 
 class PortfolioDto:
