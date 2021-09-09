@@ -17,12 +17,22 @@ from .main.controller.team_controller import api as team_ns
 from .main.controller.document_controller import api as document_ns
 
 blueprint = Blueprint('api', __name__)
-
+#STUFF LUKE ADDED
+authorizations = {
+    'Basic Auth': {
+        'type': 'basic',
+        'in': 'header',
+        'name': 'Authorization'
+    },
+}
+##HERE
 api = Api(blueprint,
           title='Lasso Real Estate',
           version='1.0',
           description='The development environment for endpoints for the Lasso Real Estate App.',
           contact='luke@fromstandard.com',
+          security='Basic Auth',
+          authorizations=authorizations
           )
 
 api.add_namespace(user_ns, path="/user")
