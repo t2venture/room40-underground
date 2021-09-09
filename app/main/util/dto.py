@@ -21,6 +21,20 @@ class CompanyDto:
         'pitchbook': fields.String(description='company pitchbook profile')
     })
 
+class DocumentDto:
+    api = Namespace('document', description='document related operations')
+    document = api.model('document', {
+        'id': fields.String(required=False, description='document id'),
+        'title': fields.String(required=True, description='document title'),
+        'contents': fields.String(required=True, description='document controls'),
+        'created_by': fields.String(required=False, description='id of who created the document'),
+        'modified_by': fields.String(required=False, description='id of who modified the document'),
+        'created_time': fields.String(required=False, description='when the document was created'),
+        'modified_time': fields.String(required=False, description='when the document was modified'),
+        'is_deleted': fields.String(required=True, description='is the document deleted'),
+        'is_active': fields.String(required=True, description = 'is the document active or not')
+    })
+
 class UserCompanyDto:
     api = Namespace('user company', description='user_company related operations')
     user_company = api.model('user_company', {

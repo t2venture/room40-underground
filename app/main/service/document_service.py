@@ -9,11 +9,10 @@ def save_new_document(data):
         new_document = Document(
             title=data['title'],
 	    contents=data['contents'],
-	    created_by=0,
-	    modified_by=0,
-	    #UPDATE THIS
-	    created_date=datetime.datetime.now(),
-	    modified_date=datetime.datetime.now(),
+	    created_by=data['login_user_id'],
+	    modified_by=data['login_user_id'],
+	    created_date=data['action_time'],
+	    modified_date=data['action_time'],
 	    is_deleted=False,
 	    is_active=True
         )
@@ -33,18 +32,14 @@ def save_new_document(data):
         return response_object, 401
 
 def update_document(document_id, data):
-
     try:
-        property = get_a_document(document_id)
-
-        property.title=data['title'],
-        property.contents=data['contents'],
-        property.modified_by=0,
-	property.modified_time=datetime.datetime.now(),
-	property.is_active=data['is_active'],
-	#CHANGE THIS
-        save_changes(property)
-
+        document = get_a_document(document_id)
+        document.title=data['title'],
+        document.contents=data['contents'],
+        document.modified_by=data['login_user_id'],
+        document.modified_time=data['action_time'],
+        document.is_active=data['is_active'],
+        save_changes(document)
         response_object = {
                     'status': 'success',
                     'message': 'Successfully registered.',
@@ -60,9 +55,13 @@ def update_document(document_id, data):
         return response_object, 401
 
 
-def delete_a_document(document_id):
+def delete_a_document(document_id, data):
     try:
-        Document.query.filter_by(id=document_id).delete()
+        del_documents=Document.query.filter_by(id=document_id).all()
+        for document in del_documents:
+            document.is_deleted=True
+            document.modified_by=data['login_user_id'],
+            document.modified_time=data['action_time'],
         db.session.commit()
         response_object = {
                     'status': 'success',
@@ -80,11 +79,15 @@ def delete_a_document(document_id):
 
 
 def get_all_documents():
-    documents=Document.query
+    documents=Document.query.filter_by(is_deleted=False).filter_by(is_active=True)
+    return documents.all()
+
+def get_all_deleted_documents():
+    documents=Document.query.filter_by(is_deleted=True)
     return documents.all()
 
 def get_a_document(document_id):
-    return Document.query.filter_by(id=document_id).first()
+    return Document.query.filter_by(id=document_id).filter_by(is_deleted=False).filter_by(is_active=True).first()
 
 def save_changes(data):
     db.session.add(data)
