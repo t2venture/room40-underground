@@ -19,11 +19,11 @@ from .main.controller.document_controller import api as document_ns
 blueprint = Blueprint('api', __name__)
 #STUFF LUKE ADDED
 authorizations = {
-    'Basic Auth': {
-        'type': 'basic',
+    'apiKey': {
+        'type' : 'apiKey',
         'in': 'header',
         'name': 'Authorization'
-    },
+    }
 }
 ##HERE
 api = Api(blueprint,
@@ -31,7 +31,7 @@ api = Api(blueprint,
           version='1.0',
           description='The development environment for endpoints for the Lasso Real Estate App.',
           contact='luke@fromstandard.com',
-          security='Basic Auth',
+          security='apiKey',
           authorizations=authorizations
           )
 
