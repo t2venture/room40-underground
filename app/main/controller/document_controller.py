@@ -14,13 +14,18 @@ _document = DocumentDto.document
 class DocumentList(Resource):
     @api.doc('list_of_documents for a document')
     @api.marshal_list_with(_document, envelope='data')
+    @api.param("title", "title of the document")
+    @api.param("is_deleted", "whether the document is deleted")
+    @api.param("is_active", "whether the document is active")
     @token_required
     def get(self):
 	    '''List all documents'''
 	    parser = reqparse.RequestParser()
 	    parser.add_argument("title", type=str)
+	    parser.add_argument("is_deleted", type=bool)
+	    parser.add_argument("is_active", type=bool)
 	    args = parser.parse_args()
-	    return get_all_documents(args["title"])
+	    return get_all_documents(args["title"], args["is_deleted"], args["is_active"])
 
     @api.response(201, 'Document successfully created.')
     @api.doc('create a new document')

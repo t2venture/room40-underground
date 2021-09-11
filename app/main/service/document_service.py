@@ -78,15 +78,19 @@ def delete_a_document(document_id, data):
         return response_object, 401
 
 
-def get_all_documents(query_title=""):
-    documents=Document.query.filter_by(is_deleted=False).filter_by(is_active=True)
+def get_all_documents(query_title="", is_deleted=False, is_active=True):
+    documents=Document.query.filter_by(is_deleted=is_deleted).filter_by(is_active=is_active)
     if query_title and query_title!="":
+        query_title='%'+query_title+'%'
         document=documents.filter(Document.title.like(query_title))
     return documents.all()
 
 def get_all_deleted_documents():
     documents=Document.query.filter_by(is_deleted=True)
     return documents.all()
+
+def get_a_deleted_document(document_id):
+    return Document.query.filter_by(id=document_id).filter_by(is_deleted=True).first()
 
 def get_a_document(document_id):
     return Document.query.filter_by(id=document_id).filter_by(is_deleted=False).filter_by(is_active=True).first()

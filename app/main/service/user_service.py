@@ -123,8 +123,8 @@ def delete_a_user(user_id, data):
         }
         return response_object, 401
 
-def get_all_users(company_id="", team_id=""):
-    users=User.query
+def get_all_users(company_id="", team_id="", is_deleted=False, is_active=True):
+    users=User.query.filter_by(is_deleted=is_deleted, is_active=is_active)
 
     if company_id and company_id != "":
         user_ids = [uc.user_id for uc in get_users_from_company(company_id)]
@@ -137,8 +137,14 @@ def get_all_users(company_id="", team_id=""):
 
 
 def get_a_user(user_id):
-    return User.query.filter_by(id=user_id).first()
+    return User.query.filter_by(id=user_id).filter_by(is_deleted=False).filter_by(is_active=True).first()
 
+def get_all_deleted_users():
+    users=User.query.filter_by(is_deleted=True)
+    return users.all()
+
+def get_a_deleted_user(user_id):
+    return User.query.filter_by(id=user_id).filter_by(is_deleted=True).first()
 
 def save_changes(data):
     db.session.add(data)

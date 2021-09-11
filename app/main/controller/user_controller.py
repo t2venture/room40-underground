@@ -16,6 +16,8 @@ class UserList(Resource):
     @api.doc('list_of_registered_users')
     @api.param('company_id', 'company to search for users in')
     @api.param('team_id', 'team to search for users in')
+    @api.param('is_deleted', 'whether the user is deleted')
+    @api.param('is_active', 'whether the user is active')
     @api.marshal_list_with(_user, envelope='data')
     @admin_token_required
     def get(self):
@@ -23,8 +25,10 @@ class UserList(Resource):
         parser = reqparse.RequestParser()
         parser.add_argument("company_id", type=int)
         parser.add_argument("team_id", type=int)
+        parser.add_argument("is_deleted", type=bool)
+        parser.add_argument("is_active", type=bool)
         args = parser.parse_args()
-        return get_all_users(args['company_id'], args['team_id'])
+        return get_all_users(args['company_id'], args['team_id'], args['is_deleted'], args['is_active'])
 
     @api.response(201, 'User successfully created.')
     @api.doc('create a new user')
