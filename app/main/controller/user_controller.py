@@ -19,7 +19,7 @@ class UserList(Resource):
     @api.param('is_deleted', 'whether the user is deleted')
     @api.param('is_active', 'whether the user is active')
     @api.marshal_list_with(_user, envelope='data')
-    @admin_token_required
+    @token_required
     def get(self):
         """List all registered users"""
         parser = reqparse.RequestParser()
@@ -28,6 +28,10 @@ class UserList(Resource):
         parser.add_argument("is_deleted", type=bool)
         parser.add_argument("is_active", type=bool)
         args = parser.parse_args()
+        logined, status = Auth.get_logged_in_user(request)
+        token=logined.get('data')
+        if token['admin']==False:
+            return get_a_user(token['user_id'])
         return get_all_users(args['company_id'], args['team_id'], args['is_deleted'], args['is_active'])
 
     @api.response(201, 'User successfully created.')
@@ -79,7 +83,7 @@ class User(Resource):
         token=logined.get('data')
         if not token:
             return logined, status
-        if token['admin']==False and user_id!=token['user_id']:
+        if token['admin']==False and user_id and user_id!=token['user_id']:
             response_object = {
                 'status': 'fail',
                 'message': 'You cannot update this information.'
