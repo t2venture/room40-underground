@@ -68,6 +68,16 @@ def update_user(user_id, data):
         is_active=data['is_active']
     try:
         user = get_a_user(user_id)
+        if 'email' not in data.keys():
+            data['email']=user.email
+        if 'username' not in data.keys():
+            data['username']=user.username
+        if 'password' not in data.keys():
+            data['password']=user.password
+        if 'first_name' not in data.keys():
+            data['first_name']=user.first_name
+        if 'last_name' not in data.keys():
+            data['last_name']=user.last_name
         user.email=data['email'],
         user.username=data['username'],
         user.password=data['password'],

@@ -32,8 +32,15 @@ def save_new_document(data):
         return response_object, 401
 
 def update_document(document_id, data):
+    
     try:
         document = get_a_document(document_id)
+        if 'title' not in data.keys():
+            data['title']=document.title
+        if 'contents' not in data.keys():
+            data['contents']=document.contents
+        if 'is_active' not in data.keys():
+            data['is_active']=document.is_active
         document.title=data['title'],
         document.contents=data['contents'],
         document.modified_by=data['login_user_id'],

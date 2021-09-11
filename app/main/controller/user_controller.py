@@ -89,6 +89,8 @@ class User(Resource):
                 'message': 'You cannot update this information.'
             }
             return response_object, 401
+        if token['admin']==False:
+            del data['password']
         login_user={"login_user_id": token['user_id']}
         data.update(login_user)
         return update_user(user_id, data)
