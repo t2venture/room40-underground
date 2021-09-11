@@ -10,26 +10,33 @@ from app.main.model.property import Property
 from app.main.util.scrape_property import obtain_autocorrs, obtain_train_test_lists, return_list_property, return_raw_propertys, obtain_time_series_dict, obtain_dict_vals, obtain_train_test_lists
 from app.main.util.project_values import project_arima
 from app.main.service.property_service import get_all_propertys
-
-
+import uuid
+import datetime
 import csv
 users_csv = 'app/main/util/data_files/users.csv'
 companies_csv = 'app/main/util/data_files/companies.csv'
 user_companies_csv = 'app/main/util/data_files/user_companies.csv'
 
 def add_users():
-    with open(users_csv, mode='r') as csv_file:
-        csv_reader = csv.DictReader(csv_file)
-        for row in csv_reader:
-            new_user = User(
-                email=row["email"],
-                password=row["password"],
-                linkedin_url=row["linkedin_url"],
-                twitter_url=row["twitter_url"],
-                registered_on=datetime.datetime.utcnow(),
-            )
-            db.session.add(new_user)
-    
+    new_user=User(email="angikar.ghosal@gmail.com",
+    first_name="Angikar",
+    last_name="Ghosal",
+    profile_url=None,
+    username="angikarghosal",
+    admin=True,
+    password="password",
+    is_deleted=False,
+    is_active=True,
+    public_id=str(uuid.uuid4()),
+    registered_on=datetime.datetime.utcnow(),
+    linkedin_url=None,
+    twitter_url=None,
+    created_by=1,
+    modified_by=1,
+    created_time=datetime.datetime.utcnow(),
+    modified_time=datetime.datetime.utcnow(),
+    )
+    db.session.add(new_user)   
 
 def add_companies(): 
     with open(companies_csv, mode='r') as csv_file:
@@ -86,6 +93,7 @@ def upload_data():
     print("uploading users")
     add_users()
     db.session.flush()
+    '''
     print("uploading companies")
     add_companies()
     db.session.flush()
@@ -93,7 +101,9 @@ def upload_data():
     add_user_companies()
     db.session.flush()
     print("uploading propertys")
-    add_propertys()
+    ##JUST FOR TESTING
+    #add_propertys()
+    '''
     print("done")
     db.session.commit()
 

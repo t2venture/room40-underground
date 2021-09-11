@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: 6e6add7a3c69
+Revision ID: 762e64ae28e1
 Revises: 
-Create Date: 2021-09-11 13:42:55.091604
+Create Date: 2021-09-12 01:57:11.125030
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '6e6add7a3c69'
+revision = '762e64ae28e1'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -69,14 +69,23 @@ def upgrade():
     )
     op.create_table('user',
     sa.Column('id', sa.Integer(), autoincrement=True, nullable=False),
+    sa.Column('first_name', sa.String(length=255), nullable=False),
+    sa.Column('last_name', sa.String(length=255), nullable=False),
+    sa.Column('profile_url', sa.String(length=511), nullable=True),
     sa.Column('email', sa.String(length=255), nullable=False),
     sa.Column('registered_on', sa.DateTime(), nullable=False),
     sa.Column('admin', sa.Boolean(), nullable=False),
     sa.Column('public_id', sa.String(length=100), nullable=True),
     sa.Column('username', sa.String(length=50), nullable=True),
     sa.Column('password_hash', sa.String(length=100), nullable=True),
-    sa.Column('linkedin_url', sa.String(length=255), nullable=False),
-    sa.Column('twitter_url', sa.String(length=255), nullable=False),
+    sa.Column('linkedin_url', sa.String(length=255), nullable=True),
+    sa.Column('twitter_url', sa.String(length=255), nullable=True),
+    sa.Column('created_by', sa.Integer(), nullable=False),
+    sa.Column('modified_by', sa.Integer(), nullable=False),
+    sa.Column('created_time', sa.DateTime(), nullable=False),
+    sa.Column('modified_time', sa.DateTime(), nullable=False),
+    sa.Column('is_deleted', sa.Boolean(), nullable=False),
+    sa.Column('is_active', sa.Boolean(), nullable=False),
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('email'),
     sa.UniqueConstraint('public_id'),
@@ -90,8 +99,8 @@ def upgrade():
     sa.Column('modified_by', sa.Integer(), nullable=True),
     sa.Column('created_time', sa.DateTime(), nullable=False),
     sa.Column('modified_time', sa.DateTime(), nullable=False),
-    sa.Column('is_deleted', sa.Integer(), nullable=False),
-    sa.Column('is_active', sa.Integer(), nullable=False),
+    sa.Column('is_deleted', sa.Boolean(), nullable=False),
+    sa.Column('is_active', sa.Boolean(), nullable=False),
     sa.ForeignKeyConstraint(['created_by'], ['user.id'], ),
     sa.ForeignKeyConstraint(['modified_by'], ['user.id'], ),
     sa.PrimaryKeyConstraint('id')

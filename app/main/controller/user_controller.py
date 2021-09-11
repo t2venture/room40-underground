@@ -3,7 +3,10 @@ from flask_restplus import Resource, reqparse
 
 from ..util.dto import UserDto
 from ..service.user_service import save_new_user, get_all_users, get_a_user, update_user, delete_a_user
-
+from ..service.auth_helper import Auth
+import datetime
+import json
+from ..util.decorator import token_required, admin_token_required
 api = UserDto.api
 _user = UserDto.user
 
@@ -14,6 +17,7 @@ class UserList(Resource):
     @api.param('company_id', 'company to search for users in')
     @api.param('team_id', 'team to search for users in')
     @api.marshal_list_with(_user, envelope='data')
+    @admin_token_required
     def get(self):
         """List all registered users"""
         parser = reqparse.RequestParser()
@@ -28,6 +32,8 @@ class UserList(Resource):
     def post(self):
         """Creates a new User """
         data = request.json
+        action_time={"action_time": datetime.datetime.utcnow()}
+        data.update(action_time)	
         return save_new_user(data=data)
 
 
@@ -37,9 +43,20 @@ class UserList(Resource):
 class User(Resource):
     @api.doc('get a user')
     @api.marshal_with(_user)
+    @token_required
     def get(self, user_id):
         """get a user given its identifier"""
         user = get_a_user(user_id)
+        logined, status = Auth.get_logged_in_user(request)
+        token=logined.get('data')
+        if not token:
+            return logined, status
+        if token['admin']==False and user_id!=token['user_id']:
+            response_object = {
+                'status': 'fail',
+                'message': 'You cannot search for this information.'
+            }
+            return response_object, 401
         if not user:
             api.abort(404)
         else:
@@ -48,13 +65,44 @@ class User(Resource):
     @api.response(201, 'user successfully updated.')
     @api.doc('update a user')
     @api.expect(_user, validate=True)
+    @token_required
     def put(self, user_id):
         """Update a user """
         data = request.json
+        action_time={"action_time": datetime.datetime.utcnow()}
+        data.update(action_time)
+        logined, status = Auth.get_logged_in_user(request)
+        token=logined.get('data')
+        if not token:
+            return logined, status
+        if token['admin']==False and user_id!=token['user_id']:
+            response_object = {
+                'status': 'fail',
+                'message': 'You cannot update this information.'
+            }
+            return response_object, 401
+        login_user={"login_user_id": token['user_id']}
+        data.update(login_user)
         return update_user(user_id, data)
 
     @api.response(201, 'user successfully deleted.')
     @api.doc('delete a user')
+    @token_required
     def delete(self, user_id):
         """Delete a user """
-        return delete_a_user(user_id)
+        logined, status = Auth.get_logged_in_user(request)
+        token=logined.get('data')
+        if not token:
+            return logined, status
+        if token['admin']==False and user_id!=token['user_id']:
+            response_object = {
+                'status': 'fail',
+                'message': 'You cannot delete this information.'
+            }
+            return response_object, 401
+        data=dict()
+        login_user={"login_user_id": token["user_id"]}
+        action_time={"action_time": datetime.datetime.now()}
+        data.update(login_user)
+        data.update(action_time)
+        return delete_a_user(user_id, data)

@@ -30,9 +30,7 @@ class DocumentDto:
         'created_by': fields.String(required=False, description='id of who created the document'),
         'modified_by': fields.String(required=False, description='id of who modified the document'),
         'created_time': fields.String(required=False, description='when the document was created'),
-        'modified_time': fields.String(required=False, description='when the document was modified'),
-        'is_deleted': fields.String(required=True, description='is the document deleted'),
-        'is_active': fields.String(required=True, description = 'is the document active or not')
+        'modified_time': fields.String(required=False, description='when the document was modified')
     })
 
 class UserCompanyDto:
@@ -56,12 +54,13 @@ class UserDto:
     api = Namespace('user', description='user related operations')
     user = api.model('user', {
         'id': fields.String(required=False, description='user id'),
+        'first_name': fields.String(required=True, description='user first name'),
+        'last_name': fields.String(required=True, description='user last name'),
+        'profile_url': fields.String(required=False, description='img profile url'),
         'email': fields.String(required=True, description='user email address'),
         'username': fields.String(required=True, description='user username'),
-        'password': fields.String(required=True, description='user password'),
-        'public_id': fields.String(description='user Identifier'),
-        'linkedin_url': fields.String(description='user LinkedIn'),
-        'twitter_url': fields.String(description='user Twitter')
+        'linkedin_url': fields.String(required=False, description='user LinkedIn'),
+        'twitter_url': fields.String(required=False, description='user Twitter')
     })
 
 class PropertyDto:

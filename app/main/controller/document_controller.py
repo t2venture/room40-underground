@@ -6,7 +6,7 @@ from ..service.document_service import save_new_document, get_all_documents, get
 from ..service.auth_helper import Auth
 import json
 import datetime
-from ..util.decorator import token_required
+from ..util.decorator import token_required, admin_token_required
 api = DocumentDto.api
 _document = DocumentDto.document
 
@@ -16,13 +16,16 @@ class DocumentList(Resource):
     @api.marshal_list_with(_document, envelope='data')
     @token_required
     def get(self):
-        """List all documents"""
-        return get_all_documents()
+	    '''List all documents'''
+	    parser = reqparse.RequestParser()
+	    parser.add_argument("title", type=str)
+	    args = parser.parse_args()
+	    return get_all_documents(args["title"])
 
     @api.response(201, 'Document successfully created.')
     @api.doc('create a new document')
     @api.expect(_document, validate=True)
-    @token_required
+    @admin_token_required
     def post(self):
 	    """Creates a new Document """
 	    data = request.json
@@ -54,7 +57,7 @@ class Document(Resource):
     @api.response(201, 'document successfully updated.')
     @api.doc('update a document')
     @api.expect(_document, validate=True)
-    @token_required
+    @admin_token_required
     def put(self, document_id):
 	    """Update a document"""
 	    data = request.json
@@ -70,7 +73,7 @@ class Document(Resource):
 
     @api.response(201, 'document successfully deleted.')
     @api.doc('delete a document')
-    @token_required
+    @admin_token_required
     def delete(self, document_id):
 	    """Delete a document"""
 	    logined, status = Auth.get_logged_in_user(request)
