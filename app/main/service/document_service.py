@@ -11,8 +11,8 @@ def save_new_document(data):
 	    contents=data['contents'],
 	    created_by=data['login_user_id'],
 	    modified_by=data['login_user_id'],
-	    created_date=data['action_time'],
-	    modified_date=data['action_time'],
+	    created_time=data['action_time'],
+	    modified_time=data['action_time'],
 	    is_deleted=False,
 	    is_active=True
         )
