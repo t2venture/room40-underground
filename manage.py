@@ -5,7 +5,7 @@ from flask_migrate import Migrate, MigrateCommand
 from flask_script import Manager
 from flask_cors import CORS, cross_origin
 
-from app.main.model import user, company, user_company, property, property_model, portfolio, property_portfolio, document
+from app.main.model import user, property, property_model, portfolio, property_portfolio, document, team, user_team
 from app.main import create_app, db
 from app import blueprint
 from app.main.model import blacklist

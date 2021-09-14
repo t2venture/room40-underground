@@ -5,7 +5,7 @@ from app.main.model.blacklist import BlacklistToken
 from ..config import key
 
 class Rent(db.Model):
-    """ Rent Model for storing company related details """
+    """ Rent Model for storing rent related details """
     __tablename__ = "rent"
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)

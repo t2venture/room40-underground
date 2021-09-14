@@ -3,9 +3,7 @@ import datetime
 
 from app.main import db
 from app.main.model.user import User
-from app.main.model.user_company import UserCompany
 from app.main.model.user_team import UserTeam
-from app.main.service.user_company_service import get_users_from_company
 from app.main.service.user_team_service import get_users_from_team
 def save_new_user(data):
     user = User.query.filter_by(email=data['email']).first()
@@ -21,6 +19,10 @@ def save_new_user(data):
         profile_url=None
     else:
         profile_url=data['profile_url']
+    if 'company_name' not in data.keys():
+        company_name="Independent"
+    else:
+        company_name=data["company_name"]
     if not user:
         new_user = User(
             public_id=str(uuid.uuid4()),
@@ -30,6 +32,7 @@ def save_new_user(data):
             email=data['email'],
             username=data['username'],
             password=data['password'],
+            company_name=company_name,
             registered_on=datetime.datetime.utcnow(),
             linkedin_url=linkedin_url,
             twitter_url=twitter_url,
@@ -62,6 +65,10 @@ def update_user(user_id, data):
         profile_url=None
     else:
         profile_url=data['profile_url']
+    if 'company_name' not in data.keys():
+        company_name="Independent"
+    else:
+        company_name=data["company_name"]
     if 'is_active' not in data.keys():
         is_active=True
     else:
@@ -89,6 +96,7 @@ def update_user(user_id, data):
         user.linkedin_url=linkedin_url,
         user.twitter_url=twitter_url,
         user.is_active=is_active,
+        user.company_name=company_name,
         user.modified_time=data['action_time'],
         user.modified_by=data['login_user']
         save_changes(user)
@@ -115,8 +123,6 @@ def delete_a_user(user_id, data):
             du.modified_by=data['login_user_id'],
             du.modified_time=data['action_time'],
         db.session.commit()
-        UserCompany.query.filter_by(user_id=user_id).delete()
-        db.session.commit()
         UserTeam.query.filter_by(user_id=user_id).delete()
         db.session.commit()
         response_object = {
@@ -133,18 +139,27 @@ def delete_a_user(user_id, data):
         }
         return response_object, 401
 
-def get_all_users(company_id="", team_id="", is_deleted=False, is_active=True):
+def get_all_users(team_id="", is_deleted=False, is_active=True, company_name='', r_id=0):
     users=User.query.filter_by(is_deleted=is_deleted, is_active=is_active)
-
-    if company_id and company_id != "":
-        user_ids = [uc.user_id for uc in get_users_from_company(company_id)]
-        users = users.filter(User.id.in_(user_ids))
-
+    if r_id:
+        usr=get_a_user(r_id)
+        company_name=usr.company_name
     if team_id and team_id!="":
         users_ids=[ut.user_id for ut in get_users_from_team(team_id)]
         users=users.filter(User.id.in_(users_ids))
+    if company_name and company_name!="" and company_name!="Independent":
+        company_name="%"+company_name+"%"
+        users=users.filter(User.company_name.like(company_name))
     return users.all()
 
+def check_same_company(id1, id2):
+    user1=get_a_user(id1)
+    user2=get_a_user(id2)
+    if user1.company_name==user2.company_name:
+        if user1.company_name!="Independent":  
+            return True
+    else:
+        return False
 
 def get_a_user(user_id):
     return User.query.filter_by(id=user_id).filter_by(is_deleted=False).filter_by(is_active=True).first()

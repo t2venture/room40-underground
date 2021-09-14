@@ -13,7 +13,6 @@ def save_new_team(data):
     try:
         new_team = Team(
             name=data['name'],
-            company_id=data['company_id'],
         )
         save_changes(new_team)
         response_object = {
@@ -36,7 +35,6 @@ def update_team(team_id, data):
         team = get_a_team(team_id)
 
         team.name=data['name'],
-        team.company_id=data['company_id'],
 
         save_changes(team)
 

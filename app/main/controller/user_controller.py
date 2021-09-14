@@ -2,7 +2,7 @@ from flask import request
 from flask_restplus import Resource, reqparse
 
 from ..util.dto import UserDto
-from ..service.user_service import save_new_user, get_all_users, get_a_user, update_user, delete_a_user
+from ..service.user_service import save_new_user, get_all_users, get_a_user, update_user, delete_a_user, check_same_company
 from ..service.auth_helper import Auth
 import datetime
 import json
@@ -14,25 +14,28 @@ _user = UserDto.user
 @api.route('/')
 class UserList(Resource):
     @api.doc('list_of_registered_users')
-    @api.param('company_id', 'company to search for users in')
     @api.param('team_id', 'team to search for users in')
     @api.param('is_deleted', 'whether the user is deleted')
     @api.param('is_active', 'whether the user is active')
+    @api.param('company_name', 'name of the company the person belongs to')
     @api.marshal_list_with(_user, envelope='data')
     @token_required
     def get(self):
         """List all registered users"""
         parser = reqparse.RequestParser()
-        parser.add_argument("company_id", type=int)
         parser.add_argument("team_id", type=int)
         parser.add_argument("is_deleted", type=bool)
         parser.add_argument("is_active", type=bool)
+        parser.add_argument("company_name", type=str)
         args = parser.parse_args()
         logined, status = Auth.get_logged_in_user(request)
         token=logined.get('data')
+        r_id=None
+        if args["company_name"]=='Independent':
+            args["company_name"]=''
         if token['admin']==False:
-            return get_a_user(token['user_id'])
-        return get_all_users(args['company_id'], args['team_id'], args['is_deleted'], args['is_active'])
+            r_id=token['user_id']
+        return get_all_users(args['team_id'], args['is_deleted'], args['is_active'], args['company_name'], r_id)
 
     @api.response(201, 'User successfully created.')
     @api.doc('create a new user')
@@ -56,15 +59,18 @@ class User(Resource):
         """get a user given its identifier"""
         user = get_a_user(user_id)
         logined, status = Auth.get_logged_in_user(request)
+        #You can check user information for other IDs (as non admin) if same company.
         token=logined.get('data')
         if not token:
             return logined, status
         if token['admin']==False and user_id!=token['user_id']:
-            response_object = {
+            flag=check_same_company(user_id, token['user_id'])
+            if flag==False:
+                response_object = {
                 'status': 'fail',
                 'message': 'You cannot search for this information.'
-            }
-            return response_object, 401
+                }
+                return response_object, 401
         if not user:
             api.abort(404)
         else:

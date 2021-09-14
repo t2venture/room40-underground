@@ -8,18 +8,6 @@ class AuthDto:
         'password': fields.String(required=True, description='The user password '),
     })
 
-class CompanyDto:
-    api = Namespace('company', description='company related operations')
-    company = api.model('company', {
-        'id': fields.String(required=False, description='company id'),
-        'name': fields.String(required=True, description='company name'),
-        'description': fields.String(required=True, description='company description'),
-        'website': fields.String(description='company website'),
-        'industry': fields.String(description='company industry'),
-        'status': fields.String(description='company status'),
-        'crunchbase': fields.String(description='company crunchbase profile'),
-        'pitchbook': fields.String(description='company pitchbook profile')
-    })
 
 class DocumentDto:
     api = Namespace('document', description='document related operations')
@@ -31,15 +19,6 @@ class DocumentDto:
         'modified_by': fields.String(required=False, description='id of who modified the document'),
         'created_time': fields.String(required=False, description='when the document was created'),
         'modified_time': fields.String(required=False, description='when the document was modified')
-    })
-
-class UserCompanyDto:
-    api = Namespace('user company', description='user_company related operations')
-    user_company = api.model('user_company', {
-        'id': fields.String(required=False, description='user company id'),
-        'user_id': fields.String(required=True, description='user id'),
-        'company_id': fields.String(required=True, description='company id'),
-        'role': fields.String(required=False, description='user password'),
     })
 
 class UserTeamDto:
@@ -60,7 +39,8 @@ class UserDto:
         'email': fields.String(required=True, description='user email address'),
         'username': fields.String(required=True, description='user username'),
         'linkedin_url': fields.String(required=False, description='user LinkedIn'),
-        'twitter_url': fields.String(required=False, description='user Twitter')
+        'twitter_url': fields.String(required=False, description='user Twitter'),
+        'company_name': fields.String(required=False, description="company of the user")
     })
 
 class PropertyDto:
@@ -137,5 +117,4 @@ class TeamDto:
     team=api.model('team', {
         'id': fields.String(required=False, description='id of the team'),
         'name': fields.String(required=True, description='name of the team'),
-        'company_id': fields.String(required=True, description='id of the company the team is part of'),
     })

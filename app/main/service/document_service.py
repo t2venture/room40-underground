@@ -89,7 +89,7 @@ def get_all_documents(query_title="", is_deleted=False, is_active=True):
     documents=Document.query.filter_by(is_deleted=is_deleted).filter_by(is_active=is_active)
     if query_title and query_title!="":
         query_title='%'+query_title+'%'
-        document=documents.filter(Document.title.like(query_title))
+        documents=documents.filter(Document.title.like(query_title))
     return documents.all()
 
 def get_all_deleted_documents():

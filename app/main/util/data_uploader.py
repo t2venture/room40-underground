@@ -3,9 +3,7 @@ import unittest
 import datetime
 
 from app.main import db
-from app.main.model.company import Company
 from app.main.model.user import User
-from app.main.model.user_company import UserCompany
 from app.main.model.property import Property
 from app.main.util.scrape_property import obtain_autocorrs, obtain_train_test_lists, return_list_property, return_raw_propertys, obtain_time_series_dict, obtain_dict_vals, obtain_train_test_lists
 from app.main.util.project_values import project_arima
@@ -31,6 +29,7 @@ def add_users():
     registered_on=datetime.datetime.utcnow(),
     linkedin_url=None,
     twitter_url=None,
+    company_name="Independent",
     created_by=1,
     modified_by=1,
     created_time=datetime.datetime.utcnow(),
@@ -38,32 +37,6 @@ def add_users():
     )
     db.session.add(new_user)   
 
-def add_companies(): 
-    with open(companies_csv, mode='r') as csv_file:
-        csv_reader = csv.DictReader(csv_file)
-        for row in csv_reader:
-            new_company = Company(
-                name=row["name"],
-                description=row["description"],
-                website=row["website"],
-                industry=row["industry"],
-                status=row["status"],
-                crunchbase=row["crunchbase"],
-                pitchbook=row["pitchbook"]
-            )
-            db.session.add(new_company)
-
-
-def add_user_companies():
-    with open(user_companies_csv, mode='r') as csv_file:
-        csv_reader = csv.DictReader(csv_file)
-        for row in csv_reader:
-            new_user_company = UserCompany(
-                user_id=row["user_id"],
-                company_id=row["company_id"],
-                role=row["role"]
-            )
-            db.session.add(new_user_company)
 
 
 def add_propertys():
