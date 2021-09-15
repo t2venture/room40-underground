@@ -38,7 +38,7 @@ def add_users():
     db.session.add(new_user)   
 
 
-
+#NEED TO REWRITE THIS USING UPDATED SCHEMA
 def add_propertys():
     List_Property=return_list_property(return_raw_propertys())
     dict_of_values=obtain_dict_vals(obtain_time_series_dict(List_Property))

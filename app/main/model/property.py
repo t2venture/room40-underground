@@ -46,4 +46,4 @@ class Property(db.Model):
     created_time=db.Column(db.DateTime, unique=False, nullable=False)
     modified_time=db.Column(db.DateTime, unique=False, nullable=False)
     is_deleted=db.Column(db.Boolean, unique=False, nullable=False)
-	is_active=db.Column(db.Boolean, unique=False, nullable=False)
+    is_active=db.Column(db.Boolean, unique=False, nullable=False)

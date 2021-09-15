@@ -60,6 +60,23 @@ class PropertyDto:
         'usage_code': fields.String(required=False, description='usage code'),
         'bd_rms': fields.String(required=False, description='number of bedrooms'),
         'bt_rms': fields.String(required=False, description='number of bathrooms'),
+        'zipcode': fields.String(required=True, description='zipcode of the house'),
+        'photos': fields.String(required=True, description='photos of the house - webpage links'),
+        'market_price': fields.String(required=True, description='market price'),
+        'listed': fields.String(required=True, description='whether it is listed or not'),
+        'ann_mortgage_cost': fields.String(required=True, description='annual mortgage cost'),
+        'estimated_rent': fields.String(required=True, description='estimated rent'),
+        'cap_rate': fields.String(required=True, description='cap rate'),
+        'yield_rate': fields.String(required=True, description='yield rate'),
+        'lasso_score': fields.String(required=True, description='lasso score'),
+        'lasso_property': fields.String(required=True, description='lasso property subscore'),
+        'lasso_economics': fields.String(required=True, description='lasso economics subscore'),
+        'lasso_location': fields.String(required=True, description='lasso location subscore'),
+        'lasso_macro': fields.String(required=True, description='lasso macro subscore'),
+        'hoa_fee': fields.String(required=True, description='hoa fee'),
+        'hoa_rent': fields.String(required=True, description='hoa_rent'),
+        'est_property_tax': fields.String(required=True, description='estimated property tax'),
+        'est_insurance': fields.String(required=True, description='estimated insurance')
     })
 
 class PropertyModelDto:
