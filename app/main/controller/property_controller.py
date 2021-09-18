@@ -29,6 +29,8 @@ class PropertyList(Resource):
     @api.param('max_lasso_score', 'maximum lasso score')
     @api.param('min_price', 'minimum price')
     @api.param('max_price', 'maximum price')
+    @api.param('bds', 'possible bedroom counts, comma separated')
+    @api.param('bths', 'possible bathroom counts, comma separated')
     @api.marshal_list_with(_property, envelope='data')
     @token_required
     def get(self):
@@ -50,9 +52,12 @@ class PropertyList(Resource):
         parser.add_argument('max_lasso_score', type=float)
         parser.add_argument('min_price', type=int)
         parser.add_argument('max_price', type=int)
+        parser.add_argument('bds', type=str)
+        parser.add_argument('bths', type=str)
         args = parser.parse_args()
         return get_all_propertys(args['is_deleted'], args['is_active'], args['portfolio_id'], args['address'], args['street'], args['housenumber'], args["min_area"], args["max_area"],
-        args['north'], args['south'], args['east'], args['west'], args['min_lasso_score'], args['max_lasso_score'], args['min_price'], args['max_price'])
+        args['north'], args['south'], args['east'], args['west'], args['min_lasso_score'], args['max_lasso_score'], args['min_price'], args['max_price'],
+        args['bds'], args['bths'])
 
     @api.response(201, 'property successfully created.')
     @api.doc('create a new property')
@@ -66,7 +71,7 @@ class PropertyList(Resource):
         if not token:
             return logined, status
         login_user={"login_user_id": token['user_id']}
-        action_time={"action_time": datetime.datetime.now()}
+        action_time={"action_time": datetime.datetime.utcnow()}
         data.update(login_user)
         data.update(action_time)	  
         return save_new_property(data=data)
@@ -93,6 +98,14 @@ class Property(Resource):
     def put(self, property_id):
         """Update a property """
         data = request.json
+        logined, status = Auth.get_logged_in_user(request)
+        token=logined.get('data')
+        if not token:
+            return logined, status
+        login_user={"login_user_id": token['user_id']}
+        action_time={"action_time": datetime.datetime.utcnow()}
+        data.update(login_user)
+        data.update(action_time)	
         return update_property(property_id, data)
 
     @api.response(201, 'property successfully deleted.')
@@ -100,4 +113,13 @@ class Property(Resource):
     @admin_token_required
     def delete(self, property_id):
         """Delete a property """
+        logined, status = Auth.get_logged_in_user(request)
+        token=logined.get('data')
+        if not token:
+            return logined, status
+        data=dict()
+        login_user={"login_user_id": token['user_id']}
+        action_time={"action_time": datetime.datetime.utcnow()}
+        data.update(login_user)
+        data.update(action_time)	
         return delete_a_property(property_id)

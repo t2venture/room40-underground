@@ -118,7 +118,7 @@ class User(Resource):
             return response_object, 401
         data=dict()
         login_user={"login_user_id": token["user_id"]}
-        action_time={"action_time": datetime.datetime.now()}
+        action_time={"action_time": datetime.datetime.utcnow()}
         data.update(login_user)
         data.update(action_time)
         return delete_a_user(user_id, data)

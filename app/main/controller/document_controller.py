@@ -39,7 +39,7 @@ class DocumentList(Resource):
 	    if not token:
 		    return logined, status
 	    login_user={"login_user_id": token['user_id']}
-	    action_time={"action_time": datetime.datetime.now()}
+	    action_time={"action_time": datetime.datetime.utcnow()}
 	    data.update(login_user)
 	    data.update(action_time)	    
 	    return save_new_document(data=data)
@@ -71,7 +71,7 @@ class Document(Resource):
 	    if not token:
 		    return logined, status
 	    login_user={"login_user_id": token['user_id']}
-	    action_time={"action_time": datetime.datetime.now()}
+	    action_time={"action_time": datetime.datetime.utcnow()}
 	    data.update(login_user)
 	    data.update(action_time)
 	    return update_document(document_id, data)
@@ -87,7 +87,7 @@ class Document(Resource):
 		    return logined, status
 	    data=dict()
 	    login_user={"login_user_id": token["user_id"]}
-	    action_time={"action_time": datetime.datetime.now()}
+	    action_time={"action_time": datetime.datetime.utcnow()}
 	    data.update(login_user)
 	    data.update(action_time)
 	    return delete_a_document(document_id, data)

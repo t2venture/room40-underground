@@ -145,7 +145,7 @@ def delete_a_property(property_id, data):
         }
         return response_object, 401
 
-def get_all_propertys(is_deleted=False, is_active=True, portfolio_id="", address="", street="", housenumber="", min_area=0, max_area=999999, north=89.99, south=-89.99, east=179.99, west=-179.99, min_lasso_score=0, max_lasso_score=100, min_price=0, max_price=9999999):
+def get_all_propertys(is_deleted=False, is_active=True, portfolio_id="", address="", street="", housenumber="", min_area=0, max_area=999999, north=89.99, south=-89.99, east=179.99, west=-179.99, min_lasso_score=0, max_lasso_score=100, min_price=0, max_price=9999999, bds="", bths=""):
     propertys=Property.query.filter_by(is_deleted=is_deleted, is_active=is_active)
     if portfolio_id and portfolio_id!="":
         property_ids=[pt.property_id for pt in get_propertys_from_portfolio(portfolio_id)]
@@ -176,6 +176,14 @@ def get_all_propertys(is_deleted=False, is_active=True, portfolio_id="", address
         propertys=propertys.filter(Property.market_price>=min_price)
     if max_price and max_price!=9999999:
         propertys=propertys.filter(Property.market_price<=max_price)
+    if bds and bds!="":
+        bdlist = [int(x.strip()) for x in bds.split(',') if x.strip().isdigit()]
+        for b in bdlist:
+            propertys=propertys.filter(Property.bd_rms==b)
+    if bths and bths!="":
+        bthlist=[int(x.strip()) for x in bths.split(',') if x.strip().isdigit()]
+        for bt in bthlist:
+            propertys=propertys.filter(Property.bt_rms==bt)
     return propertys.all()
 
 def get_a_property(property_id):
