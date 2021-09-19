@@ -3,6 +3,9 @@ from flask_restplus import Resource
 
 from ..util.dto import UserTeamDto
 from ..service.user_team_service import save_new_user_team, get_all_user_teams, get_a_user_team, update_user_team, delete_a_user_team
+from ..service.auth_helper import Auth
+from ..util.decorator import token_required, admin_token_required
+
 
 api = UserTeamDto.api
 _user_team = UserTeamDto.user_team
@@ -12,6 +15,7 @@ _user_team = UserTeamDto.user_team
 class UserTeamList(Resource):
     @api.doc('list_of_user_teams')
     @api.marshal_list_with(_user_team, envelope='data')
+    @token_required
     def get(self):
         """List all user_teams"""
         return get_all_user_teams()
@@ -19,6 +23,7 @@ class UserTeamList(Resource):
     @api.response(201, 'user_team successfully created.')
     @api.doc('create a new user_team')
     @api.expect(_user_team, validate=True)
+    @token_required
     def post(self):
         """Creates a new user_team """
         data = request.json
@@ -30,6 +35,7 @@ class UserTeamList(Resource):
 class UserTeam(Resource):
     @api.doc('get a user_team')
     @api.marshal_with(_user_team)
+    @token_required
     def get(self, user_team_id):
         """get a user_team given its identifier"""
         user_team = get_a_user_team(user_team_id)
@@ -41,6 +47,7 @@ class UserTeam(Resource):
     @api.response(201, 'user_team successfully created.')
     @api.doc('update a user_team')
     @api.expect(_user_team, validate=True)
+    @token_required
     def put(self, user_team_id):
         """Update a user_team """
         data = request.json
@@ -48,6 +55,7 @@ class UserTeam(Resource):
 
     @api.response(201, 'user_team successfully deleted.')
     @api.doc('delete a user_team')
+    @token_required
     def delete(self, user_team_id):
         """Delete a user_team """
         return delete_a_user_team(user_team_id)

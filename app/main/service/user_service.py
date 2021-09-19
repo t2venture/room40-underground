@@ -5,6 +5,7 @@ from app.main import db
 from app.main.model.user import User
 from app.main.model.user_team import UserTeam
 from app.main.service.user_team_service import get_users_from_team
+from app.main.service.team_service import save_new_team
 def save_new_user(data):
     user = User.query.filter_by(email=data['email']).first()
     if 'linkedin_url' not in data.keys():
@@ -44,6 +45,15 @@ def save_new_user(data):
             created_by=1,
         )
         save_changes(new_user)
+        uid=new_user.id
+        team_name="Personal Team"
+        color='000000'
+        new_data=dict()
+        new_data["login_user_id"]=uid
+        new_data["name"]=team_name
+        new_data["action_time"]=datetime.datetime.utcnow()
+        new_data["color"]=color
+        save_new_team(new_data)
         return generate_token(new_user)
     else:
         response_object = {
@@ -53,20 +63,29 @@ def save_new_user(data):
         return response_object, 409
 
 def update_user(user_id, data):
+    try:
+        user=get_a_user(user_id)
+    except Exception as e:
+        print(e)
+        response_object = {
+            'status': 'fail',
+            'message': 'Some error occurred. Please try again.'
+        }
+        return response_object, 401    
     if 'linkedin_url' not in data.keys():
-        linkedin_url=None
+        linkedin_url=user.linkedin_url
     else:
         linkedin_url=data['linkedin_url']
     if 'twitter_url' not in data.keys():
-        twitter_url=None
+        twitter_url=user.twitter_url
     else:
         twitter_url=data['twitter_url']
     if 'profile_url' not in data.keys():
-        profile_url=None
+        profile_url=user.profile_url
     else:
         profile_url=data['profile_url']
     if 'company_name' not in data.keys():
-        company_name="Independent"
+        company_name=user.company_name
     else:
         company_name=data["company_name"]
     if 'is_active' not in data.keys():
@@ -98,7 +117,7 @@ def update_user(user_id, data):
         user.is_active=is_active,
         user.company_name=company_name,
         user.modified_time=data['action_time'],
-        user.modified_by=data['login_user']
+        user.modified_by=data['login_user_id']
         save_changes(user)
 
         response_object = {
@@ -120,8 +139,8 @@ def delete_a_user(user_id, data):
         del_users=User.query.filter_by(id=user_id).all()
         for du in del_users:
             du.is_deleted=True
-            du.modified_by=data['login_user_id'],
-            du.modified_time=data['action_time'],
+            du.modified_by=data['login_user_id']
+            du.modified_time=data['action_time']
         db.session.commit()
         UserTeam.query.filter_by(user_id=user_id).delete()
         db.session.commit()

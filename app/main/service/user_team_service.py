@@ -64,20 +64,35 @@ def delete_a_user_team(user_team_id):
             'message': 'Some error occurred. Please try again.'
         }
         return response_object, 401
-def get_all_user_teams():
+def get_all_user_teams(is_deleted=False, is_active=True):
 
-    return UserTeam.query.all()
+    return UserTeam.query.filter_by(is_deleted=is_deleted).filter_by(is_active=is_active).all()
 
 def get_users_from_team(team_id):
 
-    return UserTeam.query.filter_by(team_id=team_id).all()
+    return UserTeam.query.filter_by(team_id=team_id).filter_by(is_active=True).filter_by(is_deleted=False).all()
 
 def get_teams_from_user(user_id):
-    return UserTeam.query.filter_by(user_id=user_id).all()
+    return UserTeam.query.filter_by(user_id=user_id).filter_by(is_active=True).filter_by(is_deleted=False).all()
 
 def get_a_user_team(user_team_id):
     
-    return UserTeam.query.filter_by(id=user_team_id).first()
+    return UserTeam.query.filter_by(id=user_team_id).filter_by(is_active=True).filter_by(is_deleted=False).first()
+
+def check_user_in_team(user_id, team_id):
+    data=UserTeam.query.filter_by(user_id=user_id).filter_by(team_id=team_id).all()
+    if data is None:
+        return False
+    else:
+        return True
+
+def check_user_is_owner_or_editor(user_id, team_id):
+    data=UserTeam.query.filter_by(user_id=user_id).filter_by(team_id=team_id).all()
+    role=data['role']
+    if role=='Owner' or role=='Editor':
+        return True
+    else:
+        return False
 
 
 def save_changes(data):

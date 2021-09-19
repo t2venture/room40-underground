@@ -9,7 +9,7 @@ from app.main.model import user, property, property_model, portfolio, property_p
 from app.main import create_app, db
 from app import blueprint
 from app.main.model import blacklist
-
+from app.main.util.janitor import clean_database
 from app.main.util.data_uploader import upload_data, clear_data
 
 app = create_app(os.getenv('BOILERPLATE_ENV') or 'dev')
@@ -36,6 +36,10 @@ def populate_db():
 @manager.command
 def clear_db(): 
     clear_data()
+
+@manager.command
+def run_janitor():
+    clean_database()
 
 @manager.command
 def test():

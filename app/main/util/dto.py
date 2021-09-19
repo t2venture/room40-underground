@@ -15,10 +15,6 @@ class DocumentDto:
         'id': fields.String(required=False, description='document id'),
         'title': fields.String(required=True, description='document title'),
         'contents': fields.String(required=True, description='document controls'),
-        'created_by': fields.String(required=False, description='id of who created the document'),
-        'modified_by': fields.String(required=False, description='id of who modified the document'),
-        'created_time': fields.String(required=False, description='when the document was created'),
-        'modified_time': fields.String(required=False, description='when the document was modified')
     })
 
 class UserTeamDto:
@@ -27,6 +23,7 @@ class UserTeamDto:
         'id': fields.String(required=False, description='user team id'),
         'user_id': fields.String(required=True, description='user id'),
         'team_id': fields.String(required=True, description='team id'),
+        'role': fields.String(required=True, description='role of the user')
     })
 
 class UserDto:
@@ -134,4 +131,5 @@ class TeamDto:
     team=api.model('team', {
         'id': fields.String(required=False, description='id of the team'),
         'name': fields.String(required=True, description='name of the team'),
+        'color': fields.String(required=False, description='color scheme of the team'),
     })
