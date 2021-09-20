@@ -142,7 +142,11 @@ def delete_a_user(user_id, data):
             du.modified_by=data['login_user_id']
             du.modified_time=data['action_time']
         db.session.commit()
-        UserTeam.query.filter_by(user_id=user_id).delete()
+        del_ut=UserTeam.query.filter_by(user_id=user_id).all()
+        for dut in del_ut:
+            dut.is_deleted=True
+            dut.modified_by=data['login_user_id']
+            dut.modified_time=data['action_time']
         db.session.commit()
         response_object = {
                     'status': 'success',

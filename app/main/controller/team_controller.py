@@ -3,7 +3,7 @@ from flask_restplus import Resource, reqparse
 
 from ..util.dto import TeamDto
 from ..service.team_service import save_new_team, get_all_teams, get_a_team, update_team, delete_a_team
-from ..service.user_team_service import check_user_in_team, check_user_is_owner_or_editor
+from ..service.user_team_service import check_user_in_team, check_user_is_owner_or_editor, check_user_is_owner
 from ..service.auth_helper import Auth
 from ..util.decorator import token_required, admin_token_required
 import datetime
@@ -71,7 +71,7 @@ class Team(Resource):
             if check_user_in_team(token['user_id'], team_id)==False:
                 response_object = {
                 'status': 'fail',
-                'message': 'You cannot update this information.'
+                'message': 'You cannot view this information.'
                 }
                 return response_object, 401
         if not team:
@@ -122,13 +122,13 @@ class Team(Resource):
             if check_user_in_team(token['user_id'], team_id)==False:
                 response_object = {
                 'status': 'fail',
-                'message': 'You cannot update this information.'
+                'message': 'You cannot delete this information.'
                 }
                 return response_object, 401
-            if check_user_is_owner_or_editor(token['user_id'], team_id)==False:
+            if check_user_is_owner(token['user_id'], team_id)==False:
                 response_object = {
                 'status': 'fail',
-                'message': 'You cannot update this information.'
+                'message': 'You cannot delete this information.'
                 }
                 return response_object, 401
         data=dict()
