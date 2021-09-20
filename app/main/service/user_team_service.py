@@ -91,6 +91,9 @@ def get_deleted_users_for_team(team_id):
 def get_deleted_teams_for_user(user_id):
     return UserTeam.query.filter_by(user_id=user_id).filter_by(is_deleted=True).all()
 
+def get_all_deleted_user_teams():
+    return UserTeam.query.filter_by(is_deleted=True).all()
+
 
 def get_all_user_teams(is_active=True, is_deleted=False, user_id=0):
     usrtms=UserTeam.query
