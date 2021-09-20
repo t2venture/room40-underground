@@ -5,3 +5,6 @@
 #RUN python manage.py db upgrade
 #RUN python manage.py populate_db
 #RUN FLASK_APP=manage.py flask run
+
+
+#YOU CAN TEST USER, TEAM, DOCUMENT, USER_TEAM, PROPERTY ENDPOINTS SAFELY.
