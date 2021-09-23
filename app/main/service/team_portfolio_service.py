@@ -6,9 +6,18 @@ from app.main.model.team_portfolio import TeamPortfolio
 
 def save_new_team_portfolio(data):
     try:
+        if 'role' not in data.keys():
+            data['role']='Viewer'
         new_team_portfolio = TeamPortfolio(
             team_id=data['team_id'],
-	    portfolio_id=data['portfolio_id']
+	    portfolio_id=data['portfolio_id'],
+        role=data['role'],
+        created_by=data['login_user_id'],
+        modified_by=data['login_user_id'],
+        created_time=data['action_time'],
+        modified_time=data['action_time'],
+        is_deleted=False,
+        is_active=True,
         )
         save_changes(new_team_portfolio)
         response_object = {
@@ -29,10 +38,11 @@ def update_team_portfolio(team_portfolio_id, data):
 
     try:
         team_portfolio = get_a_team_portfolio(team_portfolio_id)
-
+        if 'role' not in data.keys():
+            data['role']=team_portfolio.role
         team_portfolio.team_id=data['team_id'],
         team_portfolio.portfolio_id=data['portfolio_id']
-
+        team_portfolio.role=data['role']
         save_changes(team_portfolio)
 
         response_object = {
@@ -49,9 +59,13 @@ def update_team_portfolio(team_portfolio_id, data):
         }
         return response_object, 401
 
-def delete_a_team_portfolio(team_portfolio_id):
+def delete_a_team_portfolio(team_portfolio_id, data):
     try:
-        TeamPortfolio.query.filter_by(id=team_portfolio_id).delete()
+        dtps=TeamPortfolio.query.filter_by(id=team_portfolio_id).all()
+        for dtp in dtps:
+            dtp.is_deleted=True
+            dtp.modified_time=data['action_time']
+            dtp.modified_by=data['login_user_id']
         db.session.commit()
         response_object = {
                     'status': 'success',
@@ -67,17 +81,20 @@ def delete_a_team_portfolio(team_portfolio_id):
         }
         return response_object, 401
 
-def get_all_team_portfolios():
-    return TeamPortfolio.query.all()
+def get_all_team_portfolios(is_deleted=False, is_active=True):
+    return TeamPortfolio.query.filter_by(is_deleted=is_deleted).filter_by(is_active=is_active).all()
+
+def get_all_deleted_team_portfolios():
+    return TeamPortfolio.query.filter_by(is_deleted=True)
 
 def get_teams_from_portfolio(portfolio_id):
-    return TeamPortfolio.query.filter_by(portfolio_id=portfolio_id).all()
+    return TeamPortfolio.query.filter_by(portfolio_id=portfolio_id).filter_by(is_active=True).filter_by(is_deleted=False).all()
 
 def get_portfolios_from_team(team_id):
-    return TeamPortfolio.query.filter_by(team_id=team_id).all()
+    return TeamPortfolio.query.filter_by(team_id=team_id).filter_by(is_active=True).filter_by(is_deleted=False).all()
 
 def get_a_team_portfolio(team_portfolio_id):
-    return TeamPortfolio.query.filter_by(id=team_portfolio_id).first()
+    return TeamPortfolio.query.filter_by(id=team_portfolio_id).filter_by(is_active=True).filter_by(is_deleted=False).first()
 
 def save_changes(data):
     db.session.add(data)
