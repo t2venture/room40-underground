@@ -1,10 +1,11 @@
+from app.main.service.user_team_service import check_user_in_team
 from flask import request
 from flask_restplus import Resource, reqparse
 from ..util.decorator import token_required, admin_token_required
 from ..util.dto import PortfolioDto
 from ..service.portfolio_service import save_new_portfolio, get_all_portfolios, get_a_portfolio, update_portfolio, delete_a_portfolio
 from ..service.team_portfolio_service import save_new_team_portfolio
-from ..service.team_service import get_all_teams, get_a_team, get_personal_team_id
+from ..service.team_service import get_all_teams, get_a_team, get_personal_team_id, get_teams_from_portfolio, get_personal_team_id
 from ..service.auth_helper import Auth
 import datetime
 api = PortfolioDto.api
@@ -27,6 +28,13 @@ class PortfolioList(Resource):
         parser.add_argument("is_deleted", type=bool)
         parser.add_argument("is_active", type=bool)
         args = parser.parse_args()
+        logined, status = Auth.get_logged_in_user(request)
+        token=logined.get('data')
+        if not token:
+            return logined, status
+        if token["admin"]==False:
+            args["team_id"]=get_personal_team_id(token["user_id"])
+        #non admins will see the portfolios they have created if they search for portfolios without specifying team id
         return get_all_portfolios(args['property_id'], args['team_id'], args["is_deleted"], args["is_active"])
 
     @api.response(201, 'portfolio successfully created.')
@@ -59,6 +67,24 @@ class Portfolio(Resource):
     def get(self, portfolio_id):
         """get a portfolio given its identifier"""
         portfolio = get_a_portfolio(portfolio_id)
+        logined, status = Auth.get_logged_in_user(request)
+        token=logined.get('data')
+        if not token:
+            return logined, status
+        usr_id=token['user_id']
+        allowed_teams=get_teams_from_portfolio(portfolio_id)
+        #Checking is User can VIEW the portfolio
+        flag=False
+        for team in allowed_teams:
+            team_id=team["id"]
+            if check_user_in_team(usr_id, team_id)==True:
+                flag=True
+        if flag==False and token['admin']==False:
+            response_object = {
+                'status': 'fail',
+                'message': 'You cannot search for this information.'
+                }
+            return response_object, 401
         if not portfolio:
             api.abort(404)
         else:

@@ -4,6 +4,7 @@ from ..util.decorator import token_required, admin_token_required
 
 from ..util.dto import TeamPortfolioDto
 from ..service.team_portfolio_service import save_new_team_portfolio, get_all_team_portfolios, get_a_team_portfolio, update_team_portfolio, delete_a_team_portfolio
+from ..service.team_service import get_teams_from_portfolio
 from ..service.auth_helper import Auth
 import datetime
 
