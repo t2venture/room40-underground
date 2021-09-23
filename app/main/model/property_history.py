@@ -7,6 +7,7 @@ from ..config import key
 class PropertyHistory(db.Model):
     """ Property History for storing property history related details """
     __tablename__ = "property_history"
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     property_id=db.Column(db.Integer, db.ForeignKey('property.id'))
     prices=db.Column(db.String(5000), unique=False, nullable=True)
     #prices is going to be a stringified dict of history of prices

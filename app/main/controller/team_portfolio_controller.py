@@ -31,7 +31,7 @@ class TeamPortfolioList(Resource):
         if not token:
             return logined, status
         if token["admin"]==False:
-            args["team_id"]=get_personal_team_id(token["user_id"])
+            args["team_id"]=get_personal_team_id(token["user_id"])["id"]
             return get_portfolios_from_team(args["team_id"])
         return get_all_team_portfolios(args["is_deleted"], args["is_active"])
 

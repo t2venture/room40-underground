@@ -5,7 +5,7 @@ from app.main import db
 from app.main.model.team import Team
 from app.main.model.user_team import UserTeam
 from app.main.model.team_portfolio import TeamPortfolio
-from app.main.service.user_team_service import get_teams_from_user
+from app.main.service.user_team_service import check_user_in_team, get_teams_from_user
 from app.main.service.team_portfolio_service import get_teams_from_portfolio
 from app.main.service.user_team_service import save_new_user_team
 
@@ -107,6 +107,15 @@ def delete_a_team(team_id, data):
             'message': 'Some error occurred. Please try again.'
         }
         return response_object, 401
+
+def get_personal_team_id(user_id):
+    user_teams=UserTeam.query.filter_by(is_active=True).filter_by(is_deleted=False).filter_by(user_id=user_id).all()
+    utids=[ut.team_id for ut in user_teams]
+    personal_teams=Team.query.filter(Team.name.like("Personal Team")).filter_by(is_active=True).filter_by(is_deleted=False)
+    personal_teams=personal_teams.filter(Team.id.in_(utids))
+    return personal_teams.first()
+
+
 
 def get_all_teams(user_id="", portfolio_id="", is_active=True, is_deleted=False):
     teams=Team.query.filter_by(is_active=is_active).filter_by(is_deleted=is_deleted).all()

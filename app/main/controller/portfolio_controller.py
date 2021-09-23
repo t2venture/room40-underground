@@ -33,7 +33,7 @@ class PortfolioList(Resource):
         if not token:
             return logined, status
         if token["admin"]==False:
-            args["team_id"]=get_personal_team_id(token["user_id"])
+            args["team_id"]=get_personal_team_id(token["user_id"])['id']
         #non admins will see the portfolios they have created if they search for portfolios without specifying team id
         return get_all_portfolios(args['property_id'], args['team_id'], args["is_deleted"], args["is_active"])
 
