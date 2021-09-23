@@ -23,7 +23,7 @@ def save_new_portfolio(data):
         save_changes(new_portfolio)
         new_data=dict()
         new_data["portfolio_id"]=new_portfolio.id
-        new_data["team_id"]=get_personal_team_id(data['login_user_id'])
+        new_data["team_id"]=get_personal_team_id(data['login_user_id'])["id"]
         new_data["role"]="Owner"
         save_new_team_portfolio(new_data)
         response_object = {
@@ -78,7 +78,11 @@ def delete_a_portfolio(portfolio_id, data):
         #need to change this
         PropertyPortfolio.query.filter_by(portfolio_id=portfolio_id).delete()
         db.session.commit()
-        TeamPortfolio.query.filter_by(portfolio_id=portfolio_id).delete()
+        del_tpfs=TeamPortfolio.query.filter_by(portfolio_id=portfolio_id).all()
+        for tpf in del_tpfs:
+            tpf.is_deleted=True
+            tpf.modified_time=data['action_time']
+            tpf.modified_by=data['modified_by']
         db.session.commit()
         response_object = {
                     'status': 'success',

@@ -1,4 +1,4 @@
-from app.main.service.user_team_service import check_user_in_team
+from app.main.service.user_team_service import check_user_in_team, check_user_is_owner_or_editor, check_user_is_owner
 from flask import request
 from flask_restplus import Resource, reqparse
 from ..util.decorator import token_required, admin_token_required
@@ -102,6 +102,18 @@ class Portfolio(Resource):
             return logined, status
         login_user={"login_user_id": token['user_id']}
         action_time={"action_time": datetime.datetime.utcnow()}
+        allowed_teams=get_teams_from_portfolio(portfolio_id)
+        flag=False
+        for team in allowed_teams:
+            if team["role"]=="Owner" or team["role"]=="Editor":
+                if check_user_is_owner_or_editor(token['user_id'],team["team_id"])==True:
+                    flag=True
+        if flag==False and token['admin']==False:
+            response_object = {
+                'status': 'fail',
+                'message': 'You cannot add this information.'
+                }
+            return response_object, 401
         data.update(login_user)
         data.update(action_time)
         return update_portfolio(portfolio_id, data)
@@ -116,7 +128,19 @@ class Portfolio(Resource):
             return logined, status
         login_user={"login_user_id": token['user_id']}
         action_time={"action_time": datetime.datetime.utcnow()}
+        allowed_teams=get_teams_from_portfolio(portfolio_id)
+        flag=False
+        for team in allowed_teams:
+            if team["role"]=="Owner" or team["role"]=="Editor":
+                if check_user_is_owner_or_editor(token['user_id'],team["team_id"])==True:
+                    flag=True
+        if flag==False and token['admin']==False:
+            response_object = {
+                'status': 'fail',
+                'message': 'You cannot add this information.'
+                }
+            return response_object, 401
         data=dict()
         data.update(login_user)
         data.update(action_time)
-        return delete_a_portfolio(portfolio_id)
+        return delete_a_portfolio(portfolio_id, data)

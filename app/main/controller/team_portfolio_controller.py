@@ -56,7 +56,7 @@ class TeamPortfolioList(Resource):
             if team["role"]=="Owner" or team["role"]=="Editor":
                 if check_user_is_owner_or_editor(token['user_id'],team["team_id"])==True:
                     flag=True
-        if flag==False:
+        if flag==False and token["admin"]==False:
             response_object = {
                 'status': 'fail',
                 'message': 'You cannot add this information.'
@@ -112,7 +112,7 @@ class TeamPortfolio(Resource):
             if team["role"]=="Owner" or team["role"]=="Editor":
                 if check_user_is_owner_or_editor(token['user_id'],team["team_id"])==True:
                     flag=True
-        if flag==False:
+        if flag==False and token['admin']==False:
             response_object = {
                 'status': 'fail',
                 'message': 'You cannot add this information.'
@@ -141,7 +141,7 @@ class TeamPortfolio(Resource):
             if team["role"]=="Owner" or team["role"]=="Editor":
                 if check_user_is_owner_or_editor(token['user_id'],team["team_id"])==True:
                     flag=True
-        if flag==False:
+        if flag==False and token['admin']==False:
             response_object = {
                 'status': 'fail',
                 'message': 'You cannot delete this information.'

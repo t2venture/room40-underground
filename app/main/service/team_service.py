@@ -92,7 +92,11 @@ def delete_a_team(team_id, data):
             dut.modified_by=data['login_user_id']
             dut.modified_time=data['action_time']
         db.session.commit()
-        TeamPortfolio.query.filter_by(team_id=team_id).delete()
+        dtpfs=TeamPortfolio.query.filter_by(team_id=team_id).all()
+        for tpf in dtpfs:
+            tpf.is_deleted=True
+            tpf.modified_time=data['action_time']
+            tpf.modified_by=data['modified_by']
         db.session.commit()
         response_object = {
                     'status': 'success',
