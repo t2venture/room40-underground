@@ -16,7 +16,7 @@ def save_new_user_team(data):
             created_by=data['login_user_id'],
             created_time=data['action_time'],
             modified_by=data['login_user_id'],
-            modified_time=data['action_time'],s
+            modified_time=data['action_time'],
         )
         save_changes(new_user_team)
         response_object = {
