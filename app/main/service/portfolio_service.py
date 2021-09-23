@@ -76,7 +76,11 @@ def delete_a_portfolio(portfolio_id, data):
             pf.modified_by=data['modified_by']
         db.session.commit()
         #need to change this
-        PropertyPortfolio.query.filter_by(portfolio_id=portfolio_id).delete()
+        dppfs=PropertyPortfolio.query.filter_by(portfolio_id=portfolio_id).all()
+        for ppf in dppfs:
+            ppf.is_deleted=True
+            ppf.modified_time=data["action_time"]
+            ppf.modified_by=data["login_user_id"]
         db.session.commit()
         del_tpfs=TeamPortfolio.query.filter_by(portfolio_id=portfolio_id).all()
         for tpf in del_tpfs:

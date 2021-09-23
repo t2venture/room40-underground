@@ -124,6 +124,7 @@ class TeamPortfolioDto:
         'id': fields.String(required=False, description='id'),
         'team_id': fields.String(required=True, description= 'id of the team'),
         'portfolio_id': fields.String(required=True, description = 'id of portfolio'),
+        'role': fields.String(required=True, description='role of the team in this portfolio'),
     })
 
 class RentDto:

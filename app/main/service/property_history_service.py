@@ -9,8 +9,8 @@ def save_new_property_history(data):
     try:
         new_property_history = PropertyHistory(
             property_id=data['property_id'],
-	    prices=data['prices'],
-	    events=data['events'],
+	        prices=data['prices'],
+	        events=data['events'],
             created_time=datetime.datetime.utcnow(),
             modified_time=datetime.datetime.utcnow(),
             is_deleted=False,
@@ -44,8 +44,8 @@ def update_property_history(property_history_id, data):
         if 'events' not in data.keys():
             data['events']=property_history.events
         property_history.property_id=data['property_id'],
-	property_history.prices=data['prices'],
-	property_history.events=data['events'],
+        property_history.prices=data['prices'],
+        property_history.events=data['events'],
         property_history.modified_by=data['login_user_id'],
         property_history.modified_time=data['action_time'],
         save_changes(property_history)

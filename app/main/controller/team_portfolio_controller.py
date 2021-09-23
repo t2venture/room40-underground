@@ -20,6 +20,7 @@ class TeamPortfolioList(Resource):
     @api.param('is_deleted', 'whether the property model is deleted or not')
     @api.param('is_active', 'whether the property model is active or not')
     @api.marshal_list_with(_team_portfolio, envelope='data')
+    @token_required
     def get(self):
         """List all team_portfolios"""
         parser = reqparse.RequestParser()
@@ -38,6 +39,7 @@ class TeamPortfolioList(Resource):
     @api.response(201, 'team_portfolio successfully created.')
     @api.doc('create a new team_portfolio')
     @api.expect(_team_portfolio, validate=True)
+    @token_required
     def post(self):
         """Creates a new team_portfolio """
         data = request.json
@@ -70,6 +72,7 @@ class TeamPortfolioList(Resource):
 class TeamPortfolio(Resource):
     @api.doc('get a team_portfolio')
     @api.marshal_with(_team_portfolio)
+    @token_required
     def get(self, team_portfolio_id):
         """get a team_portfolio given its identifier"""
         team_portfolio = get_a_team_portfolio(team_portfolio_id)
@@ -94,6 +97,7 @@ class TeamPortfolio(Resource):
     @api.response(201, 'team_portfolio successfully created.')
     @api.doc('update a team_portfolio')
     @api.expect(_team_portfolio, validate=True)
+    @token_required
     def put(self, team_portfolio_id):
         """Update a team_portfolio """
         data = request.json
@@ -122,6 +126,7 @@ class TeamPortfolio(Resource):
 
     @api.response(201, 'team_portfolio successfully deleted.')
     @api.doc('delete a team_portfolio')
+    @token_required
     def delete(self, team_portfolio_id, data):
         """Delete a team"""
         logined, status = Auth.get_logged_in_user(request)

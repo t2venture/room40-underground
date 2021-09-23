@@ -20,6 +20,7 @@ class PortfolioList(Resource):
     @api.param('is_deleted', 'if the portfolio is deleted or not')
     @api.param('is_active', 'if the portfolio is active or not')
     @api.marshal_list_with(_portfolio, envelope='data')
+    @token_required
     def get(self):
         """List all portfolios"""
         parser = reqparse.RequestParser()
@@ -64,6 +65,7 @@ class PortfolioList(Resource):
 class Portfolio(Resource):
     @api.doc('get a portfolio')
     @api.marshal_with(_portfolio)
+    @token_required
     def get(self, portfolio_id):
         """get a portfolio given its identifier"""
         portfolio = get_a_portfolio(portfolio_id)
@@ -93,6 +95,7 @@ class Portfolio(Resource):
     @api.response(201, 'portfolio successfully created.')
     @api.doc('update a portfolio')
     @api.expect(_portfolio, validate=True)
+    @token_required
     def put(self, portfolio_id):
         """Update a portfolio"""
         data = request.json
@@ -120,6 +123,7 @@ class Portfolio(Resource):
 
     @api.response(201, 'portfolio successfully deleted.')
     @api.doc('delete a portfolio')
+    @token_required
     def delete(self, portfolio_id, data):
         """Delete a portfolio """
         logined, status = Auth.get_logged_in_user(request)

@@ -151,7 +151,11 @@ def delete_a_property(property_id, data):
         db.session.commit()
 
 
-        PropertyPortfolio.query.filter_by(property_id=property_id).delete()
+        dppfs=PropertyPortfolio.query.filter_by(property_id=property_id).delete()
+        for ppf in dppfs:
+            ppf.is_deleted=True
+            ppf.modified_time=data["action_time"]
+            ppf.modified_by=data["login_user_id"]
         db.session.commit()
         response_object = {
                     'status': 'success',
