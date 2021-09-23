@@ -12,8 +12,6 @@ import uuid
 import datetime
 import csv
 users_csv = 'app/main/util/data_files/users.csv'
-companies_csv = 'app/main/util/data_files/companies.csv'
-user_companies_csv = 'app/main/util/data_files/user_companies.csv'
 
 def add_users():
     new_user=User(email="angikar.ghosal@gmail.com",
@@ -45,14 +43,15 @@ def add_propertys():
     train_list_of_med_val, train_list_of_max_val, train_list_of_min_val, test_list_of_med_val, test_list_of_max_val, test_list_of_min_val=obtain_train_test_lists(dict_of_values)
     autocorr_dict=obtain_autocorrs(train_list_of_med_val, test_list_of_med_val)
     for row in List_Property:
+        timenow=datetime.datetime.utcnow()
         new_property=Property(address=row["address"], majorcity=row["majorcity"],
         building_sqft_area=row["building_sq_ft"], gross_sqft_area=row["gross_sq_ft"],
         latitude=row['latitude'], longitude=row['longitude'], street=row['street'], housenumber=row['housenumber'],
-        usage_code=row['usage_code'], bd_rms=row["bed_count"], bt_rms=row["bath_count"])
+        usage_code=row['usage_code'], bd_rms=row["bed_count"], bt_rms=row["bath_count"], created_time=timenow, modified_time=timenow)
         db.session.add(new_property)
         db.session.flush()
         pid=new_property.id
-        ##FOR OTHER ALGOS, JUST CHANGE PROJECT_ARIMA FROM PROJECT_VALUES FILE
+        ##For other algorithms, change the name of project_arima from project_values file.
         fc1yr, fc2yr = project_arima(row["address"], train_list_of_med_val, test_list_of_med_val)
         ####5 yr forecast set to garbage
         fc5yr = 999999
@@ -60,7 +59,10 @@ def add_propertys():
         m3ac=autocorr[3]
         m6ac=autocorr[6]
         new_property_model=PropertyModel(property_id=pid, project_oneyear=fc1yr,
-        project_twoyear=fc2yr, project_5yr=fc5yr, threemonth_corr=m3ac, sixmonth_corr=m6ac)
+        project_twoyear=fc2yr, project_5yr=fc5yr, threemonth_corr=m3ac, sixmonth_corr=m6ac, model_type="arima", created_time=timenow,
+        modified_time=timenow)
+
+        #New fields like model metrics need to be uploaded in scrape_property.
         db.session.add(new_property_model)
 def upload_data():
     print("uploading users")

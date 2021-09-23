@@ -122,4 +122,4 @@ class Property(Resource):
         action_time={"action_time": datetime.datetime.utcnow()}
         data.update(login_user)
         data.update(action_time)	
-        return delete_a_property(property_id)
+        return delete_a_property(property_id, data)
