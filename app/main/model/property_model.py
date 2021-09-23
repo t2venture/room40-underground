@@ -5,7 +5,7 @@ from app.main.model.blacklist import BlacklistToken
 from ..config import key
 
 class PropertyModel(db.Model):
-    """ Deal Model for storing deal related details """
+    """ Property Model for storing Property model related details """
     __tablename__ = "property_model"
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     property_id=db.Column(db.Integer, db.ForeignKey('property.id'))

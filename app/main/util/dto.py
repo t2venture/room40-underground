@@ -89,7 +89,17 @@ class PropertyModelDto:
         'lower_series': fields.String(required=False, description='lower series'),
         'median_series': fields.String(required=False, description='median series'),
         'upper_series': fields.String(required=False, description='upper series'),
-        'model_series': fields.String(required=False, description='model series')
+        'model_metrics': fields.String(required=False, description='model metrics'),
+        'model_type': fields.String(required=False, description='type of the model')
+    })
+
+class PropertyHistoryDto:
+    api=Namespace('property_history', description='property_history related operations')
+    property_history = api.model('proeprty_history',{
+        'id': fields.String(required=False, description='id'),
+        'property_id': fields.String(required=True, description='property_id'),
+        'prices': fields.String(required=False, description='stringified dict of the prices'),
+        'events': fields.String(required=False, description='events in the history of the property')
     })
 
 class PortfolioDto:
