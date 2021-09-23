@@ -144,3 +144,9 @@ class TeamDto:
         'name': fields.String(required=True, description='name of the team'),
         'color': fields.String(required=False, description='color scheme of the team'),
     })
+
+class DemographicsDto:
+    api = Namespace('demographics', description='summarized demographics')
+    demographics=api.model('demographics',{
+        'demog': fields.String(required=False, description='stringified dict of summarized demographics'),
+    })
