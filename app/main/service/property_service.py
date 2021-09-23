@@ -4,6 +4,7 @@ import datetime
 from app.main import db
 from app.main.model.property import Property
 from app.main.model.property_model import PropertyModel
+from app.main.model.property_history import PropertyHistory
 from app.main.model.property_portfolio import PropertyPortfolio
 from app.main.service.property_portfolio_service import get_propertys_from_portfolio
 from app.main.util.scrape_property import strip_housenumber_street
@@ -130,6 +131,7 @@ def delete_a_property(property_id, data):
             dp.modified_by=data['login_user_id'],
             dp.modified_time=data['action_time']
         db.session.commit()
+
         del_pms=PropertyModel.query.filter_by(property_id=property_id).all()
 
         for dpm in del_pms:
@@ -138,6 +140,17 @@ def delete_a_property(property_id, data):
             dpm.modified_by=data['login_user_id']
             #should be 1
         db.session.commit()
+
+        del_phs=PropertyHistory.query.filter_by(property_id=property_id).all()
+
+        for dhs in del_phs:
+            dhs.is_deleted=True
+            dhs.modified_time=data['action_time']
+            dhs.modified_by=data['login_user_id']
+            #should be 1
+        db.session.commit()
+
+
         PropertyPortfolio.query.filter_by(property_id=property_id).delete()
         db.session.commit()
         response_object = {

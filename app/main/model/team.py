@@ -9,7 +9,7 @@ class Team(db.Model):
     __tablename__ = "team"
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    name = db.Column(db.String(255), unique=False, nullable=False)
+    name = db.Column(db.String(255), unique=False, nullable=False, default="Personal Team")
     color = db.Column(db.String(7), unique=False, nullable=False, default='000000')
     #black is the default color
     created_by=db.Column(db.Integer, db.ForeignKey('user.id'))
