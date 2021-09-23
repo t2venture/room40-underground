@@ -141,7 +141,7 @@ class Portfolio(Resource):
         if flag==False and token['admin']==False:
             response_object = {
                 'status': 'fail',
-                'message': 'You cannot add this information.'
+                'message': 'You cannot delete this information.'
                 }
             return response_object, 401
         data=dict()
