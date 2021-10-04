@@ -28,7 +28,11 @@ def save_new_team(data):
         )
         save_changes(new_team)
         tid=new_team.id
-        save_new_user_team(team_id=tid, user_id=data['login_user_id'], role='Owner')
+        new_data=dict()
+        new_data['team_id']=tid
+        new_data['user_id']=data['login_user_id']
+        new_data['role']='Owner'
+        save_new_user_team(new_data)
         ###ADD TEAM FOR EVERY INDIVIDUAL
         response_object = {
                 'status': 'success',
