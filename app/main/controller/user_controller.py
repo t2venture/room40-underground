@@ -14,28 +14,35 @@ _user = UserDto.user
 @api.route('/')
 class UserList(Resource):
     @api.doc('list_of_registered_users')
-    @api.param('team_id', 'team to search for users in')
     @api.param('is_deleted', 'whether the user is deleted')
     @api.param('is_active', 'whether the user is active')
-    @api.param('company_name', 'name of the company the person belongs to')
+
+    #@api.param('company_name', 'name of the company the person belongs to')
+
     @api.marshal_list_with(_user, envelope='data')
     @token_required
     def get(self):
         """List all registered users"""
         parser = reqparse.RequestParser()
-        parser.add_argument("team_id", type=int)
         parser.add_argument("is_deleted", type=bool)
         parser.add_argument("is_active", type=bool)
-        parser.add_argument("company_name", type=str)
+
+        #parser.add_argument("company_name", type=str)
+
         args = parser.parse_args()
         logined, status = Auth.get_logged_in_user(request)
         token=logined.get('data')
-        r_id=None
-        if args["company_name"]=='Independent':
-            args["company_name"]=''
+        if not args['is_deleted']:
+            args['is_deleted']=False
+        if not args['is_active']:
+            args['is_active']=True
         if token['admin']==False:
-            r_id=token['user_id']
-        return get_all_users(args['team_id'], args['is_deleted'], args['is_active'], args['company_name'], r_id)
+            adm=False
+            usr=int(token['user_id'])
+        else:
+            adm=True
+            usr=1
+        return get_all_users(args['is_deleted'], args['is_active'], adm, usr)
 
     @api.response(201, 'User successfully created.')
     @api.doc('create a new user')

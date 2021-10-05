@@ -34,6 +34,8 @@ class TeamList(Resource):
             return logined, status
         if token['admin']==False:
             args["user_id"]=token["user_id"]
+        else:
+            args['user_id']=1
         return get_all_teams(args["user_id"], args["portfolio_id"], args["is_active"], args["is_deleted"])
 
     @api.response(201, 'Team successfully created.')

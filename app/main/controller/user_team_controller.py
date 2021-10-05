@@ -28,8 +28,10 @@ class UserTeamList(Resource):
         if not token:
             return logined, status
         if token['admin']==False:
-            args["user_id"]=token["user_id"]
-        return get_all_user_teams(args["is_active"], args["is_deleted"], args["user_id"])
+            usr=token["user_id"]
+        else:
+            usr=1
+        return get_all_user_teams(args["is_active"], args["is_deleted"], usr)
 
     @api.response(201, 'user_team successfully created.')
     @api.doc('create a new user_team')
