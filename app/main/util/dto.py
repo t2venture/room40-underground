@@ -34,7 +34,7 @@ class UserDto:
         'last_name': fields.String(required=True, description='user last name'),
         'profile_url': fields.String(required=False, description='img profile url'),
         'email': fields.String(required=True, description='user email address'),
-        'username': fields.String(required=True, description='user username'),
+        'username': fields.String(required=False, description='user username'),
         'linkedin_url': fields.String(required=False, description='user LinkedIn'),
         'twitter_url': fields.String(required=False, description='user Twitter'),
         'company_name': fields.String(required=False, description="company of the user")

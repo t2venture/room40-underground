@@ -24,6 +24,10 @@ def save_new_user(data):
         company_name="Independent"
     else:
         company_name=data["company_name"]
+    if 'username' not in data.keys():
+        usrname=data['first_name']
+    else:
+        usrname=data['username']
     if not user:
         new_user = User(
             public_id=str(uuid.uuid4()),
@@ -31,7 +35,7 @@ def save_new_user(data):
             last_name=data['last_name'],
             profile_url=profile_url,
             email=data['email'],
-            username=data['username'],
+            username=usrname,
             password=data['password'],
             company_name=company_name,
             registered_on=datetime.datetime.utcnow(),

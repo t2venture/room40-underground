@@ -9,7 +9,6 @@ def register_user(self):
         data=json.dumps(dict(
             first_name='Test',
             last_name='McTestFace',
-            username='testusername',
             email='example@gmail.com',
             password='test123',
         )),
