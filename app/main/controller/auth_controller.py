@@ -1,10 +1,12 @@
 from flask import request
-from flask_restplus import Resource
+from flask_restplus import Resource, reqparse
 import datetime
-from app.main.service.user_service import save_new_user
+from app.main.service.user_service import save_new_user, check_if_registered_user, get_a_user_by_email, update_user, send_email
 from app.main.service.auth_helper import Auth
 from ..util.dto import AuthDto
 from ..util.dto import UserDto
+from ..util.email import set_password
+
 api = AuthDto.api
 user_auth = AuthDto.user_auth
 
@@ -45,3 +47,36 @@ class LogoutAPI(Resource):
         # get auth token
         auth_header = request.headers.get('Authorization')
         return Auth.logout_user(data=auth_header)
+
+@api.route('/forgotpassword')
+class ForgotPasswordAPI(Resource):
+    '''
+    Forgot Password Resource
+    '''
+    @api.response('200', 'An email has been sent with the temporary password. Please login and change your password')
+    @api.param('email_address', 'your email address')
+    def post(self):
+        parser = reqparse.RequestParser()
+        parser.add_argument("email_address", type=str)
+        args=parser.parse_args()
+        flag=check_if_registered_user(args['email_address'])
+        if flag==False:
+            response_object = {
+            'status': 'fail',
+            'message': 'Your email address is not registered.'}
+            return response_object, 401
+        else:
+            new_password=set_password()
+            changed_user=get_a_user_by_email(args['email_address'])
+            id_changed_user=changed_user["id"]
+            data=dict()
+            data['login_user_id']=1
+            data['action_time']=datetime.datetime.utcnow()
+            data['password']=new_password
+            update_user(id_changed_user, data)
+            ##SEND EMAIL FUNCTION
+            send_email(args['email_address'], new_password)
+
+            
+
+
