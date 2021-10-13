@@ -5,6 +5,7 @@ import datetime
 from app.main import db
 from app.main.model.user import User
 from app.main.model.property import Property
+from app.main.model.document import Document
 from app.main.util.scrape_property import obtain_autocorrs, obtain_train_test_lists, return_list_property, return_raw_propertys, obtain_time_series_dict, obtain_dict_vals, obtain_train_test_lists
 from app.main.util.project_values import project_arima
 from app.main.service.property_service import get_all_propertys
@@ -12,7 +13,7 @@ import uuid
 import datetime
 import csv
 users_csv = 'app/main/util/data_files/users.csv'
-
+from app.main.util.document_text import terms_use, terms_privacy
 def add_users():
     new_user=User(email="angikar.ghosal@gmail.com",
     first_name="Angikar",
@@ -35,6 +36,23 @@ def add_users():
     )
     db.session.add(new_user)   
 
+def add_documents():
+    new_terms=Document(title="Terms of Use",
+    contents=terms_use,
+    created_by=1,
+    modified_by=1,
+    created_time=datetime.datetime.utcnow(),
+    modified_time=datetime.datetime.utcnow(),
+    )
+    db.session.add(new_terms)
+    new_privacy=Document(title="Privacy",
+    contents=terms_privacy,
+    created_by=1,
+    modified_by=1,
+    created_time=datetime.datetime.utcnow(),
+    modified_time=datetime.datetime.utcnow(),
+    )
+    db.session.add(new_privacy)
 
 #NEED TO REWRITE THIS USING UPDATED SCHEMA
 def add_propertys():
@@ -67,6 +85,9 @@ def add_propertys():
 def upload_data():
     print("uploading users")
     add_users()
+    db.session.flush()
+    print ("uploading documents")
+    add_documents()
     db.session.flush()
     '''
     print("uploading companies")
