@@ -39,11 +39,17 @@ def clean_database():
 	all_property_historys=get_all_deleted_property_historys()
 	all_property_models=get_all_deleted_property_models()
 	all_property_portfolios=get_all_deleted_property_portfolios()
-
+	all_users_notconfirmed=get_all_users()
 
 	time_now=datetime.datetime.utcnow()
 
 	#259200 is the number of seconds in 30 days
+	for u in all_users_notconfirmed:
+		delta=time_now-u.modified_time
+		if u.confirmed==False and delta.total_seconds()time_param:
+			User.query(id=u.id).delete()
+			db.session.commit()
+
 	for doc in all_documents:
 		delta=time_now-doc.modified_time
 		if delta.total_seconds()>time_param:

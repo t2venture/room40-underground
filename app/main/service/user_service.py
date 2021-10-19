@@ -7,6 +7,8 @@ from app.main.model.user_team import UserTeam
 from app.main.service.user_team_service import get_users_from_team
 from app.main.service.team_service import save_new_team
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
+from app.main.token import generate_confirmation_token, confirm_token
+from app.main.util.email import send_confirmation_email
 
 def save_new_user(data):
     user = User.query.filter_by(email=data['email']).first()
@@ -55,6 +57,7 @@ def save_new_user(data):
             modified_time=data['action_time'],
             modified_by=1,
             created_by=1,
+            confirmed=False
         )
         save_changes(new_user)
         uid=new_user.id
@@ -66,7 +69,10 @@ def save_new_user(data):
         new_data["action_time"]=datetime.datetime.utcnow()
         new_data["color"]=color
         save_new_team(new_data)
+        confirmation_token=generate_confirmation_token(data["email"])
+        send_confirmation_email(data["email"], confirmation_token)
         return generate_token(new_user)
+        
     else:
         response_object = {
             'status': 'fail',
@@ -116,6 +122,10 @@ def update_user(user_id, data):
             data['first_name']=user.first_name
         if 'last_name' not in data.keys():
             data['last_name']=user.last_name
+        if 'confirmed' not in data.keys():
+            data['confirmed']=user.confirmed
+        if 'confirmed_on' not in data.keys():
+            data['confirmed_on']=user.confirmed_on
         user.email=data['email'],
         user.username=data['username'],
         user.password=data['password'],
@@ -130,6 +140,8 @@ def update_user(user_id, data):
         user.company_name=company_name,
         user.modified_time=data['action_time'],
         user.modified_by=data['login_user_id']
+        user.confirmed=data['confirmed'],
+        user.confirmed_on=data['confirmed_on']
         save_changes(user)
 
         response_object = {
@@ -238,7 +250,7 @@ def generate_token(user):
         auth_token = user.encode_auth_token(user.id)
         response_object = {
             'status': 'success',
-            'message': 'Successfully registered.',
+            'message': 'Successfully registered. Please confirm your email.',
             'Authorization': auth_token
         }
         return response_object, 201
@@ -248,3 +260,34 @@ def generate_token(user):
             'message': 'Some error occurred. Please try again.'
         }
         return response_object, 401
+
+def confirm_email(confirm_token):
+    try:
+        email = confirm_token(confirm_token)
+    except Exception as e:
+        response_object = {
+            'status': 'fail',
+            'message': 'The confirmation token has expired or is not valid.'
+        }
+        return response_object, 401
+    user_to_confirm = User.query.filter_by(email=email).first()
+    id_of_user_to_confirm=user_to_confirm.id
+    data={"confirmed":True, "confirmed_on":datetime.datetime.utcnow()}
+    update_user(id_of_user_to_confirm, data)
+
+def verify_reset_email(confirm_token, password):
+    try:
+        email = confirm_token(confirm_token)
+    except Exception as e:
+        response_object = {
+            'status': 'fail',
+            'message': 'The confirmation token has expired or is not valid.'
+        }
+        return response_object, 401
+    user_to_change_password=User.query.filter_by(email=email).first()
+    id_of_user_to_reset=user_to_change_password.id
+    data={"confirmed":True, "confirmed_on":datetime.datetime.utcnow(),"password":password}
+    update_user(id_of_user_to_reset, data)
+    
+
+    

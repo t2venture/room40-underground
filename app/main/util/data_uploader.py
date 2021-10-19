@@ -33,6 +33,8 @@ def add_users():
     modified_by=1,
     created_time=datetime.datetime.utcnow(),
     modified_time=datetime.datetime.utcnow(),
+    confirmed=True,
+    confirmed_on=datetime.datetime.utcnow()
     )
     db.session.add(new_user)   
 

@@ -8,6 +8,12 @@ class AuthDto:
         'password': fields.String(required=True, description='The user password '),
     })
 
+class ConfirmDto:
+    api = Namespace('confirm', description='confirmation related operations')
+    user_confirm = api.model('confirmation_details', {
+        'token': fields.String(required=True, description='confirmation token'),
+    })
+
 
 class DocumentDto:
     api = Namespace('document', description='document related operations')

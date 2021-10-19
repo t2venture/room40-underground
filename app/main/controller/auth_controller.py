@@ -1,11 +1,12 @@
 from flask import request
 from flask_restplus import Resource, reqparse
 import datetime
-from app.main.service.user_service import save_new_user, check_if_registered_user, get_a_user_by_email, update_user, send_email
+from app.main.service.user_service import save_new_user, check_if_registered_user, get_a_user_by_email, update_user, send_change_password_email
 from app.main.service.auth_helper import Auth
 from ..util.dto import AuthDto
 from ..util.dto import UserDto
 from ..util.email import set_password
+
 
 api = AuthDto.api
 user_auth = AuthDto.user_auth
@@ -36,6 +37,8 @@ class SignupAPI(Resource):
         action_time={"action_time": datetime.datetime.utcnow()}
         data.update(action_time)	
         return save_new_user(data=data)
+
+
 
 @api.route('/logout')
 class LogoutAPI(Resource):
@@ -75,7 +78,7 @@ class ForgotPasswordAPI(Resource):
             data['password']=new_password
             update_user(id_changed_user, data)
             ##SEND EMAIL FUNCTION
-            send_email(args['email_address'], new_password)
+            send_change_password_email(args['email_address'], new_password)
 
             
 

@@ -8,7 +8,12 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 class Config:
     SECRET_KEY = os.getenv('SECRET_KEY', 'my_precious_secret_key')
     DEBUG = False
-
+    MAIL_SERVER = 'smtp.gmail.com'
+    MAIL_PORT = 465
+    MAIL_USE_SSL = True
+    MAIL_USERNAME = 'tryrenta@gmail.com'
+    MAIL_PASSWORD = 'vgnpapuiolnsgtoi'
+    SECURITY_PASSWORD_SALT = 'my_precious_two'
 
 class DevelopmentConfig(Config):
     # uncomment the line below to use postgres

@@ -32,6 +32,8 @@ class User(db.Model):
     modified_time=db.Column(db.DateTime, unique=False, nullable=False)
     is_deleted=db.Column(db.Boolean, unique=False, nullable=False, default=False)
     is_active=db.Column(db.Boolean, unique=False, nullable=False, default=True)
+    confirmed=db.Column(db.Boolean, unique=False, nullable=False, default=False)
+    confirmed_on=db.Column(db.DateTime, unique=False, nullable=True)
 
 
     @property

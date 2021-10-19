@@ -14,6 +14,7 @@ from .main.controller.rent_controller import api as rent_ns
 from .main.controller.team_controller import api as team_ns
 from .main.controller.document_controller import api as document_ns
 from .main.controller.property_history_controller import api as property_history_ns
+from .main.controller.confirm_controller import api as confirm_ns
 
 blueprint = Blueprint('api', __name__)
 #STUFF LUKE ADDED
@@ -46,3 +47,4 @@ api.add_namespace(team_ns, path="/team")
 api.add_namespace(team_portfolio_ns, path="/team_portfolio")
 api.add_namespace(document_ns, path="/document")
 api.add_namespace(property_history_ns, path="/property_history")
+api.add_namespace(confirm_ns, path="/confirm")

@@ -1,24 +1,57 @@
 import smtplib
 from email.message import EmailMessage
+import ssl
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+
 import random
 import string
 EMAIL_ADDRESS = 'tryrenta@gmail.com'
 EMAIL_PASSWORD = 'vgnpapuiolnsgtoi'
+
+def send_confirmation_email(email, confirmation_token):
+	text='''Thank you for creating an account at Lasso! Please confirm your email ID at this link. #LINK TO BE CREATED'''+confirmation_token
+	html_text='''Thank you for creating an account at Lasso! Please confirm your email ID at this link. <a href=#LINK TO BE CREATED'''+confirmation_token+'''>Confirmation Link</a>'''
+	#THIS LINK WILL CALL the <confirm/token> endpoint controller.
+	html="""\
+		<html>
+		<body><p>"""+html_text+"""</p></body></html>"""
+	message = MIMEMultipart("alternative")
+	message["Subject"] = "Lasso: Change Password"
+	message["From"] = EMAIL_ADDRESS
+	message["To"] = email
+	part1 = MIMEText(text, "plain")
+	part2 = MIMEText(html, "html")
+	message.attach(part1)
+	message.attach(part2)
+	context = ssl.create_default_context()
+	with smtplib.SMTP_SSL('smtp.gmail.com', 465, context=context) as smtp:
+	    smtp.login(EMAIL_ADDRESS, EMAIL_PASSWORD) 
+	    smtp.sendmail(EMAIL_ADDRESS, email, message.as_string())
+
+def reset_password(email):
+	
+
+
 def set_password():
 	x = ''.join(random.choices(string.ascii_letters + string.digits, k=16))
 	return x
 
-def send_email(email, password):
-
-	msg = EmailMessage()
-	msg['Subject'] = 'Lasso: Password Change Request'
-	msg['From'] = EMAIL_ADDRESS 
-	msg['To'] = email
-	content='''Hello, we have received a request from your email account to change your password.
+def send_change_password_email(email, password):
+	message = MIMEMultipart("alternative")
+	message["Subject"] = "Lasso: Change Password"
+	message["From"] = EMAIL_ADDRESS
+	message["To"] = email
+	text = '''Hello, we have received a request from your email account to change your password.
 	Your new password is '''+password+'''. Please login using your new password.'''
-	msg.set_content()
-
-
-	with smtplib.SMTP_SSL('smtp.gmail.com', 465) as smtp:
+	html = """\
+		<html>
+		<body><p>"""+text+"""</p></body></html>"""
+	part1 = MIMEText(text, "plain")
+	part2 = MIMEText(html, "html")
+	message.attach(part1)
+	message.attach(part2)
+	context = ssl.create_default_context()
+	with smtplib.SMTP_SSL('smtp.gmail.com', 465, context=context) as smtp:
 	    smtp.login(EMAIL_ADDRESS, EMAIL_PASSWORD) 
-	    smtp.send_message(msg)
+	    smtp.sendmail(EMAIL_ADDRESS, email, message.as_string())
