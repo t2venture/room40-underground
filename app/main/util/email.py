@@ -10,9 +10,9 @@ EMAIL_ADDRESS = 'tryrenta@gmail.com'
 EMAIL_PASSWORD = 'vgnpapuiolnsgtoi'
 
 def send_confirmation_email(email, confirmation_token):
-	text='''Thank you for creating an account at Lasso! Please confirm your email ID at this link. #LINK TO BE CREATED'''+confirmation_token
-	html_text='''Thank you for creating an account at Lasso! Please confirm your email ID at this link. <a href=#LINK TO BE CREATED'''+confirmation_token+'''>Confirmation Link</a>'''
-	#THIS LINK WILL CALL the <confirm/token> endpoint controller.
+	text='''Please confirm your email ID at this link. #LINK TO BE CREATED'''+confirmation_token
+	html_text='''Please confirm your email ID at this link. <a href=#LINK TO BE CREATED'''+confirmation_token+'''>Confirmation Link</a>'''
+	#THIS LINK WILL CALL the <confirm/token> endpoint controller. You can enter your password here.
 	html="""\
 		<html>
 		<body><p>"""+html_text+"""</p></body></html>"""
@@ -28,9 +28,6 @@ def send_confirmation_email(email, confirmation_token):
 	with smtplib.SMTP_SSL('smtp.gmail.com', 465, context=context) as smtp:
 	    smtp.login(EMAIL_ADDRESS, EMAIL_PASSWORD) 
 	    smtp.sendmail(EMAIL_ADDRESS, email, message.as_string())
-
-def reset_password(email):
-	
 
 
 def set_password():

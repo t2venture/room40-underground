@@ -5,8 +5,8 @@ from app.main.service.user_service import save_new_user, check_if_registered_use
 from app.main.service.auth_helper import Auth
 from ..util.dto import AuthDto
 from ..util.dto import UserDto
-from ..util.email import set_password
-
+from ..util.email import set_password, send_confirmation_email, send_change_password_email
+from app.main.token import generate_confirmation_token, confirm_token
 
 api = AuthDto.api
 user_auth = AuthDto.user_auth
@@ -69,6 +69,9 @@ class ForgotPasswordAPI(Resource):
             'message': 'Your email address is not registered.'}
             return response_object, 401
         else:
+            #METHOD 1
+            ####
+            '''
             new_password=set_password()
             changed_user=get_a_user_by_email(args['email_address'])
             id_changed_user=changed_user["id"]
@@ -79,7 +82,13 @@ class ForgotPasswordAPI(Resource):
             update_user(id_changed_user, data)
             ##SEND EMAIL FUNCTION
             send_change_password_email(args['email_address'], new_password)
+            '''
+            ###
+            #METHOD 2 (MORE SECURE)
+            ###
+            confirmation_token=generate_confirmation_token(args["email_address"])
 
+            ###
             
 
 

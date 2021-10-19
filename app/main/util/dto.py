@@ -12,6 +12,7 @@ class ConfirmDto:
     api = Namespace('confirm', description='confirmation related operations')
     user_confirm = api.model('confirmation_details', {
         'token': fields.String(required=True, description='confirmation token'),
+        'password': fields.String(required=True, description='password to be changed')
     })
 
 

@@ -72,6 +72,7 @@ def save_new_user(data):
         confirmation_token=generate_confirmation_token(data["email"])
         send_confirmation_email(data["email"], confirmation_token)
         return generate_token(new_user)
+        #WE COULD POTENTIALLY LIMIT OPERATIONS UNLESS USER IS CONFIRMED. CURRENTLY CONFIRMATION NOT NEEDED.
         
     else:
         response_object = {
@@ -261,9 +262,9 @@ def generate_token(user):
         }
         return response_object, 401
 
-def confirm_email(confirm_token):
+def confirm_email(token):
     try:
-        email = confirm_token(confirm_token)
+        email = confirm_token(token)
     except Exception as e:
         response_object = {
             'status': 'fail',
@@ -275,9 +276,9 @@ def confirm_email(confirm_token):
     data={"confirmed":True, "confirmed_on":datetime.datetime.utcnow()}
     update_user(id_of_user_to_confirm, data)
 
-def verify_reset_email(confirm_token, password):
+def verify_reset_email(token, password):
     try:
-        email = confirm_token(confirm_token)
+        email = confirm_token(token)
     except Exception as e:
         response_object = {
             'status': 'fail',
@@ -286,7 +287,7 @@ def verify_reset_email(confirm_token, password):
         return response_object, 401
     user_to_change_password=User.query.filter_by(email=email).first()
     id_of_user_to_reset=user_to_change_password.id
-    data={"confirmed":True, "confirmed_on":datetime.datetime.utcnow(),"password":password}
+    data={"modified_by":id_of_user_to_reset, "modified_time":datetime.datetime.utcnow(),"password":password}
     update_user(id_of_user_to_reset, data)
     
 
