@@ -45,3 +45,5 @@ virtualenv==20.4.3
 virtualenv-clone==0.5.4
 virtualenvwrapper==4.8.4
 Werkzeug==0.16.1
+wtforms==2.3.3
+

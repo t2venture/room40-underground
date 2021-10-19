@@ -16,7 +16,11 @@ app = create_app(os.getenv('BOILERPLATE_ENV') or 'dev')
 # Eliminate CORS issue.
 CORS(app)
 app.register_blueprint(blueprint)
-
+app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+app.config['MAIL_PORT'] = 465
+app.config['MAIL_USE_SSL'] = True
+app.config['MAIL_USERNAME'] = 'tryrenta@gmail.com'
+app.config['MAIL_PASSWORD'] = 'vgnpapuiolnsgtoi'
 app.app_context().push()
 
 manager = Manager(app)

@@ -6,6 +6,8 @@ from app.main.model.user import User
 from app.main.model.user_team import UserTeam
 from app.main.service.user_team_service import get_users_from_team
 from app.main.service.team_service import save_new_team
+from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
+
 def save_new_user(data):
     user = User.query.filter_by(email=data['email']).first()
     if 'linkedin_url' not in data.keys():
@@ -28,6 +30,12 @@ def save_new_user(data):
         usrname=data['first_name']
     else:
         usrname=data['username']
+    if validate_email(data['email'])==True or validate_first_name(data['first_name'])==True:
+        response_object = {
+            'status': 'fail',
+            'message': 'User already exists. Please Log in.',
+        }
+        return response_object, 409
     if not user:
         new_user = User(
             public_id=str(uuid.uuid4()),
@@ -209,6 +217,20 @@ def get_a_deleted_user(user_id):
 def save_changes(data):
     db.session.add(data)
     db.session.commit()
+
+def validate_first_name(first_name)):
+    user = User.query.filter_by(first_name=first_name).first()
+    if user:
+        return True
+    else:
+        return False
+
+def validate_email(email):
+    user = User.query.filter_by(email=email).first()
+    if user:
+        return True
+    else:
+        return False
 
 def generate_token(user):
     try:
