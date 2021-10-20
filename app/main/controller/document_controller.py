@@ -17,7 +17,6 @@ class DocumentList(Resource):
     @api.param("title", "title of the document")
     @api.param("is_deleted", "whether the document is deleted")
     @api.param("is_active", "whether the document is active")
-    @token_required
     def get(self):
 	    '''List all documents'''
 	    parser = reqparse.RequestParser()
@@ -50,7 +49,6 @@ class DocumentList(Resource):
 class Document(Resource):
     @api.doc('get a document')
     @api.marshal_with(_document)
-    @token_required
     def get(self, document_id):
         """get a document given its identifier"""
         document = get_a_document(document_id)
