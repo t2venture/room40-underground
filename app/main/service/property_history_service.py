@@ -91,7 +91,7 @@ def get_all_property_historys(is_deleted=False, is_active=True, property_id=""):
     phs=PropertyHistory.query
     if property_id and property_id!="":
         phs=phs.filter_by(property_id=property_id)
-    phs=phs.filter_by(is_deleted=is_deleted).filter_by(is_active=is_active).all()
+    phs=phs.filter_by(is_deleted=False).filter_by(is_active=True).all()
     return phs
 
 def get_all_deleted_property_historys():

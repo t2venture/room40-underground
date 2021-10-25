@@ -81,7 +81,7 @@ def delete_a_property_portfolio(property_portfolio_id, data):
         return response_object, 401
 
 def get_all_property_portfolios(is_deleted=False, is_active=True):
-    return PropertyPortfolio.query.filter_by(is_deleted=is_deleted).filter_by(is_active=is_active).all()
+    return PropertyPortfolio.query.filter_by(is_deleted=False).filter_by(is_active=True).all()
 
 def get_all_deleted_property_portfolios():
     return PropertyPortfolio.query.filter_by(is_deleted=True).all()

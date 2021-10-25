@@ -120,7 +120,7 @@ def get_all_property_models(is_deleted=False, is_active=True, property_id=""):
     pms=PropertyModel.query
     if property_id and property_id!="":
         pms=pms.filter_by(property_id=property_id)
-    pms=pms.filter_by(is_deleted=is_deleted).filter_by(is_active=is_active).all()
+    pms=pms.filter_by(is_deleted=False).filter_by(is_active=True).all()
     return pms
 
 def get_all_deleted_property_models():

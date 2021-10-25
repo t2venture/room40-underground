@@ -172,7 +172,7 @@ def delete_a_property(property_id, data):
         return response_object, 401
 
 def get_all_propertys(is_deleted=False, is_active=True, portfolio_id="", address="", street="", housenumber="", min_area=0, max_area=999999, north=89.99, south=-89.99, east=179.99, west=-179.99, min_lasso_score=0, max_lasso_score=100, min_price=0, max_price=9999999, bds="", bths=""):
-    propertys=Property.query.filter_by(is_deleted=is_deleted, is_active=is_active)
+    propertys=Property.query.filter_by(is_deleted=False, is_active=True)
     if portfolio_id and portfolio_id!="":
         property_ids=[pt.property_id for pt in get_propertys_from_portfolio(portfolio_id)]
         propertys=propertys.filter(Property.id.in_(property_ids))

@@ -126,7 +126,7 @@ def get_personal_team_id(user_id):
 
 
 def get_all_teams(user_id=1, portfolio_id="", is_active=True, is_deleted=False):
-    teams=Team.query.filter_by(is_active=is_active).filter_by(is_deleted=is_deleted)
+    teams=Team.query.filter_by(is_active=True).filter_by(is_deleted=False)
     if user_id!=1:
         team_ids=[ut.team_id for ut in get_teams_from_user(user_id)]
         teams=teams.filter(Team.id.in_(team_ids))

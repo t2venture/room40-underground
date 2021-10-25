@@ -16,7 +16,8 @@ class TokenConfirmation(Resource):
 		'''Verifies the token sent'''
 		data=request.json
 		token=data["token"]
-		confirm_email(token)
 		if 'password' in data.keys():
 			verify_reset_email(token, data["password"])
+		else:
+			confirm_email(token)
 

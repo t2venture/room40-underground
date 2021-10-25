@@ -82,7 +82,7 @@ def delete_a_team_portfolio(team_portfolio_id, data):
         return response_object, 401
 
 def get_all_team_portfolios(is_deleted=False, is_active=True):
-    return TeamPortfolio.query.filter_by(is_deleted=is_deleted).filter_by(is_active=is_active).all()
+    return TeamPortfolio.query.filter_by(is_deleted=False).filter_by(is_active=True).all()
 
 def get_all_deleted_team_portfolios():
     return TeamPortfolio.query.filter_by(is_deleted=True)

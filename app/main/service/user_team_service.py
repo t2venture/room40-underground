@@ -99,7 +99,7 @@ def get_all_user_teams(is_active=True, is_deleted=False, user_id=1):
     usrtms=UserTeam.query
     if user_id!=1:
         usrtms=usrtms.filter_by(user_id=user_id)
-    return usrtms.filter_by(is_deleted=is_deleted).filter_by(is_active=is_active).all()
+    return usrtms.filter_by(is_deleted=False).filter_by(is_active=True).all()
 
 def get_users_from_team(team_id):
 

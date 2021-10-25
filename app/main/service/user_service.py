@@ -207,7 +207,7 @@ def check_same_company(id1, id2):
         return False
 
 def check_if_registered_user(email):
-    usrs=User.query.filter_by(email=email).filter_by(is_deleted=False).filter_by(is_active=True).all()
+    usrs=User.query.filter(User.email==email).filter_by(is_deleted=False).filter_by(is_active=True).all()
     if not usrs:
         return False
     else:
