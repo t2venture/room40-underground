@@ -87,7 +87,12 @@ class ForgotPasswordAPI(Resource):
             #METHOD 2 (MORE SECURE)
             ###
             confirmation_token=generate_confirmation_token(args["email_address"])
-
+            response_object={
+                'status': 'success',
+                'message': 'Successfully registered. Please confirm your email.',
+                'confirmation': confirmation_token
+            }
+            return response_object, 201
             ###
             
 
