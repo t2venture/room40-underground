@@ -9,11 +9,11 @@ def generate_confirmation_token(email):
 	
 
 def confirm_token(token, expiration=3600):
-    serializer = URLSafeTimedSerializer(app.config['SECRET_KEY'])
+    serializer = URLSafeTimedSerializer('secret_key')
     try:
         email = serializer.loads(
             token,
-            salt=app.config['SECURITY_PASSWORD_SALT'],
+            salt='my_precious_salt',
             max_age=expiration
         )
     except:
