@@ -11,7 +11,6 @@ user_confirm=ConfirmDto.user_confirm
 class TokenConfirmation(Resource):
 	@api.doc('confirm a token')
 	@api.response(201,'token confirmed!')
-	@api.expect(user_confirm, validate=True)
 	def post(self):
 		'''Verifies the token sent'''
 		data=request.json
