@@ -82,11 +82,18 @@ class ForgotPasswordAPI(Resource):
             update_user(id_changed_user, data)
             ##SEND EMAIL FUNCTION
             send_change_password_email(args['email_address'], new_password)
+            response_object={
+                'status': 'success',
+                'message': 'Successfully registered. Please confirm your email.',
+                'confirmation': confirmation_token
+            }
+            return response_object, 201
             '''
             ###
             #METHOD 2 (MORE SECURE)
             ###
             confirmation_token=generate_confirmation_token(args["email_address"])
+            send_confirmation_email(args["email_address"], confirmation_token)
             response_object={
                 'status': 'success',
                 'message': 'Successfully registered. Please confirm your email.',

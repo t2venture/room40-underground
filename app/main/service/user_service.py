@@ -288,7 +288,7 @@ def verify_reset_email(token, password):
     user_to_change_password=User.query.filter(User.email==email).first()
     if (user_to_change_password):
         id_of_user_to_reset=user_to_change_password.id
-        data={"modified_by":id_of_user_to_reset, "modified_time":datetime.datetime.utcnow(),"password":password}
+        data={"modified_by":id_of_user_to_reset, "modified_time":datetime.datetime.utcnow(),"password":password, "confirmed":True, "confirmed_on":datetime.datetime.utcnow()}
         update_user(id_of_user_to_reset, data)
     
     
