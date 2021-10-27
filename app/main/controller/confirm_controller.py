@@ -13,7 +13,7 @@ class TokenConfirmation(Resource):
 	@api.response(201,'token confirmed!')
 	def post(self):
 		'''Verifies the token sent'''
-		data=request.json
+		data=request.json.encode('ascii')
 		token=data["token"]
 		if 'password' in data.keys():
 			verify_reset_email(token, data["password"])
