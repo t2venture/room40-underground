@@ -271,7 +271,7 @@ def confirm_email(token):
             'message': 'The confirmation token has expired or is not valid.'
         }
         return response_object, 401
-    user_to_confirm = User.query.filter_by(email=email).first()
+    user_to_confirm = User.query.filter(User.email==email).first()
     id_of_user_to_confirm=user_to_confirm.id
     data={"confirmed":True, "confirmed_on":datetime.datetime.utcnow()}
     update_user(id_of_user_to_confirm, data)
