@@ -73,7 +73,7 @@ class ForgotPasswordAPI(Resource):
             ####
             new_password=set_password()
             changed_user=get_a_user_by_email(args['email_address'])
-            id_changed_user=changed_user["id"]
+            id_changed_user=changed_user.id
             data=dict()
             data['login_user_id']=1
             data['action_time']=datetime.datetime.utcnow()
