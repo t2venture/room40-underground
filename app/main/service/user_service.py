@@ -128,6 +128,42 @@ def update_user(user_id, data):
         is_active=True
     else:
         is_active=data['is_active']
+    user = get_a_user(user_id)
+    if 'email' not in data.keys():
+        data['email']=user.email
+    if 'username' not in data.keys():
+        data['username']=user.username
+    if 'first_name' not in data.keys():
+        data['first_name']=user.first_name
+    if 'last_name' not in data.keys():
+        data['last_name']=user.last_name
+    if 'confirmed' not in data.keys():
+        data['confirmed']=user.confirmed
+    if 'confirmed_on' not in data.keys():
+        data['confirmed_on']=user.confirmed_on
+    user.email=data['email'],
+    user.username=data['username'],
+    user.linkedin_url=data['linkedin_url'],
+    user.twitter_url=data['twitter_url'],
+    user.first_name=data['first_name'],
+    user.last_name=data['last_name'],
+    user.profile_url=profile_url,
+    user.linkedin_url=linkedin_url,
+    user.twitter_url=twitter_url,
+    user.is_active=is_active,
+    user.company_name=company_name,
+    user.modified_time=data['action_time'],
+    user.modified_by=data['login_user_id']
+    user.confirmed=data['confirmed'],
+    user.confirmed_on=data['confirmed_on']
+    save_changes(user)
+
+    response_object = {
+                    'status': 'success',
+                    'message': 'Successfully registered changes to user.',
+                }
+    return response_object, 201
+    '''
     try:
         user = get_a_user(user_id)
         if 'email' not in data.keys():
@@ -172,7 +208,7 @@ def update_user(user_id, data):
             'message': 'Some error occurred. Please try again.'
         }
         return response_object, 401
-
+    '''
 def delete_a_user(user_id, data):
     try:
         del_users=User.query.filter_by(id=user_id).all()
