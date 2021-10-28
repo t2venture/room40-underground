@@ -78,14 +78,16 @@ class ForgotPasswordAPI(Resource):
             data['login_user_id']=1
             data['action_time']=datetime.datetime.utcnow()
             data['password']=new_password
-            update_user(id_changed_user, data)
             ##SEND EMAIL FUNCTION
             send_change_password_email(args['email_address'], new_password)
+            return update_user(id_changed_user, data)
+            '''
             response_object={
                 'status': 'success',
                 'message': 'Successfully registered. Please check your email for the new password to login with.',
             }
             return response_object, 201
+            '''
             ###
             #METHOD 2 (MORE SECURE)
             ###

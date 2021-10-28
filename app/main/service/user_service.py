@@ -148,7 +148,7 @@ def update_user(user_id, data):
 
         response_object = {
                     'status': 'success',
-                    'message': 'Successfully registered.',
+                    'message': 'Successfully registered changes to user.',
                 }
         return response_object, 201
 

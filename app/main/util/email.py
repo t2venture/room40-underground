@@ -29,7 +29,6 @@ def send_confirmation_email(email, confirmation_token):
 	    smtp.login(EMAIL_ADDRESS, EMAIL_PASSWORD) 
 	    smtp.sendmail(EMAIL_ADDRESS, email, message.as_string())
 
-
 def set_password():
 	x = ''.join(random.choices(string.ascii_letters + string.digits, k=16))
 	return x
