@@ -232,15 +232,15 @@ def save_changes(data):
     db.session.add(data)
     db.session.commit()
 
-def validate_first_name(first_name)):
-    user = User.query.filter_by(first_name=first_name).first()
+def validate_first_name(first_name):
+    user = User.query.filter(User.first_name==first_name).first()
     if user:
         return True
     else:
         return False
 
 def validate_email(email):
-    user = User.query.filter_by(email=email).first()
+    user = User.query.filter(User.email==email).first()
     if user:
         return True
     else:
