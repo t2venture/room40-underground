@@ -142,15 +142,15 @@ def update_user(user_id, data):
             data['confirmed']=user.confirmed
         if 'confirmed_on' not in data.keys():
             data['confirmed_on']=user.confirmed_on
-        user.email=data['email'],
-        user.username=data['username'],
-        user.first_name=data['first_name'],
-        user.last_name=data['last_name'],
-        user.profile_url=profile_url,
-        user.linkedin_url=linkedin_url,
-        user.twitter_url=twitter_url,
-        user.is_active=is_active,
-        user.company_name=company_name,
+        user.email=data['email']
+        user.username=data['username']
+        user.first_name=data['first_name']
+        user.last_name=data['last_name']
+        user.profile_url=profile_url
+        user.linkedin_url=linkedin_url
+        user.twitter_url=twitter_url
+        user.is_active=is_active
+        user.company_name=company_name
         user.modified_time=data['action_time']
         user.modified_by=data['login_user_id']
         user.confirmed=data['confirmed']

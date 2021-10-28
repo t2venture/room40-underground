@@ -41,11 +41,11 @@ def update_document(document_id, data):
             data['contents']=document.contents
         if 'is_active' not in data.keys():
             data['is_active']=document.is_active
-        document.title=data['title'],
-        document.contents=data['contents'],
-        document.modified_by=data['login_user_id'],
-        document.modified_time=data['action_time'],
-        document.is_active=data['is_active'],
+        document.title=data['title']
+        document.contents=data['contents']
+        document.modified_by=data['login_user_id']
+        document.modified_time=data['action_time']
+        document.is_active=data['is_active']
         save_changes(document)
         response_object = {
                     'status': 'success',
@@ -67,8 +67,8 @@ def delete_a_document(document_id, data):
         del_documents=Document.query.filter_by(id=document_id).all()
         for document in del_documents:
             document.is_deleted=True
-            document.modified_by=data['login_user_id'],
-            document.modified_time=data['action_time'],
+            document.modified_by=data['login_user_id']
+            document.modified_time=data['action_time']
         db.session.commit()
         response_object = {
                     'status': 'success',
