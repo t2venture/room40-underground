@@ -43,11 +43,11 @@ def update_property_history(property_history_id, data):
             data['prices']=property_history.prices
         if 'events' not in data.keys():
             data['events']=property_history.events
-        property_history.property_id=data['property_id'],
-        property_history.prices=data['prices'],
-        property_history.events=data['events'],
-        property_history.modified_by=data['login_user_id'],
-        property_history.modified_time=data['action_time'],
+        property_history.property_id=data['property_id']
+        property_history.prices=data['prices']
+        property_history.events=data['events']
+        property_history.modified_by=data['login_user_id']
+        property_history.modified_time=data['action_time']
         save_changes(property_history)
 
         response_object = {

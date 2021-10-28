@@ -40,7 +40,7 @@ def update_team_portfolio(team_portfolio_id, data):
         team_portfolio = get_a_team_portfolio(team_portfolio_id)
         if 'role' not in data.keys():
             data['role']=team_portfolio.role
-        team_portfolio.team_id=data['team_id'],
+        team_portfolio.team_id=data['team_id']
         team_portfolio.portfolio_id=data['portfolio_id']
         team_portfolio.role=data['role']
         save_changes(team_portfolio)

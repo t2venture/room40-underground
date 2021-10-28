@@ -48,10 +48,10 @@ def update_portfolio(portfolio_id, data):
         if 'description' not in data.keys():
             data['description']=portfolio.description
             #####
-        portfolio.title=data['title'],
-        portfolio.description=data['description'],
-        portfolio.modified_by=data['login_user_id'],
-        portfolio.modified_time=data['action_time'], 
+        portfolio.title=data['title']
+        portfolio.description=data['description']
+        portfolio.modified_by=data['login_user_id']
+        portfolio.modified_time=data['action_time']
         save_changes(portfolio)
         response_object = {
                     'status': 'success',

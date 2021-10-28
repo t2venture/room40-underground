@@ -39,10 +39,10 @@ def update_property_portfolio(property_portfolio_id, data):
             data['property_id']=property_portfolio.property_id
         if 'portfolio_id' not in data.keys():
             data['portfolio_id']=property_portfolio.portfolio_id
-        property_portfolio.property_id=data['property_id'],
+        property_portfolio.property_id=data['property_id']
         property_portfolio.portfolio_id=data['portfolio_id']
-        property_portfolio.modified_by=data['login_user_id'],
-        property_portfolio.modified_time=data['action_time'],
+        property_portfolio.modified_by=data['login_user_id']
+        property_portfolio.modified_time=data['action_time']
         save_changes(property_portfolio)
 
         response_object = {

@@ -40,7 +40,7 @@ def update_user_team(user_team_id, data):
             data['team_id']=user_team.team_id
         if 'user_id' not in data.keys():
             data['user_id']=user_team.user_id
-        user_team.team_id=data['team_id'],
+        user_team.team_id=data['team_id']
         user_team.user_id=data['user_id']
         if 'role' not in data.keys():
             data['role']=user_team.role

@@ -31,10 +31,10 @@ def update_rent(rent_id, data):
 
     try:
         rent = get_a_rent(rent_id)
-        rent.bedroom_count=data['bedroom_count'],
-        rent.bathroom_count=data['bathroom_count'],
-        rent.rounded_sqft_area=data['rounded_sqft_area'],
-        rent.rent_amount=data['rent_amount'],
+        rent.bedroom_count=data['bedroom_count']
+        rent.bathroom_count=data['bathroom_count']
+        rent.rounded_sqft_area=data['rounded_sqft_area']
+        rent.rent_amount=data['rent_amount']
         save_changes(rent)
 
         response_object = {

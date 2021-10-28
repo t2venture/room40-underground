@@ -65,18 +65,18 @@ def update_property_model(property_model_id, data):
             data['upper_series']=property_model.upper_series
         if 'model_metrics' not in data.keys():
             data['model_metrics']=property_model.model_metrics
-        property_model.property_id=data['property_id'],
-        property_model.project_oneyear=data['project_oneyear'],
-        property_model.project_twoyear=data['project_twoyear'],
-        property_model.project_fiveyear=data['project_fiveyear'],
-        property_model.threemonth_corr=data['threemonth_corr'],
-        property_model.sixmonth_corr=data['sixmonth_corr'],
-        property_model.lower_series=data['lower_series'],
-        property_model.median_series=data['median_series'],
-        property_model.upper_series=data['upper_series'],
-        property_model.model_metrics=data['model_metrics'],
-        property_model.modified_by=data['login_user_id'],
-        property_model.modified_time=data['action_time'],
+        property_model.property_id=data['property_id']
+        property_model.project_oneyear=data['project_oneyear']
+        property_model.project_twoyear=data['project_twoyear']
+        property_model.project_fiveyear=data['project_fiveyear']
+        property_model.threemonth_corr=data['threemonth_corr']
+        property_model.sixmonth_corr=data['sixmonth_corr']
+        property_model.lower_series=data['lower_series']
+        property_model.median_series=data['median_series']
+        property_model.upper_series=data['upper_series']
+        property_model.model_metrics=data['model_metrics']
+        property_model.modified_by=data['login_user_id']
+        property_model.modified_time=data['action_time']
         save_changes(property_model)
 
         response_object = {
