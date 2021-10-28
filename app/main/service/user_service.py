@@ -283,7 +283,7 @@ def confirm_email(token):
         return response_object, 401
     user_to_confirm = User.query.filter(User.email==email).first()
     id_of_user_to_confirm=user_to_confirm.id
-    data={"confirmed":True, "confirmed_on":datetime.datetime.utcnow()}
+    data={"confirmed":True, "confirmed_on":datetime.datetime.utcnow(), "action_time": datetime.datetime.utcnow(), "login_user_id": id_of_user_to_confirm}
     return update_user(id_of_user_to_confirm, data)
 
 def verify_reset_email(token, password):
@@ -298,7 +298,7 @@ def verify_reset_email(token, password):
     user_to_change_password=User.query.filter(User.email==email).first()
     if (user_to_change_password):
         id_of_user_to_reset=user_to_change_password.id
-        data={"modified_by":id_of_user_to_reset, "modified_time":datetime.datetime.utcnow(),"password": password, "confirmed":True, "confirmed_on":datetime.datetime.utcnow()}
+        data={"modified_by":id_of_user_to_reset, "modified_time":datetime.datetime.utcnow(),"password": password, "confirmed":True, "confirmed_on":datetime.datetime.utcnow(), "action_time": datetime.datetime.utcnow(), "login_user_id": id_of_user_to_reset}
         return update_user(id_of_user_to_reset, data)
     else:
         response_object = {
