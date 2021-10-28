@@ -40,7 +40,7 @@ def send_change_password_email(email, password):
 	message["From"] = EMAIL_ADDRESS
 	message["To"] = email
 	text = '''Hello, we have received a request from your email account to change your password.
-	Your new password is '''+password+'''. Please login using your new password.'''
+	Your new password is <b>'''+password+'''</b>. Please login using your new password. If this was not you, you can update to your old password once you login.'''
 	html = """\
 		<html>
 		<body><p>"""+text+"""</p></body></html>"""

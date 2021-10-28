@@ -69,9 +69,10 @@ def save_new_user(data):
         new_data["action_time"]=datetime.datetime.utcnow()
         new_data["color"]=color
         save_new_team(new_data)
-        confirmation_token=generate_confirmation_token(data["email"])
-        send_confirmation_email(data["email"], confirmation_token)
         return generate_token(new_user)
+        #confirmation_token=generate_confirmation_token(data["email"])
+        #send_confirmation_email(data["email"], confirmation_token)
+        
         #WE COULD POTENTIALLY LIMIT OPERATIONS UNLESS USER IS CONFIRMED. CURRENTLY CONFIRMATION NOT NEEDED.
         
     else:
@@ -214,7 +215,7 @@ def check_if_registered_user(email):
         return True
 
 def get_a_user_by_email(email):
-    return User.query.filter_by(email=email).filter_by(is_deleted=False).filter_by(is_active=True).first()
+    return User.query.filter(User.email==email).filter_by(is_deleted=False).filter_by(is_active=True).first()
 
 
 def get_a_user(user_id):
