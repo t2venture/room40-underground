@@ -288,7 +288,7 @@ def confirm_email(token):
     user_to_confirm = User.query.filter(User.email==email).first()
     id_of_user_to_confirm=user_to_confirm.id
     data={"confirmed":True, "confirmed_on":datetime.datetime.utcnow()}
-    update_user(id_of_user_to_confirm, data)
+    return update_user(id_of_user_to_confirm, data)
 
 def verify_reset_email(token, password):
     try:
@@ -303,6 +303,12 @@ def verify_reset_email(token, password):
     if (user_to_change_password):
         id_of_user_to_reset=user_to_change_password.id
         data={"modified_by":id_of_user_to_reset, "modified_time":datetime.datetime.utcnow(),"password": password, "confirmed":True, "confirmed_on":datetime.datetime.utcnow()}
-        update_user(id_of_user_to_reset, data)
+        return update_user(id_of_user_to_reset, data)
+    else:
+        response_object = {
+            'status': 'fail',
+            'message': 'The email does not correspond to a registered user.'
+        }
+        return response_object, 401
     
     

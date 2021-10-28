@@ -20,7 +20,7 @@ class TokenConfirmation(Resource):
 		parser.add_argument("new_password", type=str)
 		args=parser.parse_args()
 		if args['new_password']:
-			verify_reset_email(args['token'], args["new_password"])
+			return verify_reset_email(args['token'], args["new_password"])
 		else:
-			confirm_email(args['token'])
+			return confirm_email(args['token'])
 
