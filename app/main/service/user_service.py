@@ -95,8 +95,6 @@ def update_password_user(user_id, new_password):
         return response_object, 401   
     user.password_hash=flask_bcrypt.generate_password_hash(new_password).decode('utf-8')
     save_changes(user)
-    
-
 
 def update_user(user_id, data):
     try:
@@ -107,7 +105,9 @@ def update_user(user_id, data):
             'status': 'fail',
             'message': 'Some error occurred. Please try again.'
         }
-        return response_object, 401    
+        return response_object, 401
+    if 'password' in data.keys():
+        update_password_user(user_id, data['password']) 
     if 'linkedin_url' not in data.keys():
         linkedin_url=user.linkedin_url
     else:
@@ -302,8 +302,7 @@ def verify_reset_email(token, password):
     user_to_change_password=User.query.filter(User.email==email).first()
     if (user_to_change_password):
         id_of_user_to_reset=user_to_change_password.id
-        data={"modified_by":id_of_user_to_reset, "modified_time":datetime.datetime.utcnow(),"confirmed":True, "confirmed_on":datetime.datetime.utcnow()}
+        data={"modified_by":id_of_user_to_reset, "modified_time":datetime.datetime.utcnow(),"password": password, "confirmed":True, "confirmed_on":datetime.datetime.utcnow()}
         update_user(id_of_user_to_reset, data)
-        update_password_user(id_of_user_to_reset, password)
     
     
