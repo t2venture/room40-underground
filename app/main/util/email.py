@@ -10,8 +10,8 @@ EMAIL_ADDRESS = 'tryrenta@gmail.com'
 EMAIL_PASSWORD = 'vgnpapuiolnsgtoi'
 
 def send_confirmation_email(email, confirmation_token):
-	text='''Please confirm your email ID at this link. #LINK TO BE CREATED'''+confirmation_token
-	html_text='''Please confirm your email ID at this link. <a href=#LINK TO BE CREATED'''+confirmation_token+'''>Confirmation Link</a>'''
+	text='''Please confirm your email ID at this link. http://localhost:3000/reset-password?token='''+confirmation_token
+	html_text='''Please confirm your email ID at this link. <a href="http://localhost:3000/reset-password?token='''+confirmation_token+'''>Confirmation Link</a>'''
 	#THIS LINK WILL CALL the <confirm/token> endpoint controller. You can enter your password here.
 	html="""\
 		<html>
