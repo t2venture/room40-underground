@@ -140,8 +140,10 @@ def update_user(user_id, data):
             data['last_name']=user.last_name
         if 'confirmed' not in data.keys():
             data['confirmed']=user.confirmed
+        '''
         if 'confirmed_on' not in data.keys():
             data['confirmed_on']=user.confirmed_on
+        '''
         user.email=data['email'],
         user.username=data['username'],
         user.first_name=data['first_name'],
@@ -151,10 +153,10 @@ def update_user(user_id, data):
         user.twitter_url=twitter_url,
         user.is_active=is_active,
         user.company_name=company_name,
-        user.modified_time=datetime(data['action_time']),
+        #user.modified_time=datetime(data['action_time']),
         user.modified_by=data['login_user_id']
         user.confirmed=data['confirmed'],
-        user.confirmed_on=datetime(data['confirmed_on'])
+        #user.confirmed_on=datetime(data['confirmed_on'])
         save_changes(user)
         response_object = {
                     'status': 'success',
