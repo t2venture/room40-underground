@@ -154,7 +154,7 @@ def update_user(user_id, data):
         user.modified_time=data['action_time']
         user.modified_by=data['login_user_id']
         user.confirmed=data['confirmed']
-        user.confirmed_on=datetime(data['confirmed_on'])
+        user.confirmed_on=data['confirmed_on']
         save_changes(user)
         response_object = {
                     'status': 'success',
