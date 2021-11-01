@@ -71,13 +71,11 @@ class User(Resource):
         if not token:
             return logined, status
         if token['admin']==False and user_id!=token['user_id']:
-            flag=check_same_company(user_id, token['user_id'])
-            if flag==False:
-                response_object = {
+            response_object = {
                 'status': 'fail',
                 'message': 'You cannot search for this information.'
                 }
-                return response_object, 401
+            return response_object, 401
         if not user:
             api.abort(404)
         else:
