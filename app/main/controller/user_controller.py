@@ -16,9 +16,6 @@ class UserList(Resource):
     @api.doc('list_of_registered_users')
     @api.param('is_deleted', 'whether the user is deleted')
     @api.param('is_active', 'whether the user is active')
-
-    #@api.param('company_name', 'name of the company the person belongs to')
-
     @api.marshal_list_with(_user, envelope='data')
     @token_required
     def get(self):
@@ -26,9 +23,6 @@ class UserList(Resource):
         parser = reqparse.RequestParser()
         parser.add_argument("is_deleted", type=bool)
         parser.add_argument("is_active", type=bool)
-
-        #parser.add_argument("company_name", type=str)
-
         args = parser.parse_args()
         logined, status = Auth.get_logged_in_user(request)
         token=logined.get('data')

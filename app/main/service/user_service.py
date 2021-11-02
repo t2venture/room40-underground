@@ -198,14 +198,9 @@ def delete_a_user(user_id, data):
         return response_object, 401
 
 def get_all_users(deleted=False, active=True, adm=False, usr=1):
-    print (deleted, active, adm, usr)
     users=User.query.filter_by(is_deleted=deleted).filter_by(is_active=active)
     if (adm==False):
         users=users.filter(User.id==usr)
-    '''
-    if company_name and company_name!="" and company_name!="Independent":
-        company_name="%"+company_name+"%"
-        users=users.filter(User.company_name.like(company_name))'''
     return users.all()
 
 def check_same_company(id1, id2):
