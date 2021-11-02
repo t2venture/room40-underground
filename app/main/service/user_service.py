@@ -200,7 +200,7 @@ def delete_a_user(user_id, data):
 def get_all_users(deleted=False, active=True, adm=False, usr=1):
     users=User.query.filter_by(is_deleted=deleted).filter_by(is_active=active)
     if (adm==False):
-        users=users.filter_by(id=usr)
+        users=users.filter(User.id==usr)
     '''
     if company_name and company_name!="" and company_name!="Independent":
         company_name="%"+company_name+"%"
