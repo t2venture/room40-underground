@@ -232,7 +232,7 @@ def get_a_user_by_email(email):
 
 
 def get_a_user(user_id):
-    return User.query.filter_by(id=user_id).filter_by(is_deleted=False).filter_by(is_active=True).first()
+    return User.query.filter(User.id==user_id).filter_by(is_deleted=False).filter_by(is_active=True).first()
 
 def get_all_deleted_users():
     users=User.query.filter_by(is_deleted=True)

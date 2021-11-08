@@ -15,6 +15,12 @@ class ConfirmDto:
         'password': fields.String(required=True, description='password to be changed')
     })
 
+class ChangepasswordDto:
+    api = Namespace('changepassword', description='change password related operations')
+    changepassword = api.model('change password details', {
+        'oldpassword': fields.String(required=True, description='old password'),
+        'newpassword': fields.String(required=True, description='new password')
+    })
 
 class DocumentDto:
     api = Namespace('document', description='document related operations')
