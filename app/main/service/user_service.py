@@ -33,6 +33,10 @@ def save_new_user(data):
         usrname=data['first_name']
     else:
         usrname=data['username']
+    if 'phonenumber' not in data.keys():
+        phone='999999999'
+    else:
+        phone=data['phonenumber']
     if validate_email(data['email'])==True or validate_first_name(data['first_name'])==True:
         response_object = {
             'status': 'fail',
@@ -52,6 +56,7 @@ def save_new_user(data):
             registered_on=datetime.datetime.utcnow(),
             linkedin_url=linkedin_url,
             twitter_url=twitter_url,
+            phonenumber=phone,
             is_deleted=False,
             is_active=True,
             created_time=data['action_time'],
@@ -142,6 +147,8 @@ def update_user(user_id, data):
             data['confirmed']=user.confirmed
         if 'confirmed_on' not in data.keys():
             data['confirmed_on']=user.confirmed_on
+        if 'phonenumber' not in data.keys():
+            data['phonenumber']=user.phonenumber
         user.email=data['email']
         user.username=data['username']
         user.first_name=data['first_name']
@@ -151,6 +158,7 @@ def update_user(user_id, data):
         user.twitter_url=twitter_url
         user.is_active=is_active
         user.company_name=company_name
+        user.phonenumber=data['phonenumber']
         user.modified_time=data['action_time']
         user.modified_by=data['login_user_id']
         user.confirmed=data['confirmed']

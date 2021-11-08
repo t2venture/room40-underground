@@ -44,6 +44,7 @@ class UserDto:
         'username': fields.String(required=False, description='user username'),
         'linkedin_url': fields.String(required=False, description='user LinkedIn'),
         'twitter_url': fields.String(required=False, description='user Twitter'),
+        'phonenumber': fields.String(required=False, description='phone number'),
         'company_name': fields.String(required=False, description="company of the user")
     })
 

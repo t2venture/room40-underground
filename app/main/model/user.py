@@ -25,6 +25,7 @@ class User(db.Model):
     password_hash = db.Column(db.String(100))
     linkedin_url = db.Column(db.String(255), unique=False, nullable=True)
     twitter_url = db.Column(db.String(255), unique=False, nullable=True)
+    phonenumber = db.Column(db.String(30), unique=False, nullable=True)
     company_name=db.Column(db.String(255), unique=False, default="Independent")
     created_by=db.Column(db.Integer, unique=False, nullable=False, default=same_as('id'))
     modified_by=db.Column(db.Integer, unique=False, nullable=False, default=same_as('id'))

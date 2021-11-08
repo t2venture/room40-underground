@@ -29,6 +29,7 @@ def add_users():
     linkedin_url=None,
     twitter_url=None,
     company_name="Independent",
+    phonenumber='9194337673',
     created_by=1,
     modified_by=1,
     created_time=datetime.datetime.utcnow(),
