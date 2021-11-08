@@ -60,8 +60,9 @@ class Auth:
     @staticmethod
     def get_logged_in_user(new_request):
         # get the auth token
-        auth_token = new_request.headers.get('Authorization')
-        if auth_token:
+        full_auth_token = new_request.headers.get('Authorization')
+        if full_auth_token:
+            auth_token=full_auth_token.split(" ")[1]
             resp = User.decode_auth_token(auth_token)
             if not isinstance(resp, str):
                 user = User.query.filter_by(id=resp).first()
