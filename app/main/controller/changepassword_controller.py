@@ -43,4 +43,4 @@ class Changepassword(Resource):
 			return response_object, 401
 		else:
 			data={"password": args['newpassword']}
-			return update_user(usr_id, args['newpassword'])
+			return update_user(usr_id, data)
