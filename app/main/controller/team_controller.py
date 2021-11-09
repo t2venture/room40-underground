@@ -96,13 +96,13 @@ class Team(Resource):
             if check_user_in_team(token['user_id'], team_id)==False:
                 response_object = {
                 'status': 'fail',
-                'message': 'You cannot update this information.'
+                'message': 'You cannot update this information. You need to be a teammember.'
                 }
                 return response_object, 401
             if check_user_is_owner_or_editor(token['user_id'], team_id)==False:
                 response_object = {
                 'status': 'fail',
-                'message': 'You cannot update this information.'
+                'message': 'You cannot update this information. You need to be a owner or editor.'
                 }
                 return response_object, 401
         login_user={"login_user_id": token['user_id']}

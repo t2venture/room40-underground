@@ -35,8 +35,10 @@ class DocumentList(Resource):
 	    data = request.json
 	    logined, status = Auth.get_logged_in_user(request)
 	    token=logined.get('data')
+
 	    if not token:
 		    return logined, status
+	    token['user_id']=int(token['user_id'])
 	    login_user={"login_user_id": token['user_id']}
 	    action_time={"action_time": datetime.datetime.utcnow()}
 	    data.update(login_user)
