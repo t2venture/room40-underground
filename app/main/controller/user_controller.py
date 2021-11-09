@@ -110,12 +110,13 @@ class User(Resource):
         token=logined.get('data')
         if not token:
             return logined, status
-        if token['admin']==False and user_id!=token['user_id']:
-            response_object = {
-                'status': 'fail',
-                'message': 'You cannot delete this information.'
-            }
-            return response_object, 401
+        if token['admin']==False:
+            if user_id!=token['user_id']:
+                response_object = {
+                    'status': 'fail',
+                    'message': 'You cannot delete this information.'
+                    }
+                return response_object, 401
         data=dict()
         login_user={"login_user_id": token["user_id"]}
         action_time={"action_time": datetime.datetime.utcnow()}
