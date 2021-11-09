@@ -8,7 +8,7 @@ import json
 from ..service.auth_helper import Auth
 from ..util.decorator import token_required, admin_token_required
 api=ChangepasswordDto.api
-changepassword=api.changepassword
+changepassword=ChangepasswordDto.changepassword
 
 @api.route('/')
 
@@ -20,11 +20,11 @@ class Changepassword(Resource):
 	@token_required
 	def post(self):
 		parser = reqparse.RequestParser()
-        	parser.add_argument("oldpassword", type=str)
-        	parser.add_argument("newpassword", type=str)
-        	args = parser.parse_args()
+		parser.add_argument("oldpassword", type=str)
+		parser.add_argument("newpassword", type=str)
+		args = parser.parse_args()
 		logined, status = Auth.get_logged_in_user(request)
-        	token=logined.get('data')
+		token=logined.get('data')
 		usr_id=int(token['user_id'])
 		user_to_change=get_a_user(usr_id)
 		flag=user_to_change.check_password(args['oldpassword'])
@@ -33,7 +33,7 @@ class Changepassword(Resource):
 				'status': 'fail',
 				'message': 'email or password does not match.'
 				}
-                	return response_object, 401
+			return response_object, 401
 
 		elif not args['newpassword']:
 			response_object = {

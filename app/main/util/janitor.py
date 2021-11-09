@@ -46,7 +46,7 @@ def clean_database():
 	#259200 is the number of seconds in 30 days
 	for u in all_users_notconfirmed:
 		delta=time_now-u.modified_time
-		if u.confirmed==False and delta.total_seconds()time_param:
+		if u.confirmed==False and delta.total_seconds()>time_param:
 			User.query(id=u.id).delete()
 			db.session.commit()
 

@@ -16,7 +16,7 @@ class TokenConfirmation(Resource):
 	def post(self):
 		'''Verifies the token sent'''
 		parser = reqparse.RequestParser()
-        	parser.add_argument("token", type=str)
+		parser.add_argument("token", type=str)
 		parser.add_argument("new_password", type=str)
 		args=parser.parse_args()
 		if args['new_password']:
