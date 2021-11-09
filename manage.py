@@ -5,7 +5,7 @@ from flask_migrate import Migrate, MigrateCommand
 from flask_script import Manager
 from flask_cors import CORS, cross_origin
 
-from app.main.model import user, property, property_model, portfolio, property_portfolio, document, team, user_team, team_portfolio, property_history
+from app.main.model import user, property, property_model, portfolio, property_portfolio, document, team, user_team, team_portfolio
 from app.main import create_app, db
 from app import blueprint
 from app.main.model import blacklist
@@ -27,7 +27,7 @@ manager.add_command('db', MigrateCommand)
 
 @manager.command
 def run():
-    app.run()
+    app.run(host='192.168.1.26')
 
 @manager.command
 def populate_db():

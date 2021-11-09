@@ -177,6 +177,7 @@ def update_user(user_id, data):
             'message': 'Some error occurred. Please try again.'
         }
         return response_object, 401
+
 def delete_a_user(user_id, data):
     try:
         del_users=User.query.filter_by(id=user_id).all()

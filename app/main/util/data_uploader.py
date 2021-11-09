@@ -46,6 +46,8 @@ def add_documents():
     modified_by=1,
     created_time=datetime.datetime.utcnow(),
     modified_time=datetime.datetime.utcnow(),
+    is_deleted=False,
+    is_active=True,
     )
     db.session.add(new_terms)
     new_privacy=Document(title="Privacy",
@@ -54,6 +56,8 @@ def add_documents():
     modified_by=1,
     created_time=datetime.datetime.utcnow(),
     modified_time=datetime.datetime.utcnow(),
+    is_deleted=False,
+    is_active=True,
     )
     db.session.add(new_privacy)
 
