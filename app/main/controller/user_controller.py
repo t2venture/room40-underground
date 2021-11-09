@@ -88,7 +88,7 @@ class User(Resource):
         token=logined.get('data')
         if not token:
             return logined, status
-        token['admin']=int(token['admin'])
+        token['user_id']=int(token['user_id'])
         print (token['admin'])
         print (user_id, type(user_id))
         print (token['user_id'], type(token['user_id']))
