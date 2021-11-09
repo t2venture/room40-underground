@@ -88,12 +88,13 @@ class User(Resource):
         token=logined.get('data')
         if not token:
             return logined, status
-        if token['admin']==False and user_id and user_id!=token['user_id']:
-            response_object = {
-                'status': 'fail',
-                'message': 'You cannot update this information.'
-            }
-            return response_object, 401
+        if token['admin']==False:
+            if user_id and user_id!=token['user_id']:
+                response_object = {
+                    'status': 'fail',
+                    'message': 'You cannot update this information.'
+                    }
+                return response_object, 401
         if token['admin']==False:
             del data['password']
         login_user={"login_user_id": token['user_id']}
