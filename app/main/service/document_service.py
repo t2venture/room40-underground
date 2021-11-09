@@ -91,6 +91,7 @@ def get_all_documents(query_title="", deleted=False, active=True):
         query_title='%'+query_title+'%'
         documents=documents.filter(Document.title.like(query_title))
     return documents.all()
+    # return Document.query.filter_by(is_deleted,is_active=1).all()
 
 
 def get_all_deleted_documents():

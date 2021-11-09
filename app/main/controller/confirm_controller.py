@@ -9,18 +9,18 @@ user_confirm=ConfirmDto.user_confirm
 
 @api.route('/')
 class TokenConfirmation(Resource):
-	@api.doc('confirm a token')
-	@api.response(201,'token confirmed!')
-	@api.param('token', 'your confirmation token')
-	@api.param('new_password', 'setting your password')
-	def post(self):
-		'''Verifies the token sent'''
-		parser = reqparse.RequestParser()
-		parser.add_argument("token", type=str)
-		parser.add_argument("new_password", type=str)
-		args=parser.parse_args()
-		if args['new_password']:
-			return verify_reset_email(args['token'], args["new_password"])
-		else:
-			return confirm_email(args['token'])
+    @api.doc('confirm a token')
+    @api.response(201, 'token confirmed!')
+    @api.param('token', 'your confirmation token')
+    @api.param('new_password', 'setting your password')
+    def post(self):
+        '''Verifies the token sent'''
+        parser = reqparse.RequestParser()
+        parser.add_argument("token", type=str)
+        parser.add_argument("new_password", type=str)
+        args = parser.parse_args()
+        if args['new_password']:
+            return verify_reset_email(args['token'], args["new_password"])
+        else:
+            return confirm_email(args['token'])
 

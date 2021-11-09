@@ -2,13 +2,16 @@ from flask import request
 from flask_restplus import Resource, reqparse
 
 from ..util.dto import DocumentDto
-from ..service.document_service import save_new_document, get_all_documents, get_a_document, update_document, delete_a_document
+from ..service.document_service import save_new_document, get_all_documents, get_a_document, update_document, \
+    delete_a_document
 from ..service.auth_helper import Auth
 import json
 import datetime
 from ..util.decorator import token_required, admin_token_required
+
 api = DocumentDto.api
 _document = DocumentDto.document
+
 
 @api.route('/')
 class DocumentList(Resource):
@@ -42,6 +45,7 @@ class DocumentList(Resource):
 	    data.update(login_user)
 	    data.update(action_time)	    
 	    return save_new_document(data=data)
+
 
 @api.route('/<document_id>')
 @api.param('document_id', 'The Document identifier')
