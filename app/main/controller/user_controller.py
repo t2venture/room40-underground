@@ -15,7 +15,7 @@ _user = UserDto.user
 class UserList(Resource):
     @api.doc('list_of_registered_users')
     @api.param('is_deleted', 'whether the user is deleted')
-    @api.param('is_active', 'whether the user is active')s
+    @api.param('is_active', 'whether the user is active')
     @api.marshal_list_with(_user, envelope='data')
     @token_required
     def get(self):
