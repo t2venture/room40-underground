@@ -42,5 +42,5 @@ class Changepassword(Resource):
 				}
 			return response_object, 401
 		else:
-			data={"password": args['newpassword']}
+			data={"password": args['newpassword'], "login_user_id": usr_id, "action_time": datetime.datetime.utcnow()}
 			return update_user(usr_id, data)
