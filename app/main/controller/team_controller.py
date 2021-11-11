@@ -67,6 +67,7 @@ class Team(Resource):
         team = get_a_team(team_id)
         logined, status = Auth.get_logged_in_user(request)
         token=logined.get('data')
+        team_id=int(team_id)
         if not token:
             return logined, status
         if token['admin']==False:
@@ -90,6 +91,7 @@ class Team(Resource):
         data = request.json
         logined, status = Auth.get_logged_in_user(request)
         token=logined.get('data')
+        team_id=int(team_id)
         if not token:
             return logined, status
         if token['admin']==False:
@@ -118,6 +120,7 @@ class Team(Resource):
         """Delete a team """
         logined, status = Auth.get_logged_in_user(request)
         token=logined.get('data')
+        team_id=int(team_id)
         if not token:
             return logined, status
         if token['admin']==False:

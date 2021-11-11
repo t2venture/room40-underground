@@ -7,7 +7,8 @@ from app.main.model.user_team import UserTeam
 def save_new_user_team(data):
     if 'role' not in data.keys():
         data['role']='Viewer'
-
+    if data['role'] not in ['Editor', 'Owner', 'Viewer']:
+        data['role']='Viewer'
     try:
         new_user_team = UserTeam(
             team_id=data['team_id'],
@@ -112,30 +113,28 @@ def get_teams_from_user(user_id):
 
 def get_a_user_team(user_team_id):
     
-    return UserTeam.query.filter_by(id=user_team_id).filter_by(is_active=True).filter_by(is_deleted=False).first()
+    return UserTeam.query.filter(UserTeam.id==user_team_id).filter_by(is_active=True).filter_by(is_deleted=False).first()
 
 def check_user_in_team(user_id, team_id):
-    data=UserTeam.query.filter_by(user_id=user_id).filter_by(team_id=team_id).all()
+    data=UserTeam.query.filter(UserTeam.user_id==user_id).filter(UserTeam.team_id==team_id).all()
     if data is None:
         return False
     else:
         return True
 
 def check_user_is_owner_or_editor(user_id, team_id):
-    data=UserTeam.query.filter_by(user_id=user_id).filter_by(team_id=team_id).all()
-    role=data['role']
-    if role=='Owner' or role=='Editor':
-        return True
-    else:
+    mydata=UserTeam.query.filter(UserTeam.user_id==user_id).filter(UserTeam.team_id==team_id).filter(UserTeam.role.in_(['Owner', 'Editor'])).all()
+    if mydata is None:
         return False
+    else:
+        return True
 
 def check_user_is_owner(user_id, team_id):
-    data=UserTeam.query.filter_by(user_id=user_id).filter_by(team_id=team_id).all()
-    role=data['role']
-    if role=='Owner':
-        return True
-    else:
+    mydata=UserTeam.query.filter_by(user_id=user_id).filter_by(team_id=team_id).filter(UserTeam.role=='Owner').all()
+    if mydata is None:
         return False
+    else:
+        return True
 
 
 def save_changes(data):

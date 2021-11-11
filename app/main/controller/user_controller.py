@@ -58,18 +58,21 @@ class User(Resource):
     @token_required
     def get(self, user_id):
         """get a user given its identifier"""
-        user = get_a_user(user_id)
         logined, status = Auth.get_logged_in_user(request)
         #You can check user information for other IDs (as non admin) if same company.
         token=logined.get('data')
         if not token:
             return logined, status
-        if token['admin']==False and user_id!=token['user_id']:
-            response_object = {
-                'status': 'fail',
-                'message': 'You cannot search for this information.'
-                }
-            return response_object, 401
+        if token['admin']==False:
+            user_id=int(user_id)
+            tokenid=int(token["user_id"])
+            if user_id!=tokenid:
+                response_object = {
+                    'status': 'fail',
+                    'message': 'You cannot search for this information.'
+                    }
+                return response_object, 401
+        user = get_a_user(user_id)
         if not user:
             api.abort(404)
         else:
@@ -90,11 +93,9 @@ class User(Resource):
             return logined, status
         token['user_id']=int(token['user_id'])
         user_id=int(user_id)
-        print (token['admin'])
-        print (user_id, type(user_id))
-        print (token['user_id'], type(token['user_id']))
         if token['admin']==False:
-            if user_id and user_id!=token['user_id']:
+            usr_id=int(token['user_id'])
+            if user_id and user_id!=usr_id:
                 response_object = {
                     'status': 'fail',
                     'message': 'You cannot update this information.'
@@ -115,8 +116,10 @@ class User(Resource):
         token=logined.get('data')
         if not token:
             return logined, status
+        user_id=int(user_id)
+        tokenid=int(token["user_id"])
         if token['admin']==False:
-            if user_id!=token['user_id']:
+            if user_id!=tokenid:
                 response_object = {
                     'status': 'fail',
                     'message': 'You cannot delete this information.'

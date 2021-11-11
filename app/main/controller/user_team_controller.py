@@ -27,11 +27,7 @@ class UserTeamList(Resource):
         token=logined.get('data')
         if not token:
             return logined, status
-        if token['admin']==False:
-            usr=token["user_id"]
-        else:
-            usr=1
-        return get_all_user_teams(args["is_active"], args["is_deleted"], usr)
+        return get_all_user_teams(args["is_active"], args["is_deleted"], token["user_id"])
 
     @api.response(201, 'user_team successfully created.')
     @api.doc('create a new user_team')
@@ -45,6 +41,7 @@ class UserTeamList(Resource):
         if not token:
             return logined, status
         if token['admin']==False:
+            print (token['user_id'], type(token['user_id']), data['team_id'], type(data['team_id']))
             if check_user_in_team(token['user_id'], data['team_id'])==False:
                 response_object = {
                 'status': 'fail',
@@ -76,16 +73,17 @@ class UserTeam(Resource):
         token=logined.get('data')
         if not token:
             return logined, status
-        if token['admin']==False:
-            usr=token["user_id"]
+        user_team_id=int(user_team_id)
         user_team = get_a_user_team(user_team_id)
-        tm=user_team["team_id"]
-        if check_user_in_team(usr, tm)==False:
-            response_object = {
-                'status': 'fail',
-                'message': 'You cannot view this information.'
-                }
-            return response_object, 401
+        tm=int(user_team.team_id)
+        tokenid=int(token["user_id"])
+        if token['admin']==False:
+            if check_user_in_team(tokenid, tm)==False:
+                response_object = {
+                    'status': 'fail',
+                    'message': 'You cannot view this information.'
+                    }
+                return response_object, 401
         if not user_team:
             api.abort(404)
         else:
@@ -102,17 +100,17 @@ class UserTeam(Resource):
         token=logined.get('data')
         if not token:
             return logined, status
-        if token['admin']==False:
-            usr=token["user_id"]
+        user_team_id=int(user_team_id)
         user_team = get_a_user_team(user_team_id)
-        tm=user_team["team_id"]
-        if check_user_in_team(usr, tm)==False:
+        tokenid=int(token["user_id"])
+        tm=int(user_team.team_id)
+        if check_user_in_team(tokenid, tm)==False:
             response_object = {
                 'status': 'fail',
                 'message': 'You cannot update this information.'
                 }
             return response_object, 401
-        if check_user_is_owner(usr, tm)==False:
+        if check_user_is_owner(token["user_id"], tm)==False:
             response_object = {
                 'status': 'fail',
                 'message': 'You cannot update this information.'
@@ -133,17 +131,16 @@ class UserTeam(Resource):
         token=logined.get('data')
         if not token:
             return logined, status
-        if token['admin']==False:
-            usr=token["user_id"]
+        user_team_id=int(user_team_id)
         user_team = get_a_user_team(user_team_id)
-        tm=user_team["team_id"]
-        if check_user_in_team(usr, tm)==False:
+        tm=int(user_team.team_id)
+        if check_user_in_team(token["user_id"], tm)==False:
             response_object = {
                 'status': 'fail',
                 'message': 'You cannot update this information.'
                 }
             return response_object, 401
-        if check_user_is_owner_or_editor(usr, tm)==False:
+        if check_user_is_owner_or_editor(token["user_id"], tm)==False:
             response_object = {
                 'status': 'fail',
                 'message': 'You cannot update this information.'
