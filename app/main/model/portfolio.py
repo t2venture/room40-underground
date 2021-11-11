@@ -11,3 +11,5 @@ class Portfolio(db.Model):
 	id=db.Column(db.Integer, primary_key=True, autoincrement=True)
 	title=db.Column(db.String(255), unique=False, nullable=True)
 	description=db.Column(db.String(255), unique=False, nullable=True)
+	is_deleted=db.Column(db.Boolean, unique=False, nullable=False, default=False)
+	is_active=db.Column(db.Boolean, unique=False, nullable=False, default=True)

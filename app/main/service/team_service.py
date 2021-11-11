@@ -32,6 +32,8 @@ def save_new_team(data):
         new_data['team_id']=tid
         new_data['user_id']=data['login_user_id']
         new_data['role']='Owner'
+        new_data['login_user_id']=data['login_user_id']
+        new_data['action_time']=data['action_time']
         save_new_user_team(new_data)
         ###ADD TEAM FOR EVERY INDIVIDUAL
         response_object = {

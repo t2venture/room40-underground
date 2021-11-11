@@ -17,6 +17,8 @@ def save_new_user_team(data):
             created_time=data['action_time'],
             modified_by=data['login_user_id'],
             modified_time=data['action_time'],
+            is_deleted=False,
+            is_active=True,
         )
         save_changes(new_user_team)
         response_object = {
@@ -86,10 +88,10 @@ def delete_a_user_team(user_team_id, data):
         return response_object, 401
 
 def get_deleted_users_for_team(team_id):
-    return UserTeam.query.filter_by(team_id=team_id).filter_by(is_deleted=True).all()
+    return UserTeam.query.filter(UserTeam.team_id==team_id).filter_by(is_deleted=True).all()
 
 def get_deleted_teams_for_user(user_id):
-    return UserTeam.query.filter_by(user_id=user_id).filter_by(is_deleted=True).all()
+    return UserTeam.query.filter(UserTeam.user_id==user_id).filter_by(is_deleted=True).all()
 
 def get_all_deleted_user_teams():
     return UserTeam.query.filter_by(is_deleted=True).all()
@@ -98,15 +100,15 @@ def get_all_deleted_user_teams():
 def get_all_user_teams(is_active=True, is_deleted=False, user_id=1):
     usrtms=UserTeam.query
     if user_id!=1:
-        usrtms=usrtms.filter_by(user_id=user_id)
+        usrtms=usrtms.filter(UserTeam.user_id==user_id)
     return usrtms.filter_by(is_deleted=False).filter_by(is_active=True).all()
 
 def get_users_from_team(team_id):
 
-    return UserTeam.query.filter_by(team_id=team_id).filter_by(is_active=True).filter_by(is_deleted=False).all()
+    return UserTeam.query.filter(UserTeam.team_id==team_id).filter_by(is_active=True).filter_by(is_deleted=False).all()
 
 def get_teams_from_user(user_id):
-    return UserTeam.query.filter_by(user_id=user_id).filter_by(is_active=True).filter_by(is_deleted=False).all()
+    return UserTeam.query.filter(UserTeam.user_id==user_id).filter_by(is_active=True).filter_by(is_deleted=False).all()
 
 def get_a_user_team(user_team_id):
     

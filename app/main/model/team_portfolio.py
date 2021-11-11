@@ -10,3 +10,5 @@ class TeamPortfolio(db.Model):
 	id = db.Column(db.Integer, primary_key=True, autoincrement=True)
 	team_id=db.Column(db.Integer, db.ForeignKey('team.id'))
 	portfolio_id=db.Column(db.Integer, db.ForeignKey('portfolio.id'))
+	is_deleted=db.Column(db.Boolean, unique=False, nullable=False, default=False)
+	is_active=db.Column(db.Boolean, unique=False, nullable=False, default=True)
