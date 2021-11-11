@@ -41,7 +41,6 @@ class UserTeamList(Resource):
         if not token:
             return logined, status
         if token['admin']==False:
-            print (token['user_id'], type(token['user_id']), data['team_id'], type(data['team_id']))
             if check_user_in_team(token['user_id'], data['team_id'])==False:
                 response_object = {
                 'status': 'fail',
