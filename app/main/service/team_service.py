@@ -86,19 +86,19 @@ def update_team(team_id, data):
 
 def delete_a_team(team_id, data):
     try:
-        del_teams=Team.query.filter_by(id=team_id).all()
+        del_teams=Team.query.filter(Team.id==team_id).all()
         for dt in del_teams:
             dt.is_deleted=True
             dt.modified_by=data['login_user_id']
             dt.modified_time=data['action_time']
         db.session.commit()
-        duts=UserTeam.query.filter_by(team_id=team_id).all()
+        duts=UserTeam.query.filter(Team.team_id==team_id).all()
         for dut in duts:
             dut.is_deleted=True
             dut.modified_by=data['login_user_id']
             dut.modified_time=data['action_time']
         db.session.commit()
-        dtpfs=TeamPortfolio.query.filter_by(team_id=team_id).all()
+        dtpfs=TeamPortfolio.query.filter(TeamPortfolio.team_id==team_id).all()
         for tpf in dtpfs:
             tpf.is_deleted=True
             tpf.modified_time=data['action_time']
@@ -119,7 +119,7 @@ def delete_a_team(team_id, data):
         return response_object, 401
 
 def get_personal_team_id(user_id):
-    user_teams=UserTeam.query.filter_by(is_active=True).filter_by(is_deleted=False).filter_by(user_id=user_id).all()
+    user_teams=UserTeam.query.filter_by(is_active=True).filter_by(is_deleted=False).filter(UserTeam.user_id==user_id).all()
     utids=[ut.team_id for ut in user_teams]
     personal_teams=Team.query.filter(Team.name.like("Personal Team")).filter_by(is_active=True).filter_by(is_deleted=False)
     personal_teams=personal_teams.filter(Team.id.in_(utids))
@@ -142,7 +142,7 @@ def get_all_deleted_teams():
 
 
 def get_a_team(team_id):
-    return Team.query.filter_by(id=team_id).filter_by(is_active=True).filter_by(is_deleted=False).first()
+    return Team.query.filter(Team.id==team_id).filter_by(is_active=True).filter_by(is_deleted=False).first()
 
 
 def save_changes(data):

@@ -29,13 +29,13 @@ class TeamList(Resource):
         parser.add_argument("is_deleted", type=bool)
         args = parser.parse_args()
         logined, status = Auth.get_logged_in_user(request)
-        token=logined.get('data')
+        token = logined.get('data')
         if not token:
             return logined, status
-        if token['admin']==False:
-            args["user_id"]=token["user_id"]
+        if token['admin'] == False:
+            args["user_id"] = token["user_id"]
         else:
-            args['user_id']=1
+            args['user_id'] = 1
         return get_all_teams(args["user_id"], args["portfolio_id"], args["is_active"], args["is_deleted"])
 
     @api.response(201, 'Team successfully created.')
@@ -46,14 +46,15 @@ class TeamList(Resource):
         """Creates a new Team """
         data = request.json
         logined, status = Auth.get_logged_in_user(request)
-        token=logined.get('data')
+        token = logined.get('data')
         if not token:
             return logined, status
-        login_user={"login_user_id": token['user_id']}
-        action_time={"action_time": datetime.datetime.utcnow()}
+        login_user = {"login_user_id": token['user_id']}
+        action_time = {"action_time": datetime.datetime.utcnow()}
         data.update(login_user)
         data.update(action_time)
         return save_new_team(data=data)
+
 
 @api.route('/<team_id>')
 @api.param('team_id', 'The Team identifier')
@@ -63,18 +64,18 @@ class Team(Resource):
     @api.marshal_with(_team)
     @token_required
     def get(self, team_id):
-        """get a team given its identifier"""
-        team = get_a_team(team_id)
+        """get a team given its identifier""" 
         logined, status = Auth.get_logged_in_user(request)
-        token=logined.get('data')
-        team_id=int(team_id)
+        token = logined.get('data')
+        team_id = int(team_id)
+        team = get_a_team(team_id)
         if not token:
             return logined, status
-        if token['admin']==False:
-            if check_user_in_team(token['user_id'], team_id)==False:
+        if token['admin'] == False:
+            if check_user_in_team(token['user_id'], team_id) == False:
                 response_object = {
-                'status': 'fail',
-                'message': 'You cannot view this information.'
+                    'status': 'fail',
+                    'message': 'You cannot view this information.'
                 }
                 return response_object, 401
         if not team:
@@ -90,27 +91,27 @@ class Team(Resource):
         """Update a team """
         data = request.json
         logined, status = Auth.get_logged_in_user(request)
-        token=logined.get('data')
-        team_id=int(team_id)
+        token = logined.get('data')
+        team_id = int(team_id)
         if not token:
             return logined, status
-        if token['admin']==False:
-            if check_user_in_team(token['user_id'], team_id)==False:
+        if token['admin'] == False:
+            if check_user_in_team(token['user_id'], team_id) == False:
                 response_object = {
-                'status': 'fail',
-                'message': 'You cannot update this information. You need to be a teammember.'
+                    'status': 'fail',
+                    'message': 'You cannot update this information. You need to be a teammember.'
                 }
                 return response_object, 401
-            if check_user_is_owner_or_editor(token['user_id'], team_id)==False:
+            if check_user_is_owner_or_editor(token['user_id'], team_id) == False:
                 response_object = {
-                'status': 'fail',
-                'message': 'You cannot update this information. You need to be a owner or editor.'
+                    'status': 'fail',
+                    'message': 'You cannot update this information. You need to be a owner or editor.'
                 }
                 return response_object, 401
-        login_user={"login_user_id": token['user_id']}
-        action_time={"action_time": datetime.datetime.utcnow()}
+        login_user = {"login_user_id": token['user_id']}
+        action_time = {"action_time": datetime.datetime.utcnow()}
         data.update(login_user)
-        data.update(action_time) 
+        data.update(action_time)
         return update_team(team_id, data)
 
     @api.response(201, 'team successfully deleted.')
@@ -119,26 +120,26 @@ class Team(Resource):
     def delete(self, team_id):
         """Delete a team """
         logined, status = Auth.get_logged_in_user(request)
-        token=logined.get('data')
-        team_id=int(team_id)
+        token = logined.get('data')
+        team_id = int(team_id)
         if not token:
             return logined, status
-        if token['admin']==False:
-            if check_user_in_team(token['user_id'], team_id)==False:
+        if token['admin'] == False:
+            if check_user_in_team(token['user_id'], team_id) == False:
                 response_object = {
-                'status': 'fail',
-                'message': 'You cannot delete this information.'
+                    'status': 'fail',
+                    'message': 'You cannot delete this information.'
                 }
                 return response_object, 401
-            if check_user_is_owner(token['user_id'], team_id)==False:
+            if check_user_is_owner(token['user_id'], team_id) == False:
                 response_object = {
-                'status': 'fail',
-                'message': 'You cannot delete this information.'
+                    'status': 'fail',
+                    'message': 'You cannot delete this information.'
                 }
                 return response_object, 401
-        data=dict()
-        login_user={"login_user_id": token['user_id']}
-        action_time={"action_time": datetime.datetime.utcnow()}
+        data = dict()
+        login_user = {"login_user_id": token['user_id']}
+        action_time = {"action_time": datetime.datetime.utcnow()}
         data.update(login_user)
-        data.update(action_time) 
+        data.update(action_time)
         return delete_a_team(team_id, data)

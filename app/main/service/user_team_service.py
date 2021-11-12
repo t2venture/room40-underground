@@ -130,7 +130,7 @@ def check_user_is_owner_or_editor(user_id, team_id):
         return True
 
 def check_user_is_owner(user_id, team_id):
-    mydata=UserTeam.query.filter_by(user_id=user_id).filter_by(team_id=team_id).filter(UserTeam.role=='Owner').all()
+    mydata=UserTeam.query.filter(UserTeam.user_id==user_id).filter_by(UserTeam.team_id==team_id).filter(UserTeam.role=='Owner').all()
     if mydata is None:
         return False
     else:
