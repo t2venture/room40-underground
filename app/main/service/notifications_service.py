@@ -46,13 +46,13 @@ def save_new_notifications(data):
         	return response_object, 401
 
 def get_a_notification(notification_id):
-	return Notifications.filter_by(id=notification_id).filter_by(is_active=True).filter_by(is_deleted=False).first()
+	return Notifications.filter(Notifications.id==notification_id).filter_by(is_active=True).filter_by(is_deleted=False).first()
 
 def get_all_notifications_for_user(user_id):
-	return Notifications.filter_by(user_id=user_id).filter_by(is_active=True).filter_by(is_deleted=False).all()
+	return Notifications.filter(Notifications.user_id==user_id).filter_by(is_active=True).filter_by(is_deleted=False).all()
 
 def get_all_deleted_notifications_for_user(user_id):
-	return Notifications.filter_by(user_id=user_id).filter_by(is_deleted=True).all()
+	return Notifications.filter(Notifications.user_id==user_id).filter_by(is_deleted=True).all()
 
 
 def mark_read_notifications(notification_id, data):

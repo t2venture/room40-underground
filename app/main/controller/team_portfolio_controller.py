@@ -75,7 +75,8 @@ class TeamPortfolio(Resource):
     @token_required
     def get(self, team_portfolio_id):
         """get a team_portfolio given its identifier"""
-        team_portfolio = get_a_team_portfolio(team_portfolio_id)
+        tpid=int(team_portfolio_id)
+        team_portfolio = get_a_team_portfolio(tpid)
         logined, status = Auth.get_logged_in_user(request)
         token=logined.get('data')
         if not token:
@@ -84,7 +85,7 @@ class TeamPortfolio(Resource):
         if not team_portfolio:
             api.abort(404)
         if token["admin"]==False:
-            team_id=team_portfolio["team_id"]
+            team_id=int(team_portfolio["team_id"])
             if (check_user_in_team(token["user_id"], team_id)==False):
                 response_object = {
                 'status': 'fail',
@@ -110,7 +111,7 @@ class TeamPortfolio(Resource):
         data.update(login_user)
         data.update(action_time)
         portfolio_to_update=data["portfolio_id"]
-        allowed_teams=get_teams_from_portfolio(portfolio_to_update)
+        allowed_teams=get_teams_from_portfolio(portfolio_to_update["id"])
         flag=False
         for team in allowed_teams:
             if team["role"]=="Owner" or team["role"]=="Editor":
@@ -138,9 +139,10 @@ class TeamPortfolio(Resource):
         action_time={"action_time": datetime.datetime.utcnow()}
         data.update(login_user)
         data.update(action_time)
-        deltpf=get_a_team_portfolio(team_portfolio_id)
+        tpid=int(team_portfolio_id)
+        deltpf=get_a_team_portfolio(tpid)
         portfolio_to_update=deltpf["portfolio_id"]
-        allowed_teams=get_teams_from_portfolio(portfolio_to_update)
+        allowed_teams=get_teams_from_portfolio(portfolio_to_update["id"])
         flag=False
         for team in allowed_teams:
             if team["role"]=="Owner" or team["role"]=="Editor":

@@ -55,25 +55,26 @@ def update_team(team_id, data):
         is_active=True
     else:
         is_active=data['is_active']
+
     try:
         team = get_a_team(team_id)
 
-        team.name=data['name'],
-        team.is_active=is_active,
+        team.name = data['name']
+        team.is_active = is_active
         if 'name' not in data.keys():
-            data['name']=team.name
-        team.name=data['name']
+            data['name'] = team.name
+        team.name = data['name']
         if 'color' not in data.keys():
-            data['color']=team.color
-        team.color=data['color']
-        team.modified_time=data['action_time']
-        team.modified_by=data['login_user_id']
+            data['color'] = team.color
+        team.color = data['color']
+        team.modified_time = data['action_time']
+        team.modified_by = data['login_user_id']
         save_changes(team)
-    
+
         response_object = {
-                    'status': 'success',
-                    'message': 'Successfully registered.',
-                }
+            'status': 'success',
+            'message': 'Successfully registered.',
+        }
         return response_object, 201
 
     except Exception as e:
@@ -83,6 +84,7 @@ def update_team(team_id, data):
             'message': 'Some error occurred. Please try again.'
         }
         return response_object, 401
+
 
 def delete_a_team(team_id, data):
     try:

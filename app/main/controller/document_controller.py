@@ -54,12 +54,13 @@ class Document(Resource):
     @api.doc('get a document')
     @api.marshal_with(_document)
     def get(self, document_id):
-        """get a document given its identifier"""
-        document = get_a_document(document_id)
-        if not document:
-            api.abort(404)
-        else:
-            return document
+	    """get a document given its identifier"""
+	    d_id=int(document_id)
+	    document=get_a_document(d_id)
+	    if not document:
+		    api.abort(404)
+	    else:
+		    return document
 
     @api.response(201, 'document successfully updated.')
     @api.doc('update a document')
@@ -76,7 +77,8 @@ class Document(Resource):
 	    action_time={"action_time": datetime.datetime.utcnow()}
 	    data.update(login_user)
 	    data.update(action_time)
-	    return update_document(document_id, data)
+	    d_id=int(document_id)
+	    return update_document(d_id, data)
 
     @api.response(201, 'document successfully deleted.')
     @api.doc('delete a document')
@@ -92,4 +94,5 @@ class Document(Resource):
 	    action_time={"action_time": datetime.datetime.utcnow()}
 	    data.update(login_user)
 	    data.update(action_time)
-	    return delete_a_document(document_id, data)
+	    d_id=int(document_id)
+	    return delete_a_document(d_id, data)

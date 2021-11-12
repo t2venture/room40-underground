@@ -4,6 +4,8 @@ import datetime
 
 from app.main import db
 from app.main.model.user import User
+from app.main.model.team import Team
+from app.main.model.user_team import UserTeam
 from app.main.model.property import Property
 from app.main.model.document import Document
 from app.main.util.scrape_property import obtain_autocorrs, obtain_train_test_lists, return_list_property, return_raw_propertys, obtain_time_series_dict, obtain_dict_vals, obtain_train_test_lists
@@ -37,7 +39,32 @@ def add_users():
     confirmed=True,
     confirmed_on=datetime.datetime.utcnow()
     )
-    db.session.add(new_user)   
+    db.session.add(new_user) 
+    db.session.flush()
+
+    new_team=Team(name="Superuser Personal Team",
+    color="ffffff",
+    created_by=1,
+    modified_by=1,
+    created_time=datetime.datetime.utcnow(),
+    modified_time=datetime.datetime.utcnow(),
+    is_deleted=False,
+    is_active=True
+    )
+    db.session.add(new_team)
+    db.session.flush()
+
+    new_user_team=UserTeam(user_id=1,
+    team_id=1,
+    role='Owner',
+    created_by=1,
+    modified_by=1,
+    created_time=datetime.datetime.utcnow(),
+    modified_time=datetime.datetime.utcnow(),
+    is_deleted=False,
+    is_active=True)
+    db.session.add(new_user_team)
+    db.session.flush()
 
 def add_documents():
     new_terms=Document(title="Terms of Use",
@@ -96,17 +123,6 @@ def upload_data():
     print ("uploading documents")
     add_documents()
     db.session.flush()
-    '''
-    print("uploading companies")
-    add_companies()
-    db.session.flush()
-    print("uploading user companies")
-    add_user_companies()
-    db.session.flush()
-    print("uploading propertys")
-    ##JUST FOR TESTING
-    #add_propertys()
-    '''
     print("done")
     db.session.commit()
 

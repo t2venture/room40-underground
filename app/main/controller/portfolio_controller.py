@@ -68,17 +68,18 @@ class Portfolio(Resource):
     @token_required
     def get(self, portfolio_id):
         """get a portfolio given its identifier"""
-        portfolio = get_a_portfolio(portfolio_id)
+        p_id=int(portfolio_id)
+        portfolio = get_a_portfolio(p_id)
         logined, status = Auth.get_logged_in_user(request)
         token=logined.get('data')
         if not token:
             return logined, status
-        usr_id=token['user_id']
-        allowed_teams=get_teams_from_portfolio(portfolio_id)
+        usr_id=int(token['user_id'])
+        allowed_teams=get_teams_from_portfolio(p_id)
         #Checking is User can VIEW the portfolio
         flag=False
         for team in allowed_teams:
-            team_id=team["id"]
+            team_id=int(team["id"])
             if check_user_in_team(usr_id, team_id)==True:
                 flag=True
         if flag==False and token['admin']==False:

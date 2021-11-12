@@ -69,20 +69,20 @@ def update_portfolio(portfolio_id, data):
 
 def delete_a_portfolio(portfolio_id, data):
     try:
-        del_pfs=Portfolio.query.filter_by(id=portfolio_id).all()
+        del_pfs=Portfolio.query.filter(Portfolio.id==portfolio_id).all()
         for pf in del_pfs:
             pf.is_deleted=True
             pf.modified_time=data['action_time']
             pf.modified_by=data['modified_by']
         db.session.commit()
         #need to change this
-        dppfs=PropertyPortfolio.query.filter_by(portfolio_id=portfolio_id).all()
+        dppfs=PropertyPortfolio.query.filter(PropertyPortfolio.portfolio_id==portfolio_id).all()
         for ppf in dppfs:
             ppf.is_deleted=True
             ppf.modified_time=data["action_time"]
             ppf.modified_by=data["login_user_id"]
         db.session.commit()
-        del_tpfs=TeamPortfolio.query.filter_by(portfolio_id=portfolio_id).all()
+        del_tpfs=TeamPortfolio.query.filter(TeamPortfolio.portfolio_id==portfolio_id).all()
         for tpf in del_tpfs:
             tpf.is_deleted=True
             tpf.modified_time=data['action_time']
@@ -118,7 +118,7 @@ def get_all_deleted_portfolios():
 
 
 def get_a_portfolio(portfolio_id):
-    return Portfolio.query.filter_by(id=portfolio_id).filter_by(is_deleted=False).filter_by(is_active=True).first()
+    return Portfolio.query.filter(Portfolio.id==portfolio_id).filter_by(is_deleted=False).filter_by(is_active=True).first()
 
 
 def save_changes(data):

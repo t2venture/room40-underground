@@ -65,20 +65,21 @@ class PropertyPortfolio(Resource):
     @token_required
     def get(self, property_portfolio_id):
         """get a property_portfolio given its identifier"""
-        property_portfolio = get_a_property_portfolio(property_portfolio_id)
+        ppid=int(property_portfolio_id)
+        property_portfolio = get_a_property_portfolio(ppid)
         if not property_portfolio:
             api.abort(404)
         logined, status = Auth.get_logged_in_user(request)
         token=logined.get('data')
         if not token:
             return logined, status
-        usr_id=token['user_id']
-        portfolio_id=property_portfolio["portfolio_id"]
+        usr_id=int(token['user_id'])
+        portfolio_id=int(property_portfolio["portfolio_id"])
         allowed_teams=get_teams_from_portfolio(portfolio_id)
         #Checking is User can VIEW the property_portfolio
         flag=False
         for team in allowed_teams:
-            team_id=team["id"]
+            team_id=int(team["id"])
             if check_user_in_team(usr_id, team_id)==True:
                 flag=True
         if flag==False and token['admin']==False:
@@ -96,6 +97,7 @@ class PropertyPortfolio(Resource):
     def put(self, property_portfolio_id):
         """Update a property_portfolio """
         data = request.json
+        ppid=int(property_portfolio_id)
         logined, status = Auth.get_logged_in_user(request)
         token=logined.get('data')
         if not token:
@@ -105,13 +107,13 @@ class PropertyPortfolio(Resource):
         action_time={"action_time": datetime.datetime.utcnow()}
         data.update(login_user)
         data.update(action_time)
-        property_portfolio = get_a_property_portfolio(property_portfolio_id)
-        portfolio_id=property_portfolio["portfolio_id"]
+        property_portfolio = get_a_property_portfolio(ppid)
+        portfolio_id=int(property_portfolio["portfolio_id"])
         allowed_teams=get_teams_from_portfolio(portfolio_id)
         #Checking is User can VIEW the property_portfolio
         flag=False
         for team in allowed_teams:
-            team_id=team["id"]
+            team_id=int(team["id"])
             if check_user_in_team(usr_id, team_id)==True:
                 flag=True
         if flag==False and token['admin']==False:
@@ -136,8 +138,9 @@ class PropertyPortfolio(Resource):
         action_time={"action_time": datetime.datetime.utcnow()}
         data.update(login_user)
         data.update(action_time)
-        property_portfolio = get_a_property_portfolio(property_portfolio_id)
-        portfolio_id=property_portfolio["portfolio_id"]
+        ppid=int(property_portfolio_id)
+        property_portfolio = get_a_property_portfolio(ppid)
+        portfolio_id=int(property_portfolio["portfolio_id"])
         allowed_teams=get_teams_from_portfolio(portfolio_id)
         flag=False
         for team in allowed_teams:

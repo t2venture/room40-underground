@@ -64,7 +64,7 @@ def update_document(document_id, data):
 
 def delete_a_document(document_id, data):
     try:
-        del_documents=Document.query.filter_by(id=document_id).all()
+        del_documents=Document.query.filter(Document.id==document_id).all()
         for document in del_documents:
             document.is_deleted=True
             document.modified_by=data['login_user_id']
@@ -91,7 +91,7 @@ def get_all_documents(query_title="", deleted=False, active=True):
         query_title='%'+query_title+'%'
         documents=documents.filter(Document.title.like(query_title))
     return documents.all()
-    # return Document.query.filter_by(is_deleted,is_active=1).all()
+
 
 
 def get_all_deleted_documents():
@@ -99,10 +99,10 @@ def get_all_deleted_documents():
     return documents.all()
 
 def get_a_deleted_document(document_id):
-    return Document.query.filter_by(id=document_id).filter_by(is_deleted=True).first()
+    return Document.query.filter(Document.id==document_id).filter_by(is_deleted=True).first()
 
 def get_a_document(document_id):
-    return Document.query.filter_by(id=document_id).filter_by(is_deleted=False).filter_by(is_active=True).first()
+    return Document.query.filter(Document.id==document_id).filter_by(is_deleted=False).filter_by(is_active=True).first()
 
 def save_changes(data):
     db.session.add(data)

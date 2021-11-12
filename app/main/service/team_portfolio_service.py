@@ -88,13 +88,13 @@ def get_all_deleted_team_portfolios():
     return TeamPortfolio.query.filter_by(is_deleted=True)
 
 def get_teams_from_portfolio(portfolio_id):
-    return TeamPortfolio.query.filter_by(portfolio_id=portfolio_id).filter_by(is_active=True).filter_by(is_deleted=False).all()
+    return TeamPortfolio.query.filter(TeamPortfolio.portfolio_id==portfolio_id).filter_by(is_active=True).filter_by(is_deleted=False).all()
 
 def get_portfolios_from_team(team_id):
-    return TeamPortfolio.query.filter_by(team_id=team_id).filter_by(is_active=True).filter_by(is_deleted=False).all()
+    return TeamPortfolio.query.filter(TeamPortfolio.team_id==team_id).filter_by(is_active=True).filter_by(is_deleted=False).all()
 
 def get_a_team_portfolio(team_portfolio_id):
-    return TeamPortfolio.query.filter_by(id=team_portfolio_id).filter_by(is_active=True).filter_by(is_deleted=False).first()
+    return TeamPortfolio.query.filter(TeamPortfolio.id==team_portfolio_id).filter_by(is_active=True).filter_by(is_deleted=False).first()
 
 def save_changes(data):
     db.session.add(data)
