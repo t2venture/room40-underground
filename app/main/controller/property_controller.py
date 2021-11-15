@@ -55,9 +55,10 @@ class PropertyList(Resource):
         parser.add_argument('bds', type=str)
         parser.add_argument('bths', type=str)
         args = parser.parse_args()
-        return get_all_propertys(args['is_deleted'], args['is_active'], args['portfolio_id'], args['address'], args['street'], args['housenumber'], args["min_area"], args["max_area"],
+        X=get_all_propertys(args['is_deleted'], args['is_active'], args['portfolio_id'], args['address'], args['street'], args['housenumber'], args["min_area"], args["max_area"],
         args['north'], args['south'], args['east'], args['west'], args['min_lasso_score'], args['max_lasso_score'], args['min_price'], args['max_price'],
         args['bds'], args['bths'])
+        return X[:20]
 
     @api.response(201, 'property successfully created.')
     @api.doc('create a new property')
