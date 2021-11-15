@@ -85,7 +85,8 @@ class Property(Resource):
     @token_required
     def get(self, property_id):
         """get a property given its identifier"""
-        property = get_a_property(property_id)
+        p_id=int(property_id)
+        property = get_a_property(p_id)
         if not property:
             api.abort(404)
         else:
@@ -106,7 +107,8 @@ class Property(Resource):
         action_time={"action_time": datetime.datetime.utcnow()}
         data.update(login_user)
         data.update(action_time)	
-        return update_property(property_id, data)
+        p_id=int(property_id)
+        return update_property(p_id, data)
 
     @api.response(201, 'property successfully deleted.')
     @api.doc('delete a property')
@@ -122,4 +124,5 @@ class Property(Resource):
         action_time={"action_time": datetime.datetime.utcnow()}
         data.update(login_user)
         data.update(action_time)	
-        return delete_a_property(property_id, data)
+        p_id=int(property_id)
+        return delete_a_property(p_id, data)

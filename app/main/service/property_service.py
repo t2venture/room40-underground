@@ -125,14 +125,14 @@ def update_property(property_id, data):
 
 def delete_a_property(property_id, data):
     try:
-        del_propertys=Property.query.filter_by(id=property_id).all()
+        del_propertys=Property.query.filter(Property.id==property_id).all()
         for dp in del_propertys:
             dp.is_deleted=True
             dp.modified_by=data['login_user_id'],
             dp.modified_time=data['action_time']
         db.session.commit()
 
-        del_pms=PropertyModel.query.filter_by(property_id=property_id).all()
+        del_pms=PropertyModel.query.filter(PropertyModel.property_id==property_id).all()
 
         for dpm in del_pms:
             dpm.is_deleted=True
@@ -141,7 +141,7 @@ def delete_a_property(property_id, data):
             #should be 1
         db.session.commit()
 
-        del_phs=PropertyHistory.query.filter_by(property_id=property_id).all()
+        del_phs=PropertyHistory.query.filter(PropertyHistory.property_id==property_id).all()
 
         for dhs in del_phs:
             dhs.is_deleted=True
@@ -151,7 +151,7 @@ def delete_a_property(property_id, data):
         db.session.commit()
 
 
-        dppfs=PropertyPortfolio.query.filter_by(property_id=property_id).delete()
+        dppfs=PropertyPortfolio.query.filter(PropertyPortfolio.property_id==property_id).delete()
         for ppf in dppfs:
             ppf.is_deleted=True
             ppf.modified_time=data["action_time"]
@@ -213,14 +213,14 @@ def get_all_propertys(is_deleted=False, is_active=True, portfolio_id="", address
     return propertys.all()
 
 def get_a_property(property_id):
-    return Property.query.filter_by(id=property_id).filter_by(is_deleted=False).filter_by(is_active=True).first()
+    return Property.query.filter(Property.id==property_id).filter_by(is_deleted=False).filter_by(is_active=True).first()
 
 def get_all_deleted_propertys(property_id):
     propertys=Property.query.filter_by(is_deleted=True)
     return propertys.all()
 
 def get_a_deleted_property(property_id):
-    return Property.query.filter_by(id=property_id).filter_by(is_deleted=True).all()
+    return Property.query.filter(Property.id==property_id).filter_by(is_deleted=True).all()
 
 def save_changes(data):
     db.session.add(data)
