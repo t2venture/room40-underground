@@ -26,7 +26,7 @@ class Property(db.Model):
     photos=db.Column(db.String(1011), unique=False, nullable=True)
     market_price=db.Column(db.Integer, unique=False, nullable=True)
     listed=db.Column(db.Boolean, unique=False, nullable=False, default=True)
-    cherre_id=db.Column(db.String(255), unique=True, nullable=False)
+    cherre_id=db.Column(db.String(255), unique=True, nullable=True)
     #THESE ARE SET TO NULLABLE FOR NOW
     ann_mortgage_cost=db.Column(db.Integer, unique=False, nullable=True)
     estimated_rent=db.Column(db.Integer, unique=False, nullable=True)

@@ -155,7 +155,8 @@ def calculate_fips_dict():
     QI=unique_fips_query(city[0], city[1])
     OI="tax_assessor"
     data_cherre=make_query(QI, OI)
-    dict_of_fips[city[0]]=dict_of_fips[city[0]]+data_cherre
+    if data_cherre:
+      dict_of_fips[city[0]]=dict_of_fips[city[0]]+data_cherre
   return dict_of_fips
 
 def return_raw_propertys():
@@ -199,8 +200,10 @@ def return_list_property(data_diff_demog):
           continue
         if i['property_use_standardized_code']!="385":
           continue
-        if not i['bed_count']:
-          continue
+        if 'bed_count' not in i.keys():
+          i['bed_count']=0
+        if 'bath_count' not in i.keys():
+          i['bath_count']=0
         if not i['building_sq_ft']:
           continue
     
@@ -213,9 +216,12 @@ def return_list_property(data_diff_demog):
         Longitude=i['longitude']
         Street=strip_housenumber_street(Address)[1]
         HouseNumber=strip_housenumber_street(Address)[0]
+        Bd_rms=i['bed_count']
+        Bt_rms=i['bath_count']
         Dict={"majorcity": MajorCity, "address": Address, "building_sq_ft": Building_Sq_Ft, 
         "gross_sq_ft": Gross_Sq_Ft, "latitude": Latitude, "longitude": Longitude,
-        "street": Street, "housenumber": HouseNumber, "usage_code": UsageCode}
+        "street": Street, "housenumber": HouseNumber, "usage_code": UsageCode, "bed_count": Bd_rms,
+        "bath_count": Bt_rms}
         List_Property.append(Dict)
   return List_Property
 
