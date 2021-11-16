@@ -13,6 +13,8 @@ _property = PropertyDto.property
 @api.route('/')
 class PropertyList(Resource):
     @api.doc('list_of_propertys for a property')
+    @api.param('pagenumber', 'which page you want to display, default 1')
+    @api.param('perpagedisplay', 'how many to display per page, default 20')
     @api.param('is_deleted', 'whether the property is deleted or not')
     @api.param('is_active', 'whether the property is active or not')
     @api.param('portfolio_id', 'portfolio id to search properties in')
@@ -36,6 +38,8 @@ class PropertyList(Resource):
     def get(self):
         """List all propertys"""
         parser = reqparse.RequestParser()
+        parser.add_argument("pagenumber", type=int)
+        parser.add_argument("perpagedisplay", type=int)
         parser.add_argument("is_deleted", type=bool)
         parser.add_argument("is_active", type=bool)
         parser.add_argument("portfolio_id", type=int)
@@ -55,11 +59,19 @@ class PropertyList(Resource):
         parser.add_argument('bds', type=str)
         parser.add_argument('bths', type=str)
         args = parser.parse_args()
+        if not args["pagenumber"]:
+            args["pagenumber"]=1
+        if not args["perpagedisplay"]:
+            args["perpagedisplay"]=20
         X=get_all_propertys(args['is_deleted'], args['is_active'], args['portfolio_id'], args['address'], args['street'], args['housenumber'], args["min_area"], args["max_area"],
         args['north'], args['south'], args['east'], args['west'], args['min_lasso_score'], args['max_lasso_score'], args['min_price'], args['max_price'],
         args['bds'], args['bths'])
-        return X[:20]
-
+        print (len(X))
+        #print (X)
+        multiplier=(args["pagenumber"]-1)*args["perpagedisplay"]
+        adder=args["perpagedisplay"]
+        values=X[multiplier:multiplier+adder]
+        return values
     @api.response(201, 'property successfully created.')
     @api.doc('create a new property')
     @api.expect(_property, validate=True)
