@@ -94,7 +94,7 @@ def delete_a_team(team_id, data):
             dt.modified_by=data['login_user_id']
             dt.modified_time=data['action_time']
         db.session.commit()
-        duts=UserTeam.query.filter(Team.team_id==team_id).all()
+        duts=UserTeam.query.filter(UserTeam.team_id==team_id).all()
         for dut in duts:
             dut.is_deleted=True
             dut.modified_by=data['login_user_id']
