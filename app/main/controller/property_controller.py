@@ -34,7 +34,7 @@ class PropertyList(Resource):
     @api.param('bds', 'possible bedroom counts, comma separated')
     @api.param('bths', 'possible bathroom counts, comma separated')
     @api.marshal_list_with(_property, envelope='data')
-    @token_required
+    #@token_required
     def get(self):
         """List all propertys"""
         parser = reqparse.RequestParser()
