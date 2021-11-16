@@ -34,7 +34,7 @@ class PropertyList(Resource):
     @api.param('bds', 'possible bedroom counts, comma separated')
     @api.param('bths', 'possible bathroom counts, comma separated')
     @api.marshal_list_with(_property, envelope='data')
-    #@token_required
+    @token_required
     def get(self):
         """List all propertys"""
         parser = reqparse.RequestParser()
@@ -66,10 +66,16 @@ class PropertyList(Resource):
         X=get_all_propertys(args['is_deleted'], args['is_active'], args['portfolio_id'], args['address'], args['street'], args['housenumber'], args["min_area"], args["max_area"],
         args['north'], args['south'], args['east'], args['west'], args['min_lasso_score'], args['max_lasso_score'], args['min_price'], args['max_price'],
         args['bds'], args['bths'])
-        print (len(X))
-        #print (X)
         multiplier=(args["pagenumber"]-1)*args["perpagedisplay"]
         adder=args["perpagedisplay"]
+        if multiplier>=len(X):
+            response_object = {
+                    'status': 'fail',
+                    'message': 'You have reached the end of your search results.'
+                    }
+            return response_object, 400
+        if multiplier+adder>len(X) and multiplier<len(X):
+            adder=len(X)-multiplier
         values=X[multiplier:multiplier+adder]
         return values
     @api.response(201, 'property successfully created.')
