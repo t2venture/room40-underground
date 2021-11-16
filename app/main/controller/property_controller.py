@@ -73,7 +73,7 @@ class PropertyList(Resource):
                     'status': 'fail',
                     'message': 'You have reached the end of your search results.'
                     }
-            return response_object, 400
+            return response_object, 404
         if multiplier+adder>len(X) and multiplier<len(X):
             adder=len(X)-multiplier
         values=X[multiplier:multiplier+adder]
