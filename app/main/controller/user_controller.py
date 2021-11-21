@@ -16,6 +16,7 @@ class UserList(Resource):
     @api.doc('list_of_registered_users')
     @api.param('is_deleted', 'whether the user is deleted')
     @api.param('is_active', 'whether the user is active')
+    @api.param('email_id', 'email of the user')
     @api.marshal_list_with(_user, envelope='data')
     @token_required
     def get(self):
@@ -23,6 +24,7 @@ class UserList(Resource):
         parser = reqparse.RequestParser()
         parser.add_argument("is_deleted", type=bool)
         parser.add_argument("is_active", type=bool)
+        parser.add_argument("email_id", type=str)
         args = parser.parse_args()
         logined, status = Auth.get_logged_in_user(request)
         token=logined.get('data')
@@ -36,7 +38,7 @@ class UserList(Resource):
         else:
             adm=True
             usr=1
-        return get_all_users(args['is_deleted'], args['is_active'], adm, usr)
+        return get_all_users(args['is_deleted'], args['is_active'], adm, usr, args['email_id'])
 
     @api.response(201, 'User successfully created.')
     @api.doc('create a new user')

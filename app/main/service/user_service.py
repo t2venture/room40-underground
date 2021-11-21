@@ -206,8 +206,8 @@ def delete_a_user(user_id, data):
         }
         return response_object, 401
 
-def get_all_users(deleted=False, active=True, adm=False, usr=1):
-    users=User.query.filter_by(is_deleted=deleted).filter_by(is_active=active)
+def get_all_users(deleted=False, active=True, adm=False, usr=1, email_id="angikar.ghosal@gmail.com"):
+    users=User.query.filter(User.is_deleted==deleted).filter(User.is_active==active).filter(User.email.like(email_id))
     if (adm==False):
         users=users.filter(User.id==usr)
     return users.all()
