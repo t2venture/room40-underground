@@ -38,8 +38,8 @@ class UserEmailTeam(Resource):
 				'message': 'You cannot add this information.'
 				}
 			return response_object, 401
-        	login_user={"login_user_id": token['user_id']}
-        	action_time={"action_time": datetime.datetime.utcnow()}
+		login_user={"login_user_id": token['user_id']}
+		action_time={"action_time": datetime.datetime.utcnow()}
 		user_to_add=get_a_user_by_email(data['user_email'])
 		if not user_to_add:
 			response_object = {
@@ -51,6 +51,6 @@ class UserEmailTeam(Resource):
 		new_data["team_id"]=data["team_id"]
 		new_data["user_id"]=user_to_add.id
 		new_data["role"]=data["role"]
-        	new_data.update(login_user)
-        	new_data.update(action_time)   
-        	return save_new_user_team(data=data)
+		new_data.update(login_user)
+		new_data.update(action_time)
+		return save_new_user_team(data=data)

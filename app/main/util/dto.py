@@ -8,15 +8,6 @@ class AuthDto:
         'password': fields.String(required=True, description='The user password '),
     })
 
-class UserEmailTeamDto:
-    api = Namespace('user_email_team', description='user email team related operations')
-    user_email_team = api.model('auth_details', {
-        'id': fields.String(required=False, description='user team id'),
-        'user_email': fields.String(required=True, description='user id'),
-        'team_id': fields.String(required=True, description='team id'),
-        'role': fields.String(required=False, description='role of the user')
-    })
-
 class ConfirmDto:
     api = Namespace('confirm', description='confirmation related operations')
     user_confirm = api.model('confirmation_details', {
@@ -172,4 +163,13 @@ class DemographicsDto:
     api = Namespace('demographics', description='summarized demographics')
     demographics=api.model('demographics',{
         'demog': fields.String(required=False, description='stringified dict of summarized demographics'),
+    })
+
+class UserEmailTeamDto:
+    api = Namespace('user_email_team', description='user email team related operations')
+    user_email_team = api.model('user_email_team_details', {
+        'id': fields.String(required=False, description='user team id'),
+        'user_email': fields.String(required=True, description='user id'),
+        'team_id': fields.String(required=True, description='team id'),
+        'role': fields.String(required=False, description='role of the user')
     })

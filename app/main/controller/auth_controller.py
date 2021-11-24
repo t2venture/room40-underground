@@ -9,15 +9,15 @@ from ..util.email import set_password, send_confirmation_email, send_change_pass
 from app.main.token import generate_confirmation_token, confirm_token
 
 api = AuthDto.api
-user_auth = AuthDto.user_auth
-
+_user_auth = AuthDto.user_auth
+_user=UserDto.user
 @api.route('/login')
 class UserLogin(Resource):
     """
         User Login Resource
     """
     @api.doc('user login')
-    @api.expect(user_auth, validate=True)
+    @api.expect(_user_auth, validate=True)
     def post(self):
         # get the post data
         post_data = request.json
@@ -31,6 +31,7 @@ class SignupAPI(Resource):
     '''
     @api.response(201, 'User successfully created.')
     @api.doc('signup a user')
+    @api.expect(_user, validate=True)
     def post(self):
         """Creates a new User """
         data = request.json
