@@ -48,9 +48,9 @@ class UserEmailTeam(Resource):
 				}
 			return response_object, 404
 		new_data=dict()
-		new_data["team_id"]=data["team_id"]
+		new_data["team_id"]=int(data["team_id"])
 		new_data["user_id"]=user_to_add.id
 		new_data["role"]=data["role"]
 		new_data.update(login_user)
 		new_data.update(action_time)
-		return save_new_user_team(data=data)
+		return save_new_user_team(data=new_data)

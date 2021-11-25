@@ -3,7 +3,7 @@ import datetime
 
 from app.main import db
 from app.main.model.user_team import UserTeam
-
+from app.main.model.team import Team
 def save_new_user_team(data):
     if 'role' not in data.keys():
         data['role']='Viewer'
@@ -27,7 +27,6 @@ def save_new_user_team(data):
                 'message': 'Successfully registered.',
             }
         return response_object, 201
-
     except Exception as e:
         print(e)
         response_object = {
@@ -100,8 +99,13 @@ def get_all_deleted_user_teams():
 
 def get_all_user_teams(is_active=True, is_deleted=False, user_id=1):
     usrtms=UserTeam.query
-    if user_id!=1:
+    '''if user_id!=1:
         usrtms=usrtms.filter(UserTeam.user_id==user_id)
+    '''
+    if user_id!=1:
+        allowed_teams=UserTeam.filter(UserTeam.user_id==user_id)
+        allowed_teams_ids=[ut.team_id for ut in allowed_teams]
+        usrtms=usrtms.filter(UserTeam.team_id.in_(allowed_teams_ids))
     return usrtms.filter_by(is_deleted=False).filter_by(is_active=True).all()
 
 def get_users_from_team(team_id):
