@@ -39,6 +39,7 @@ def save_new_team(data):
         response_object = {
                 'status': 'success',
                 'message': 'Successfully registered.',
+                'team_id': tid
             }
         return response_object, 201
 
