@@ -17,6 +17,7 @@ from .main.controller.property_history_controller import api as property_history
 from .main.controller.confirm_controller import api as confirm_ns
 from .main.controller.changepassword_controller import api as changepassword_ns
 from .main.controller.user_email_team_controller import api as user_email_team_ns
+from .main.controller.user_email_array_controller import api as user_email_array_ns
 
 blueprint = Blueprint('api', __name__)
 #STUFF LUKE ADDED
@@ -52,3 +53,4 @@ api.add_namespace(property_history_ns, path="/property_history")
 api.add_namespace(confirm_ns, path="/confirm")
 api.add_namespace(changepassword_ns, path="/changepassword")
 api.add_namespace(user_email_team_ns, path="/user_email_team")
+api.add_namespace(user_email_array_ns, path="/user_email_array")

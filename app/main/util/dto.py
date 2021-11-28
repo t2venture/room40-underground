@@ -166,10 +166,17 @@ class DemographicsDto:
     })
 
 class UserEmailTeamDto:
-    api = Namespace('user_email_team', description='user email team related operations')
+    api = Namespace('user_email_team', description='list of user email team related operations')
     user_email_team = api.model('user_email_team_details', {
-        'id': fields.String(required=False, description='user team id'),
-        'user_email': fields.String(required=True, description='user id'),
+        'id': fields.String(required=False, description='user email team id'),
+        'user_email': fields.String(required=True, description='user email'),
         'team_id': fields.String(required=True, description='team id'),
         'role': fields.String(required=False, description='role of the user')
+    })
+
+class UserEmailArrayDto:
+    api = Namespace('user_email_array', description='user email array related operations')
+    user_email_array = api.model('user_email_array', {
+        'id': fields.String(required=False, description='user email array id'),
+        'data': fields.String(required=True, description='stringified array')
     })
