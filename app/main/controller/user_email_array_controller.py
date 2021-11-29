@@ -29,13 +29,13 @@ class UserEmailArray(Resource):
 		email_list=json.loads(data['data'])
 		for i in email_list:
 			if token['admin']==False:
-				if check_user_in_team(token['user_id'], data['team_id'])==False:
+				if check_user_in_team(token['user_id'], i['team_id'])==False:
 					response_object = {
 						'status': 'fail',
 						'message': 'You cannot add this information.'
 						}
 					return response_object, 401
-			if check_user_is_owner(token['user_id'], data['team_id'])==False:
+			if check_user_is_owner(token['user_id'], i['team_id'])==False:
 				response_object = {
 					'status': 'fail',
 					'message': 'You cannot add this information.'
@@ -43,19 +43,19 @@ class UserEmailArray(Resource):
 				return response_object, 401
 			login_user={"login_user_id": token['user_id']}
 			action_time={"action_time": datetime.datetime.utcnow()}
-			user_to_add=get_a_user_by_email(data['user_email'])
+			user_to_add=get_a_user_by_email(i['user_email'])
 			if not user_to_add:
 				response_object = {
 					'status': 'fail',
 					'message': 'This email is not registered.',
-					'email': data['user_email']
+					'email': i['user_email']
 					}
 				return response_object, 404
 			new_data=dict()
-			new_data["team_id"]=int(data["team_id"])
+			new_data["team_id"]=int(i["team_id"])
 			new_data["user_id"]=user_to_add.id
 			new_data["role"]=data["role"]
 			new_data.update(login_user)
 			new_data.update(action_time)
-			response_object, message = save_new_user_team(data=new_data)
+			response_object, message = save_new_user_team(new_data)
 		return response_object, message
