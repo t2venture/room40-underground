@@ -54,7 +54,7 @@ class UserEmailArray(Resource):
 			new_data=dict()
 			new_data["team_id"]=int(i["team_id"])
 			new_data["user_id"]=user_to_add.id
-			new_data["role"]=data["role"]
+			new_data["role"]=i["role"]
 			new_data.update(login_user)
 			new_data.update(action_time)
 			response_object, message = save_new_user_team(new_data)
