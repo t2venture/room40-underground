@@ -65,15 +65,16 @@ class User(Resource):
         token=logined.get('data')
         if not token:
             return logined, status
-        if token['admin']==False:
-            user_id=int(user_id)
-            tokenid=int(token["user_id"])
-            if user_id!=tokenid:
-                response_object = {
-                    'status': 'fail',
-                    'message': 'You cannot search for this information.'
-                    }
-                return response_object, 401
+        user_id=int(user_id)
+        tokenid=int(token["user_id"])
+        '''
+        if user_id!=tokenid:
+            response_object = {
+                'status': 'fail',
+                'message': 'You cannot search for this information.'
+                }
+            return response_object, 401
+        '''
         user = get_a_user(user_id)
         if not user:
             api.abort(404)

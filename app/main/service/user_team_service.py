@@ -97,11 +97,13 @@ def get_all_deleted_user_teams():
     return UserTeam.query.filter_by(is_deleted=True).all()
 
 
-def get_all_user_teams(is_active=True, is_deleted=False, user_id=1):
+def get_all_user_teams(is_active=True, is_deleted=False, user_id=1, team_id=1):
     usrtms=UserTeam.query
     '''if user_id!=1:
         usrtms=usrtms.filter(UserTeam.user_id==user_id)
     '''
+    if team_id!=1:
+        usrtms=usrtms.filter(UserTeam.team_id==team_id)
     if user_id!=1:
         allowed_teams=UserTeam.filter(UserTeam.user_id==user_id)
         allowed_teams_ids=[ut.team_id for ut in allowed_teams]

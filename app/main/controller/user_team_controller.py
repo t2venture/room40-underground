@@ -15,19 +15,23 @@ _user_team = UserTeamDto.user_team
 class UserTeamList(Resource):
     @api.doc('list_of_user_teams')
     @api.marshal_list_with(_user_team, envelope='data')
+    @api.param('team_id', 'team for the team_id')
     @api.param('is_active', 'whether the user_team is active')
     @api.param('is_deleted', 'whether the user_team is deleted')
     @token_required
     def get(self):
         parser = reqparse.RequestParser()
+        parser.add_argument("team_id", type=int)
         parser.add_argument("is_active", type=bool)
         parser.add_argument("is_deleted", type=bool)
         args = parser.parse_args()
         logined, status = Auth.get_logged_in_user(request)
         token=logined.get('data')
+        token["user_id"]=int(token["user_id"])
+        args["team_id"]=int(args["team_id"])
         if not token:
             return logined, status
-        return get_all_user_teams(args["is_active"], args["is_deleted"], token["user_id"])
+        return get_all_user_teams(args["is_active"], args["is_deleted"], token["user_id"], args["team_id"])
 
     @api.response(201, 'user_team successfully created.')
     @api.doc('create a new user_team')
