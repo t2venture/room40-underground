@@ -1,5 +1,5 @@
 import random
-market_value=350000
+market_value=random.randint(3500, 5000)*100
 ann_mortgage_cost = market_value/20
 estimated_rent = ann_mortgage_cost / 7
 hoa_fee = random.randint(400,800)

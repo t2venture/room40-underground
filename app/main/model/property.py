@@ -38,7 +38,7 @@ class Property(db.Model):
     lasso_location=db.Column(db.Float, unique=False, nullable=True)
     lasso_macro=db.Column(db.Float, unique=False, nullable=True)
     hoa_fee=db.Column(db.Float, unique=False, nullable=True)
-    hoa_rent=db.Column(db.Float, unique=False, nullable=True)
+    hoa_rent=db.Column(db.Boolean, unique=False, nullable=True)
     est_property_tax=db.Column(db.Float, unique=False, nullable=True)
     est_insurance=db.Column(db.Float, unique=False, nullable=True)
     created_by=db.Column(db.Integer, db.ForeignKey('user.id'))

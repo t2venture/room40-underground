@@ -1,7 +1,7 @@
 from app.main.model.property_model import PropertyModel
 import unittest
 import datetime
-
+import random
 from app.main import db
 from app.main.model.user import User
 from app.main.model.team import Team
@@ -88,21 +88,33 @@ def add_documents():
     )
     db.session.add(new_privacy)
 
-#NEED TO REWRITE THIS USING UPDATED SCHEMA
 def add_propertys():
+    '''these are all dummy values'''
+    market_value=random.randint(3500, 5000)*100
+    ann_mortgage_cost = market_value/20
+    estimated_rent = ann_mortgage_cost / 7
+    hoa_fee = random.randint(400,800)
+    hoa_rent = True
+    est_property_tax = 0.0315 * market_value
+    est_insurance= 0.007452 * market_value
+    cap_rate = (estimated_rent - (ann_mortgage_cost/12) - hoa_fee - est_insurance - est_property_tax)/market_value
+    yield_rate: cap_rate * random.randint(95,105)/100
+    '''these are all dummy values'''
     List_Property=return_list_property(return_raw_propertys())
     #dict_of_values=obtain_dict_vals(obtain_time_series_dict(List_Property))
     #train_list_of_med_val, train_list_of_max_val, train_list_of_min_val, test_list_of_med_val, test_list_of_max_val, test_list_of_min_val=obtain_train_test_lists(dict_of_values)
     #autocorr_dict=obtain_autocorrs(train_list_of_med_val, test_list_of_med_val)
     for row in List_Property:
-        timenow=datetime.datetime.utcnow()
-
         new_property=Property(address=row["address"], majorcity=row["majorcity"],
         building_sqft_area=row["building_sq_ft"], gross_sqft_area=row["gross_sq_ft"],
         latitude=row['latitude'], longitude=row['longitude'], street=row['street'], housenumber=row['housenumber'],
         usage_code=row['usage_code'], bd_rms=row["bed_count"], bt_rms=row["bath_count"], created_by=1, modified_by=1,
         created_time=datetime.datetime.utcnow(), modified_time=datetime.datetime.utcnow(), is_deleted=False,
-        is_active=True)
+        is_active=True,
+        market_price=market_value, ann_mortgage_cost=ann_mortgage_cost, cap_rate=cap_rate,
+        yield_rate=yield_rate, lasso_score=random.randint(50,100), lasso_property=random.randint(50,100),
+        lasso_economics=random.randint(50,100), lasso_location=random.randint(50,100), lasso_macro=random.randint(50,100),
+        hoa_fee=hoa_fee, hoa_rent=hoa_rent, est_property_tax=est_property_tax, est_insurance=est_insurance)
         
         db.session.add(new_property)
         db.session.flush()
