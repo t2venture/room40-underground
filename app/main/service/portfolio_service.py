@@ -111,7 +111,7 @@ def get_all_portfolios(property_id="", team_id="", is_deleted=False, is_active=T
         portfolio_ids=[pt.portfolio_id for pt in get_portfolios_from_property(property_id)]
         portfolios=portfolios.filter(Portfolio.id.in_(portfolio_ids))
     if team_id and team_id!="":
-        portfolios_ids=[tp.portfolio_id for tp in get_teams_from_portfolio(team_id)]
+        portfolios_ids=[tp.portfolio_id for tp in get_portfolios_from_team(team_id)]
         portfolios=portfolios.filter(Portfolio.id.in_(portfolios_ids))
     return portfolios.all()
 
