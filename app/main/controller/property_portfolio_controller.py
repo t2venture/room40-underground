@@ -45,7 +45,7 @@ class PropertyPortfolioList(Resource):
         allowed_teams=get_teams_from_portfolio(portfolio_to_update)
         flag=False
         for team in allowed_teams:
-            if team["role"]=="Owner" or team["role"]=="Editor":
+            if team.role=="Owner" or team.role=="Editor":
                 if check_user_is_owner_or_editor(token['user_id'],team["team_id"])==True:
                     flag=True
         if flag==False and token["admin"]==False:
@@ -144,7 +144,7 @@ class PropertyPortfolio(Resource):
         allowed_teams=get_teams_from_portfolio(portfolio_id)
         flag=False
         for team in allowed_teams:
-            if team["role"]=="Owner" or team["role"]=="Editor":
+            if team.role=="Owner" or team.role=="Editor":
                 if check_user_is_owner_or_editor(token['user_id'],team["team_id"])==True:
                     flag=True
         if flag==False and token['admin']==False:
