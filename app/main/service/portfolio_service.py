@@ -75,7 +75,7 @@ def delete_a_portfolio(portfolio_id, data):
         for pf in del_pfs:
             pf.is_deleted=True
             pf.modified_time=data['action_time']
-            pf.modified_by=data['modified_by']
+            pf.modified_by=data['login_user_id']
         db.session.commit()
         #need to change this
         dppfs=PropertyPortfolio.query.filter(PropertyPortfolio.portfolio_id==portfolio_id).all()
@@ -88,7 +88,7 @@ def delete_a_portfolio(portfolio_id, data):
         for tpf in del_tpfs:
             tpf.is_deleted=True
             tpf.modified_time=data['action_time']
-            tpf.modified_by=data['modified_by']
+            tpf.modified_by=data['login_user_id']
         db.session.commit()
         response_object = {
                     'status': 'success',
