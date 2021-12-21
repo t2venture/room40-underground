@@ -129,7 +129,7 @@ class Portfolio(Resource):
     @api.response(201, 'portfolio successfully deleted.')
     @api.doc('delete a portfolio')
     @token_required
-    def delete(self, portfolio_id, data):
+    def delete(self, portfolio_id):
         """Delete a portfolio """
         logined, status = Auth.get_logged_in_user(request)
         token=logined.get('data')
