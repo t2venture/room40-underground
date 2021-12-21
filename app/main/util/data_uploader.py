@@ -98,7 +98,7 @@ def add_propertys():
     est_property_tax = 0.0315 * market_value
     est_insurance= 0.007452 * market_value
     cap_rate = (estimated_rent - (ann_mortgage_cost/12) - hoa_fee - est_insurance - est_property_tax)/market_value
-    yield_rate: cap_rate * random.randint(95,105)/100
+    yield_rate = cap_rate * random.randint(95,105)/100
     '''these are all dummy values'''
     List_Property=return_list_property(return_raw_propertys())
     #dict_of_values=obtain_dict_vals(obtain_time_series_dict(List_Property))

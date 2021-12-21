@@ -34,7 +34,7 @@ class PortfolioList(Resource):
         if not token:
             return logined, status
         if token["admin"]==False:
-            args["team_id"]=get_personal_team_id(token["user_id"])['id']
+            args["team_id"]=get_personal_team_id(token["user_id"]).id
         #non admins will see the portfolios they have created if they search for portfolios without specifying team id
         return get_all_portfolios(args['property_id'], args['team_id'], args["is_deleted"], args["is_active"])
 
@@ -53,12 +53,16 @@ class PortfolioList(Resource):
         action_time={"action_time": datetime.datetime.utcnow()}
         data.update(login_user)
         data.update(action_time)
-        personal_team=get_personal_team_id(login_user)
-        personal_team_id={"personal_team_id": personal_team["id"]}
+        personal_team=get_personal_team_id(token['user_id'])
+        personal_team_id={"personal_team_id": personal_team.id}
         data.update(personal_team_id)
-        return save_new_portfolio(data=data)
+        save_new_portfolio(data=data)
         #This also creates the entry in TeamPortfolio as to which team member is the owner of the portfolio.
-
+        response_object = {
+                'status': 'success',
+                'message': 'Portfolio succesfully added.'
+                }
+        return response_object, 201
 @api.route('/<portfolio_id>')
 @api.param('portfolio_id', 'The portfolio identifier')
 @api.response(404, 'portfolio not found.')
@@ -79,7 +83,7 @@ class Portfolio(Resource):
         #Checking is User can VIEW the portfolio
         flag=False
         for team in allowed_teams:
-            team_id=int(team["id"])
+            team_id=int(team.id)
             if check_user_in_team(usr_id, team_id)==True:
                 flag=True
         if flag==False and token['admin']==False:
@@ -109,8 +113,8 @@ class Portfolio(Resource):
         allowed_teams=get_teams_from_portfolio(portfolio_id)
         flag=False
         for team in allowed_teams:
-            if team["role"]=="Owner" or team["role"]=="Editor":
-                if check_user_is_owner_or_editor(token['user_id'],team["team_id"])==True:
+            if team.role=="Owner" or team.role=="Editor":
+                if check_user_is_owner_or_editor(token['user_id'],team.team_id)==True:
                     flag=True
         if flag==False and token['admin']==False:
             response_object = {

@@ -32,7 +32,7 @@ class TeamPortfolioList(Resource):
         if not token:
             return logined, status
         if token["admin"]==False:
-            args["team_id"]=get_personal_team_id(token["user_id"])["id"]
+            args["team_id"]=get_personal_team_id(token["user_id"]).id
             return get_portfolios_from_team(args["team_id"])
         return get_all_team_portfolios(args["is_deleted"], args["is_active"])
 
@@ -55,7 +55,7 @@ class TeamPortfolioList(Resource):
         allowed_teams=get_teams_from_portfolio(portfolio_to_update)
         flag=False
         for team in allowed_teams:
-            if team["role"]=="Owner" or team["role"]=="Editor":
+            if team.role=="Owner" or team.role=="Editor":
                 if check_user_is_owner_or_editor(token['user_id'],team["team_id"])==True:
                     flag=True
         if flag==False and token["admin"]==False:
@@ -85,7 +85,7 @@ class TeamPortfolio(Resource):
         if not team_portfolio:
             api.abort(404)
         if token["admin"]==False:
-            team_id=int(team_portfolio["team_id"])
+            team_id=int(team_portfolio.team_id)
             if (check_user_in_team(token["user_id"], team_id)==False):
                 response_object = {
                 'status': 'fail',
@@ -114,7 +114,7 @@ class TeamPortfolio(Resource):
         allowed_teams=get_teams_from_portfolio(portfolio_to_update["id"])
         flag=False
         for team in allowed_teams:
-            if team["role"]=="Owner" or team["role"]=="Editor":
+            if team.role=="Owner" or team.role=="Editor":
                 if check_user_is_owner_or_editor(token['user_id'],team["team_id"])==True:
                     flag=True
         if flag==False and token['admin']==False:
@@ -145,7 +145,7 @@ class TeamPortfolio(Resource):
         allowed_teams=get_teams_from_portfolio(portfolio_to_update["id"])
         flag=False
         for team in allowed_teams:
-            if team["role"]=="Owner" or team["role"]=="Editor":
+            if team.role=="Owner" or team.role=="Editor":
                 if check_user_is_owner_or_editor(token['user_id'],team["team_id"])==True:
                     flag=True
         if flag==False and token['admin']==False:

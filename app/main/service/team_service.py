@@ -122,9 +122,12 @@ def delete_a_team(team_id, data):
         return response_object, 401
 
 def get_personal_team_id(user_id):
-    user_teams=UserTeam.query.filter_by(is_active=True).filter_by(is_deleted=False).filter(UserTeam.user_id==user_id).all()
+    user_teams=UserTeam.query.filter(UserTeam.is_active==True).filter(UserTeam.is_deleted==False).filter(UserTeam.user_id==user_id).all()
     utids=[ut.team_id for ut in user_teams]
-    personal_teams=Team.query.filter(Team.name.like("Personal Team")).filter_by(is_active=True).filter_by(is_deleted=False)
+    if user_id==1:
+        personal_teams=Team.query.filter(Team.name.like("Superuser Personal Team")).filter_by(is_active=True).filter_by(is_deleted=False)
+    else:
+        personal_teams=Team.query.filter(Team.name.like("Personal Team")).filter_by(is_active=True).filter_by(is_deleted=False)
     personal_teams=personal_teams.filter(Team.id.in_(utids))
     return personal_teams.first()
 

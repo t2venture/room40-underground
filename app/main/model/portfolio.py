@@ -13,3 +13,7 @@ class Portfolio(db.Model):
 	description=db.Column(db.String(255), unique=False, nullable=True)
 	is_deleted=db.Column(db.Boolean, unique=False, nullable=False, default=False)
 	is_active=db.Column(db.Boolean, unique=False, nullable=False, default=True)
+	created_by=db.Column(db.Integer, db.ForeignKey('user.id'))
+	modified_by=db.Column(db.Integer, db.ForeignKey('user.id'))
+	created_time=db.Column(db.DateTime, unique=False, nullable=False)
+	modified_time=db.Column(db.DateTime, unique=False, nullable=False)

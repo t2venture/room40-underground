@@ -23,8 +23,10 @@ def save_new_portfolio(data):
         save_changes(new_portfolio)
         new_data=dict()
         new_data["portfolio_id"]=new_portfolio.id
-        new_data["team_id"]=get_personal_team_id(data['login_user_id'])["id"]
+        new_data["team_id"]=get_personal_team_id(data['login_user_id']).id
         new_data["role"]="Owner"
+        new_data["login_user_id"]=data["login_user_id"]
+        new_data["action_time"]=data["action_time"]
         save_new_team_portfolio(new_data)
         response_object = {
                 'status': 'success',
@@ -104,7 +106,7 @@ def delete_a_portfolio(portfolio_id, data):
 
 def get_all_portfolios(property_id="", team_id="", is_deleted=False, is_active=True):
     # Get all portfolios
-    portfolios=Portfolio.query.filter_by(is_deleted=False).filter_by(is_active=True)
+    portfolios=Portfolio.query.filter(Portfolio.is_deleted==False).filter(Portfolio.is_active==True)
     if property_id and property_id!="":
         portfolio_ids=[pt.portfolio_id for pt in get_portfolios_from_property(property_id)]
         portfolios=portfolios.filter(Portfolio.id.in_(portfolio_ids))
