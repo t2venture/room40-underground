@@ -86,7 +86,7 @@ def delete_a_document(document_id, data):
 
 def get_all_documents(query_title="", deleted=False, active=True):
     print(query_title)
-    documents = Document.query.filter_by(is_deleted=False).filter_by(is_active=True)
+    documents = Document.query.filter(Document.is_deleted==False).filter(Document.is_active==True)
     if query_title and query_title!="":
         query_title='%'+query_title+'%'
         documents=documents.filter(Document.title.like(query_title))
@@ -99,10 +99,10 @@ def get_all_deleted_documents():
     return documents.all()
 
 def get_a_deleted_document(document_id):
-    return Document.query.filter(Document.id==document_id).filter_by(is_deleted=True).first()
+    return Document.query.filter(Document.id==document_id).filter(Document.is_deleted==True).first()
 
 def get_a_document(document_id):
-    return Document.query.filter(Document.id==document_id).filter_by(is_deleted=False).filter_by(is_active=True).first()
+    return Document.query.filter(Document.id==document_id).filter(Document.is_deleted==False).filter(Document.is_active==True).first()
 
 def save_changes(data):
     db.session.add(data)

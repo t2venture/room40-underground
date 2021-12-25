@@ -53,7 +53,7 @@ def update_rent(rent_id, data):
 
 def delete_a_rent(rent_id):
     try:
-        Rent.query.filter_by(id=rent_id).delete()
+        Rent.query.filter(Rent.id==rent_id).delete()
         db.session.commit()
         response_object = {
                     'status': 'success',
@@ -73,7 +73,7 @@ def get_all_rents():
     return Rent.query.all()
 
 def get_a_rent(rent_id):
-    return Rent.query.filter_by(id=rent_id).first()
+    return Rent.query.filter(Rent.id==rent_id).first()
 
 def save_changes(data):
     db.session.add(data)

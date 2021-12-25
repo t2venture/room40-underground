@@ -4,6 +4,7 @@ import datetime
 from app.main import db
 
 time_param=2592000
+short_time_param=172800
 
 from app.main.model.document import Document
 from app.main.model.property import Property
@@ -15,7 +16,8 @@ from app.main.model.portfolio import Portfolio
 from app.main.model.property_history import PropertyHistory
 from app.main.model.property_model import PropertyModel
 from app.main.model.property_portfolio import PropertyPortfolio
-
+from app.main.model.events_portfolio import EventsPortfolio
+from app.main.model.events_team import EventsTeam
 
 from app.main.service.document_service import *
 from app.main.service.property_service import *
@@ -27,6 +29,9 @@ from app.main.service.portfolio_service import *
 from app.main.service.property_history_service import *
 from app.main.service.property_model_service import *
 from app.main.service.property_portfolio_service import *
+from app.main.service.events_portfolio_service import *
+from app.main.service.events_team_service import *
+
 
 def clean_database():
 	all_documents=get_all_deleted_documents()
@@ -41,9 +46,16 @@ def clean_database():
 	all_property_portfolios=get_all_deleted_property_portfolios()
 	all_users_notconfirmed=get_all_users()
 
+	all_events_team_deleted=get_all_deleted_events_team()
+	all_events_portfolio_deleted=get_all_deleted_events_portfolio()
+
+	all_events_team=get_all_events_team()
+	all_events_portfolio=get_all_events_portfolio()
+
 	time_now=datetime.datetime.utcnow()
 
-	#259200 is the number of seconds in 30 days
+	#2592000 is the number of seconds in 30 days
+	#172800 is the number of seconds in 2 days
 	for u in all_users_notconfirmed:
 		delta=time_now-u.modified_time
 		if u.confirmed==False and delta.total_seconds()>time_param:
@@ -109,6 +121,34 @@ def clean_database():
 		if delta.total_seconds()>time_param:
 			PropertyPortfolio.query(id=ppf.id).delete()
 			db.session.commit()
+
+	for delevtm in all_events_team_deleted:
+		delta=time_now-delevtm.created_time
+		if delta.total_seconds()>time_param:
+			EventsTeam.query(id=delevtm.id).delete()
+			db.session.commit()
+
+	for delevpf in all_events_portfolio_deleted:
+		delta=time_now=delevpf.created_time
+		if delta.total_seconds()>time_param:
+			EventsPortfolio.query(id=delevpf.id).delete()
+			db.session.commit()
+		
+	for evtm in all_events_team:
+		delta=time_now-evtm.created_time
+		if delta.total_seconds()>short_time_param:
+			evtm.is_deleted=True
+			db.session.add(evtm)
+			db.session.commit()
+	
+	for evpf in all_events_portfolio:
+		delta=time_now-evpf.created_time
+		if delta.total_seconds()>short_time_param:
+			evpf.is_deleted=True
+			db.session.add(evtm)
+			db.session.commit()
+
+	
 
 	
 	

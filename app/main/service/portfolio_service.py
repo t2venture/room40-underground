@@ -77,7 +77,6 @@ def delete_a_portfolio(portfolio_id, data):
             pf.modified_time=data['action_time']
             pf.modified_by=data['login_user_id']
         db.session.commit()
-        #need to change this
         dppfs=PropertyPortfolio.query.filter(PropertyPortfolio.portfolio_id==portfolio_id).all()
         for ppf in dppfs:
             ppf.is_deleted=True

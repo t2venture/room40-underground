@@ -180,3 +180,9 @@ class UserEmailArrayDto:
         'id': fields.String(required=False, description='user email array id'),
         'data': fields.String(required=True, description='stringified array')
     })
+
+class PersonalTeamDto:
+    api = Namespace('personal_team', description='to fetch data about personal team')
+    personal_team = api.model('personal_team', {
+        'personal_team_id': fields.String(required=False, description='personal_team_id')
+    })
