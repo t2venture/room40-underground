@@ -46,7 +46,7 @@ class PropertyPortfolioList(Resource):
         flag=False
         for team in allowed_teams:
             if team.role=="Owner" or team.role=="Editor":
-                if check_user_is_owner_or_editor(token['user_id'],team["team_id"])==True:
+                if check_user_is_owner_or_editor(token['user_id'],team.team_id)==True:
                     flag=True
         if flag==False and token["admin"]==False:
             response_object = {
