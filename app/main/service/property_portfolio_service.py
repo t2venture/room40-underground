@@ -81,19 +81,19 @@ def delete_a_property_portfolio(property_portfolio_id, data):
         return response_object, 401
 
 def get_all_property_portfolios(is_deleted=False, is_active=True):
-    return PropertyPortfolio.query.filter_by(is_deleted=False).filter_by(is_active=True).all()
+    return PropertyPortfolio.query.filter(PropertyPortfolio.is_deleted==False).filter(PropertyPortfolio.is_active==True).all()
 
 def get_all_deleted_property_portfolios():
-    return PropertyPortfolio.query.filter_by(is_deleted=True).all()
+    return PropertyPortfolio.query.filter(PropertyPortfolio.is_deleted==True).all()
 
-def get_propertys_from_portfolio(portfolio_id):
-    return PropertyPortfolio.query.filter_by(portfolio_id=portfolio_id).filter_by(is_deleted=False).filter_by(is_active=True).all()
+def get_propertys_from_portfolio(portfolio_id, is_deleted=False, is_active=True):
+    return PropertyPortfolio.query.filter(PropertyPortfolio.portfolio_id==portfolio_id).filter(PropertyPortfolio.is_deleted==False).filter(PropertyPortfolio.is_active==True).all()
 
 def get_portfolios_from_property(property_id):
-    return PropertyPortfolio.query.filter_by(property_id=property_id).filter_by(is_deleted=False).filter_by(is_active=True).all()
+    return PropertyPortfolio.query.filter(PropertyPortfolio.property_id==property_id).filter(PropertyPortfolio.is_deleted==False).filter(PropertyPortfolio.is_active==True).all()
 
 def get_a_property_portfolio(property_portfolio_id):
-    return PropertyPortfolio.query.filter_by(id=property_portfolio_id).filter_by(is_deleted=False).filter_by(is_active=True).first()
+    return PropertyPortfolio.query.filter(PropertyPortfolio.id==property_portfolio_id).filter(PropertyPortfolio.is_deleted==False).filter(PropertyPortfolio.is_active==True).first()
 
 def save_changes(data):
     db.session.add(data)

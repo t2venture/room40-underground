@@ -2,7 +2,7 @@ from flask import request
 from flask_restplus import Resource, reqparse
 from ..util.decorator import token_required, admin_token_required
 from ..util.dto import PropertyPortfolioDto
-from ..service.property_portfolio_service import save_new_property_portfolio, get_all_property_portfolios, get_a_property_portfolio, update_property_portfolio, delete_a_property_portfolio
+from ..service.property_portfolio_service import get_propertys_from_portfolio, save_new_property_portfolio, get_all_property_portfolios, get_a_property_portfolio, update_property_portfolio, delete_a_property_portfolio
 from ..service.team_service import get_teams_from_portfolio, get_personal_team_id
 from ..service.auth_helper import Auth
 from ..service.user_team_service import check_user_in_team, check_user_is_owner, check_user_is_owner_or_editor
@@ -16,14 +16,37 @@ class PropertyPortfolioList(Resource):
     @api.doc('list_of_property_portfolios for a property_portfolio')
     @api.param('is_deleted', 'whether the property model is deleted or not')
     @api.param('is_active', 'whether the property model is active or not')
+    @api.param('portfolio_id', 'id of the portfolio to fetch properties for')
     @api.marshal_list_with(_property_portfolio, envelope='data')
-    @admin_token_required
+    @token_required
     def get(self):
         """List all property_portfolios"""
+        logined, status = Auth.get_logged_in_user(request)
+        token=logined.get('data')
+        if not token:
+            return logined, status
+        usr_id=int(token['user_id'])
         parser = reqparse.RequestParser()
         parser.add_argument("is_deleted", type=bool)
         parser.add_argument("is_active", type=bool)
+        parser.add_argument("portfolio_id", type=int)
         args = parser.parse_args()
+        if args['portfolio_id']:
+            p_id=int(args['portfolio_id'])
+            allowed_teams=get_teams_from_portfolio(p_id)
+            #Checking is User can VIEW the portfolio
+            flag=False
+            for team in allowed_teams:
+                team_id=int(team.id)
+                if check_user_in_team(usr_id, team_id)==True:
+                    flag=True
+            if flag==False and token['admin']==False:
+                response_object = {
+                    'status': 'fail',
+                    'message': 'You cannot search for properties in this portfolio.'
+                    }
+                return response_object, 401
+            return get_propertys_from_portfolio(p_id, args["is_deleted"], args["is_active"])
         return get_all_property_portfolios(args["is_deleted"], args["is_active"])
 
     @api.response(201, 'property_portfolio successfully created.')
