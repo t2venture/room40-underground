@@ -56,13 +56,11 @@ class PortfolioList(Resource):
         personal_team=get_personal_team_id(token['user_id'])
         personal_team_id={"personal_team_id": personal_team.id}
         data.update(personal_team_id)
-        save_new_portfolio(data=data)
+        return save_new_portfolio(data=data)
         #This also creates the entry in TeamPortfolio as to which team member is the owner of the portfolio.
-        response_object = {
-                'status': 'success',
-                'message': 'Portfolio succesfully added.'
-                }
-        return response_object, 201
+
+
+        
 @api.route('/<portfolio_id>')
 @api.param('portfolio_id', 'The portfolio identifier')
 @api.response(404, 'portfolio not found.')

@@ -29,6 +29,7 @@ def save_new_portfolio(data):
         new_data["action_time"]=data["action_time"]
         save_new_team_portfolio(new_data)
         response_object = {
+                'portfolio_id': new_portfolio.id,
                 'status': 'success',
                 'message': 'Successfully registered.',
             }

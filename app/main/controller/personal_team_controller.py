@@ -17,8 +17,14 @@ class PersonalTeam(Resource):
 		parser = reqparse.RequestParser()
 		parser.add_argument("user_id", type=int)
 		args=parser.parse_args()
+		if not args['user_id']:
+			return_obj={"status": "fail", "message": "You need to input an user id"}
+			return return_obj, 400
 		user_id_to_search=int(args['user_id'])
 		team_to_return=get_personal_team_id(user_id_to_search)
+		if not team_to_return:
+			return_obj={"status": "fail", "message": "User doesn't exist"}
+			return return_obj, 404
 		personal_id=team_to_return.id
 		personal_team_obj={
 			"personal_team_id": personal_id,
