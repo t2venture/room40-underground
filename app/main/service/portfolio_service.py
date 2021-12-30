@@ -1,6 +1,6 @@
 import uuid
 import datetime
-
+from sqlalchemy import desc
 from app.main import db
 from app.main.model.portfolio import Portfolio
 from app.main.model.property_portfolio import PropertyPortfolio
@@ -113,7 +113,7 @@ def get_all_portfolios(property_id="", team_id="", is_deleted=False, is_active=T
     if team_id and team_id!="":
         portfolios_ids=[tp.portfolio_id for tp in get_portfolios_from_team(team_id)]
         portfolios=portfolios.filter(Portfolio.id.in_(portfolios_ids))
-    return portfolios.all()
+    return portfolios.order_by(desc(Portfolio.id)).all()
 
 def get_all_deleted_portfolios():
     return Portfolio.query.filter_by(is_deleted=True).all()

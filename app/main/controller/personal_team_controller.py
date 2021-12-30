@@ -6,7 +6,7 @@ from ..util.decorator import token_required, admin_token_required
 from ..util.dto import PersonalTeamDto
 from ..service.team_service import get_personal_team_id
 api=PersonalTeamDto.api
-personal_team=PersonalTeamDto.personal_team
+_personal_team=PersonalTeamDto.personal_team
 
 @api.route('/')
 class PersonalTeam(Resource):

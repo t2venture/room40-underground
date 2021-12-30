@@ -186,3 +186,9 @@ class PersonalTeamDto:
     personal_team = api.model('personal_team', {
         'personal_team_id': fields.String(required=False, description='personal_team_id')
     })
+
+class PortfolioLengthDto:
+    api = Namespace('portfolio_length', description = 'length of a particular portfolio')
+    portfolio_length = api.model('portfolio_length', {
+        'length': fields.String(required=False, description='length')
+    })
