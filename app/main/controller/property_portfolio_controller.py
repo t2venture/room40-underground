@@ -97,12 +97,12 @@ class PropertyPortfolio(Resource):
         if not token:
             return logined, status
         usr_id=int(token['user_id'])
-        portfolio_id=int(property_portfolio["portfolio_id"])
+        portfolio_id=int(property_portfolio.portfolio_id)
         allowed_teams=get_teams_from_portfolio(portfolio_id)
         #Checking is User can VIEW the property_portfolio
         flag=False
         for team in allowed_teams:
-            team_id=int(team["id"])
+            team_id=int(team.team_id)
             if check_user_in_team(usr_id, team_id)==True:
                 flag=True
         if flag==False and token['admin']==False:
@@ -131,12 +131,12 @@ class PropertyPortfolio(Resource):
         data.update(login_user)
         data.update(action_time)
         property_portfolio = get_a_property_portfolio(ppid)
-        portfolio_id=int(property_portfolio["portfolio_id"])
+        portfolio_id=int(property_portfolio.portfolio_id)
         allowed_teams=get_teams_from_portfolio(portfolio_id)
         #Checking is User can VIEW the property_portfolio
         flag=False
         for team in allowed_teams:
-            team_id=int(team["id"])
+            team_id=int(team.team_id)
             if check_user_in_team(usr_id, team_id)==True:
                 flag=True
         if flag==False and token['admin']==False:
@@ -163,7 +163,7 @@ class PropertyPortfolio(Resource):
         data.update(action_time)
         ppid=int(property_portfolio_id)
         property_portfolio = get_a_property_portfolio(ppid)
-        portfolio_id=int(property_portfolio["portfolio_id"])
+        portfolio_id=int(property_portfolio.portfolio_id)
         allowed_teams=get_teams_from_portfolio(portfolio_id)
         flag=False
         for team in allowed_teams:
