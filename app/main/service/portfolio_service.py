@@ -116,11 +116,11 @@ def get_all_portfolios(property_id="", team_id="", is_deleted=False, is_active=T
     return portfolios.order_by(desc(Portfolio.id)).all()
 
 def get_all_deleted_portfolios():
-    return Portfolio.query.filter_by(is_deleted=True).all()
+    return Portfolio.query.filter(Portfolio.is_deleted==True).all()
 
 
 def get_a_portfolio(portfolio_id):
-    return Portfolio.query.filter(Portfolio.id==portfolio_id).filter_by(is_deleted=False).filter_by(is_active=True).first()
+    return Portfolio.query.filter(Portfolio.id==portfolio_id).filter(Portfolio.is_deleted==False).filter(Portfolio.is_active==True).first()
 
 
 def save_changes(data):

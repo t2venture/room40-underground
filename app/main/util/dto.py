@@ -192,3 +192,16 @@ class PortfolioLengthDto:
     portfolio_length = api.model('portfolio_length', {
         'length': fields.String(required=False, description='length')
     })
+
+class SummaryDto:
+    api = Namespace('summary', description = 'summary for a zipcode')
+    summary = api.model('summary', {
+        'zipcode': fields.String(description='zipcode'),
+        'total_units': fields.String(description='total_units'),
+        'low_curr_frac': fields.String(description='low_curr_frac'),
+        'high_curr_frac': fields.String(description='high_curr_frac'),
+        'low_proj1_frac': fields.String(description='low_proj1_frac'),
+        'high_proj1_frac': fields.String(description='high_proj1_frac'),
+        'low_proj2_frac': fields.String(description='low_proj2_frac'),
+        'high_proj2_frac': fields.String(description='high_proj2_frac'),
+    })

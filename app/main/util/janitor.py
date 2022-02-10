@@ -18,6 +18,7 @@ from app.main.model.property_model import PropertyModel
 from app.main.model.property_portfolio import PropertyPortfolio
 from app.main.model.events_portfolio import EventsPortfolio
 from app.main.model.events_team import EventsTeam
+from app.main.model.summary import Summary
 
 from app.main.service.document_service import *
 from app.main.service.property_service import *
@@ -31,7 +32,7 @@ from app.main.service.property_model_service import *
 from app.main.service.property_portfolio_service import *
 from app.main.service.events_portfolio_service import *
 from app.main.service.events_team_service import *
-
+from app.main.service.summary_service import *
 
 def clean_database():
 	all_documents=get_all_deleted_documents()
@@ -45,12 +46,11 @@ def clean_database():
 	all_property_models=get_all_deleted_property_models()
 	all_property_portfolios=get_all_deleted_property_portfolios()
 	all_users_notconfirmed=get_all_users()
-
 	all_events_team_deleted=get_all_deleted_events_team()
 	all_events_portfolio_deleted=get_all_deleted_events_portfolio()
-
 	all_events_team=get_all_events_team()
 	all_events_portfolio=get_all_events_portfolio()
+	all_summaries=get_all_deleted_summaries()
 
 	time_now=datetime.datetime.utcnow()
 
@@ -146,6 +146,12 @@ def clean_database():
 		if delta.total_seconds()>short_time_param:
 			evpf.is_deleted=True
 			db.session.add(evtm)
+			db.session.commit()
+	
+	for dsum in get_all_deleted_summaries:
+		delta=time_now=dsum.modified_time
+		if delta.total_seconds()>time_param:
+			Summary.query(id=dsum.id).delete()
 			db.session.commit()
 
 	
