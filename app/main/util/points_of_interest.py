@@ -33,18 +33,21 @@ url = 'https://graphql.cherre.com/graphql'
 file_dir = ''  # Must include trailing slash. If left blank, 
 # csv will be created in the current directory.
 api_email='lukeowentruitt@gmail.com'
-api_token ='Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJHcmFwaFFMIFRva2VuIiwibmFtZSI6IiIsImh0dHBzOi8vaGFzdXJhLmlvL2p3dC9jbGFpbXMiOnsieC1oYXN1cmEtYWxsb3dlZC1yb2xlcyI6WyJ0Ml9kZXZlbG9wbWVudCJdLCJ4LWhhc3VyYS1kZWZhdWx0LXJvbGUiOiJ0Ml9kZXZlbG9wbWVudCIsIngtaGFzdXJhLXVzZXItaWQiOiJ0Ml9kZXZlbG9wbWVudCIsIngtaGFzdXJhLW9yZy1pZCI6InQyX2RldmVsb3BtZW50In19.sjHOw5oF3vYb3S_dxhWT7ucJ1qvQccDaHbyjzLkrKQQ'
+api_token = os.getenv("CHERRE_API_TOKEN")
+if not api_token:
+    raise ValueError("Need to define CHERRE_API_TOKEN environment variable")
+auth_header_value = 'Bearer ' + api_token
 api_account='Luke Truitt'
 
 def get_graphql_request (Query):
-    headers = {'content-type': 'application/json', 'X-Auth-Email': api_email, 'Authorization': api_token}
+    headers = {'content-type': 'application/json', 'X-Auth-Email': api_email, 'Authorization': auth_header_value}
     # This variable replacement requires Python3.6 or higher
     payload = {"query": Query}
     r = requests.request("POST",url, json=payload, headers=headers)
     return r
 
 def get_graphql_request_variables (Query,Variables):
-    headers = {'content-type': 'application/json', 'X-Auth-Email': api_email, 'Authorization': api_token}
+    headers = {'content-type': 'application/json', 'X-Auth-Email': api_email, 'Authorization': auth_header_value}
     # This variable replacement requires Python3.6 or higher
     payload = {"query": Query, "variables": Variables}
     r = requests.request("POST",url, json=payload, headers=headers)
